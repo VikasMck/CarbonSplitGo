@@ -1,0 +1,593 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6AD7AADA2CA1B3A40067D44F /* CarbonSplitGoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD7AAD92CA1B3A40067D44F /* CarbonSplitGoApp.swift */; };
+		6AD7AADC2CA1B3A40067D44F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD7AADB2CA1B3A40067D44F /* ContentView.swift */; };
+		6AD7AADE2CA1B3A60067D44F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AD7AADD2CA1B3A60067D44F /* Assets.xcassets */; };
+		6AD7AAE12CA1B3A60067D44F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6AD7AAE02CA1B3A60067D44F /* Preview Assets.xcassets */; };
+		6AD7AAEB2CA1B3A60067D44F /* CarbonSplitGoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD7AAEA2CA1B3A60067D44F /* CarbonSplitGoTests.swift */; };
+		6AD7AAF52CA1B3A60067D44F /* CarbonSplitGoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD7AAF42CA1B3A60067D44F /* CarbonSplitGoUITests.swift */; };
+		6AD7AAF72CA1B3A60067D44F /* CarbonSplitGoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AD7AAF62CA1B3A60067D44F /* CarbonSplitGoUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6AD7AAE72CA1B3A60067D44F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6AD7AACE2CA1B3A40067D44F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6AD7AAD52CA1B3A40067D44F;
+			remoteInfo = CarbonSplitGo;
+		};
+		6AD7AAF12CA1B3A60067D44F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6AD7AACE2CA1B3A40067D44F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6AD7AAD52CA1B3A40067D44F;
+			remoteInfo = CarbonSplitGo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		6AD7AAD62CA1B3A40067D44F /* CarbonSplitGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarbonSplitGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6AD7AAD92CA1B3A40067D44F /* CarbonSplitGoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarbonSplitGoApp.swift; sourceTree = "<group>"; };
+		6AD7AADB2CA1B3A40067D44F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		6AD7AADD2CA1B3A60067D44F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6AD7AAE02CA1B3A60067D44F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		6AD7AAE62CA1B3A60067D44F /* CarbonSplitGoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CarbonSplitGoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6AD7AAEA2CA1B3A60067D44F /* CarbonSplitGoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarbonSplitGoTests.swift; sourceTree = "<group>"; };
+		6AD7AAF02CA1B3A60067D44F /* CarbonSplitGoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CarbonSplitGoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6AD7AAF42CA1B3A60067D44F /* CarbonSplitGoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarbonSplitGoUITests.swift; sourceTree = "<group>"; };
+		6AD7AAF62CA1B3A60067D44F /* CarbonSplitGoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarbonSplitGoUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6AD7AAD32CA1B3A40067D44F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AD7AAE32CA1B3A60067D44F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AD7AAED2CA1B3A60067D44F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6AD7AACD2CA1B3A40067D44F = {
+			isa = PBXGroup;
+			children = (
+				6AD7AAD82CA1B3A40067D44F /* CarbonSplitGo */,
+				6AD7AAE92CA1B3A60067D44F /* CarbonSplitGoTests */,
+				6AD7AAF32CA1B3A60067D44F /* CarbonSplitGoUITests */,
+				6AD7AAD72CA1B3A40067D44F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6AD7AAD72CA1B3A40067D44F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6AD7AAD62CA1B3A40067D44F /* CarbonSplitGo.app */,
+				6AD7AAE62CA1B3A60067D44F /* CarbonSplitGoTests.xctest */,
+				6AD7AAF02CA1B3A60067D44F /* CarbonSplitGoUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6AD7AAD82CA1B3A40067D44F /* CarbonSplitGo */ = {
+			isa = PBXGroup;
+			children = (
+				6AD7AAD92CA1B3A40067D44F /* CarbonSplitGoApp.swift */,
+				6AD7AADB2CA1B3A40067D44F /* ContentView.swift */,
+				6AD7AADD2CA1B3A60067D44F /* Assets.xcassets */,
+				6AD7AADF2CA1B3A60067D44F /* Preview Content */,
+			);
+			path = CarbonSplitGo;
+			sourceTree = "<group>";
+		};
+		6AD7AADF2CA1B3A60067D44F /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				6AD7AAE02CA1B3A60067D44F /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		6AD7AAE92CA1B3A60067D44F /* CarbonSplitGoTests */ = {
+			isa = PBXGroup;
+			children = (
+				6AD7AAEA2CA1B3A60067D44F /* CarbonSplitGoTests.swift */,
+			);
+			path = CarbonSplitGoTests;
+			sourceTree = "<group>";
+		};
+		6AD7AAF32CA1B3A60067D44F /* CarbonSplitGoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				6AD7AAF42CA1B3A60067D44F /* CarbonSplitGoUITests.swift */,
+				6AD7AAF62CA1B3A60067D44F /* CarbonSplitGoUITestsLaunchTests.swift */,
+			);
+			path = CarbonSplitGoUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6AD7AAD52CA1B3A40067D44F /* CarbonSplitGo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6AD7AAFA2CA1B3A60067D44F /* Build configuration list for PBXNativeTarget "CarbonSplitGo" */;
+			buildPhases = (
+				6AD7AAD22CA1B3A40067D44F /* Sources */,
+				6AD7AAD32CA1B3A40067D44F /* Frameworks */,
+				6AD7AAD42CA1B3A40067D44F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CarbonSplitGo;
+			productName = CarbonSplitGo;
+			productReference = 6AD7AAD62CA1B3A40067D44F /* CarbonSplitGo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6AD7AAE52CA1B3A60067D44F /* CarbonSplitGoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6AD7AAFD2CA1B3A60067D44F /* Build configuration list for PBXNativeTarget "CarbonSplitGoTests" */;
+			buildPhases = (
+				6AD7AAE22CA1B3A60067D44F /* Sources */,
+				6AD7AAE32CA1B3A60067D44F /* Frameworks */,
+				6AD7AAE42CA1B3A60067D44F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6AD7AAE82CA1B3A60067D44F /* PBXTargetDependency */,
+			);
+			name = CarbonSplitGoTests;
+			productName = CarbonSplitGoTests;
+			productReference = 6AD7AAE62CA1B3A60067D44F /* CarbonSplitGoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		6AD7AAEF2CA1B3A60067D44F /* CarbonSplitGoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6AD7AB002CA1B3A60067D44F /* Build configuration list for PBXNativeTarget "CarbonSplitGoUITests" */;
+			buildPhases = (
+				6AD7AAEC2CA1B3A60067D44F /* Sources */,
+				6AD7AAED2CA1B3A60067D44F /* Frameworks */,
+				6AD7AAEE2CA1B3A60067D44F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6AD7AAF22CA1B3A60067D44F /* PBXTargetDependency */,
+			);
+			name = CarbonSplitGoUITests;
+			productName = CarbonSplitGoUITests;
+			productReference = 6AD7AAF02CA1B3A60067D44F /* CarbonSplitGoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6AD7AACE2CA1B3A40067D44F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					6AD7AAD52CA1B3A40067D44F = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					6AD7AAE52CA1B3A60067D44F = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 6AD7AAD52CA1B3A40067D44F;
+					};
+					6AD7AAEF2CA1B3A60067D44F = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 6AD7AAD52CA1B3A40067D44F;
+					};
+				};
+			};
+			buildConfigurationList = 6AD7AAD12CA1B3A40067D44F /* Build configuration list for PBXProject "CarbonSplitGo" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6AD7AACD2CA1B3A40067D44F;
+			productRefGroup = 6AD7AAD72CA1B3A40067D44F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6AD7AAD52CA1B3A40067D44F /* CarbonSplitGo */,
+				6AD7AAE52CA1B3A60067D44F /* CarbonSplitGoTests */,
+				6AD7AAEF2CA1B3A60067D44F /* CarbonSplitGoUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6AD7AAD42CA1B3A40067D44F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6AD7AAE12CA1B3A60067D44F /* Preview Assets.xcassets in Resources */,
+				6AD7AADE2CA1B3A60067D44F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AD7AAE42CA1B3A60067D44F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AD7AAEE2CA1B3A60067D44F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6AD7AAD22CA1B3A40067D44F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6AD7AADC2CA1B3A40067D44F /* ContentView.swift in Sources */,
+				6AD7AADA2CA1B3A40067D44F /* CarbonSplitGoApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AD7AAE22CA1B3A60067D44F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6AD7AAEB2CA1B3A60067D44F /* CarbonSplitGoTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6AD7AAEC2CA1B3A60067D44F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6AD7AAF72CA1B3A60067D44F /* CarbonSplitGoUITestsLaunchTests.swift in Sources */,
+				6AD7AAF52CA1B3A60067D44F /* CarbonSplitGoUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6AD7AAE82CA1B3A60067D44F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6AD7AAD52CA1B3A40067D44F /* CarbonSplitGo */;
+			targetProxy = 6AD7AAE72CA1B3A60067D44F /* PBXContainerItemProxy */;
+		};
+		6AD7AAF22CA1B3A60067D44F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6AD7AAD52CA1B3A40067D44F /* CarbonSplitGo */;
+			targetProxy = 6AD7AAF12CA1B3A60067D44F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		6AD7AAF82CA1B3A60067D44F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		6AD7AAF92CA1B3A60067D44F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6AD7AAFB2CA1B3A60067D44F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CarbonSplitGo/Preview Content\"";
+				DEVELOPMENT_TEAM = L38KUB682P;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "VMC-22.CarbonSplitGo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6AD7AAFC2CA1B3A60067D44F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CarbonSplitGo/Preview Content\"";
+				DEVELOPMENT_TEAM = L38KUB682P;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "VMC-22.CarbonSplitGo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		6AD7AAFE2CA1B3A60067D44F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L38KUB682P;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "VMC-22.CarbonSplitGoTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CarbonSplitGo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CarbonSplitGo";
+			};
+			name = Debug;
+		};
+		6AD7AAFF2CA1B3A60067D44F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L38KUB682P;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "VMC-22.CarbonSplitGoTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CarbonSplitGo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CarbonSplitGo";
+			};
+			name = Release;
+		};
+		6AD7AB012CA1B3A60067D44F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L38KUB682P;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "VMC-22.CarbonSplitGoUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CarbonSplitGo;
+			};
+			name = Debug;
+		};
+		6AD7AB022CA1B3A60067D44F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = L38KUB682P;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "VMC-22.CarbonSplitGoUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CarbonSplitGo;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6AD7AAD12CA1B3A40067D44F /* Build configuration list for PBXProject "CarbonSplitGo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6AD7AAF82CA1B3A60067D44F /* Debug */,
+				6AD7AAF92CA1B3A60067D44F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6AD7AAFA2CA1B3A60067D44F /* Build configuration list for PBXNativeTarget "CarbonSplitGo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6AD7AAFB2CA1B3A60067D44F /* Debug */,
+				6AD7AAFC2CA1B3A60067D44F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6AD7AAFD2CA1B3A60067D44F /* Build configuration list for PBXNativeTarget "CarbonSplitGoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6AD7AAFE2CA1B3A60067D44F /* Debug */,
+				6AD7AAFF2CA1B3A60067D44F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6AD7AB002CA1B3A60067D44F /* Build configuration list for PBXNativeTarget "CarbonSplitGoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6AD7AB012CA1B3A60067D44F /* Debug */,
+				6AD7AB022CA1B3A60067D44F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6AD7AACE2CA1B3A40067D44F /* Project object */;
+}
