@@ -1,8 +1,8 @@
 import CoreLocation
 
-class LocationManager: NSObject, CLLocationManagerDelegate {
+class LocationService: NSObject, CLLocationManagerDelegate {
     private let locationManager = CLLocationManager()
-    weak var delegate: LocationManagerDelegate?
+    weak var locationDelegate: PLocation?
 
     override init() {
         super.init()
@@ -12,12 +12,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func requestLocation() {
         locationManager.requestWhenInUseAuthorization()
     }
-
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        delegate?.locationManager(self, didUpdateAuthorizationStatus: manager.authorizationStatus)
-    }
-
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        delegate?.locationManager(self, didFailWithError: error)
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateAuthorisationStatus status: CLAuthorizationStatus) {
+        locationDelegate?.locationService(manager, didUpdateAuthorisationStatus: status)
     }
 }

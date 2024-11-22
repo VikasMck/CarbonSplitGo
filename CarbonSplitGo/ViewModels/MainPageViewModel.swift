@@ -1,32 +1,31 @@
 import SwiftUI
 import MapKit
 
-class MapViewModel: ObservableObject {
-    @Published var position: MapCameraPosition = .userLocation(fallback: .automatic)
-    @Published var isShowingUserLocation = false
-    @Published var authorizationStatus: CLAuthorizationStatus = .notDetermined
+class MainPageViewModel: ObservableObject {
+    @Published var userPosition: MapCameraPosition = .userLocation(fallback: .automatic)
+    @Published var isUserLocationOn = false
+    @Published var authorisationStatus: CLAuthorizationStatus = .notDetermined
     
-    private let locationManager: LocationManager
+    private let locationService: LocationService
     
-    init(locationManager: LocationManager = LocationManager()) {
-        self.locationManager = locationManager
-        self.locationManager.delegate = self
+    init(locationService: LocationService = LocationService()) {
+        self.locationService = locationService
+        self.locationService.locationDelegate = self
     }
     
     func requestLocation() {
-        locationManager.requestLocation()
-    }
-}
-
-extension MapViewModel: LocationManagerDelegate {
-    func locationManager(_ manager: LocationManager, didUpdateAuthorizationStatus status: CLAuthorizationStatus) {
-        authorizationStatus = status
-        if status == .authorizedWhenInUse || status == .authorizedAlways {
-            isShowingUserLocation = true
+        locationService.requestLocation()
+        DispatchQueue.main.async {
+            NSLog("Location manager requested at \(Date())")
         }
     }
-    
-    func locationManager(_ manager: LocationManager, didFailWithError error: Error) {
-        print("Error: \(error.localizedDescription)")
+}
+//callback for updated location permissions
+extension MainPageViewModel: PLocation {
+    func locationService(_ manager: CLLocationManager, didUpdateAuthorisationStatus status: CLAuthorizationStatus) {
+        DispatchQueue.main.async {
+            self.authorisationStatus = status
+            self.isUserLocationOn = (status == .authorizedWhenInUse || status == .authorizedAlways)
+        }
     }
 }
