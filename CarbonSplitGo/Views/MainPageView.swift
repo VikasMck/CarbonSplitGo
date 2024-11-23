@@ -3,21 +3,24 @@ import MapKit
 
 struct MainPageView: View {
     @StateObject private var mainPageViewModel = MainPageViewModel()
-
+    @State private var searchText = ""
+    @FocusState private var isFocused: Bool
+    
     var body: some View {
-        Map(position: $mainPageViewModel.userPosition) {
-            UserAnnotation()
-        }
-        .mapControls {
-            MapUserLocationButton()
-
-        }
-        .onAppear {
-            mainPageViewModel.requestLocation()
+        ZStack {
+            Map(position: $mainPageViewModel.userPosition) {
+                UserAnnotation()
+            }
+            
+            ContributionsHeaderView()
+            
+            Spacer()
+            
+            ControlPanelView()
         }
     }
 }
 
-#Preview {
+#Preview{
     MainPageView()
 }

@@ -5,6 +5,8 @@ class MainPageViewModel: ObservableObject {
     @Published var userPosition: MapCameraPosition = .userLocation(fallback: .automatic)
     @Published var isUserLocationOn = false
     @Published var authorisationStatus: CLAuthorizationStatus = .notDetermined
+    @Published var isFocused = false
+    @Published var searchText = ""
     
     private let locationService: LocationService
     
