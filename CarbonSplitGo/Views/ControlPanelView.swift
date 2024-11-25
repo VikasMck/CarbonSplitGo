@@ -7,7 +7,7 @@ enum UserChoiceDriverPassenger{
 
 struct ControlPanelView: View {
     @State private var userChoiceDriverPassenger: UserChoiceDriverPassenger = .driver
-
+    
     var body: some View {
         VStack {
             Spacer()
@@ -29,7 +29,7 @@ struct ControlPanelView: View {
                             Spacer()
                             SettingsButtonView(icon: "person.2.fill", text: "Friends")
                         }
-                        .padding(20)
+                            .padding(20)
                     )
                 }
                 
@@ -44,7 +44,7 @@ struct ControlPanelView: View {
                     .frame(height: 300)
                     .overlay(
                         VStack(spacing: 15) {
-                            NavigationLink(destination: MainPageView()) {
+                            NavigationLink(destination: SearchLocationsView()) {
                                 HStack {
                                     Image(systemName: "magnifyingglass")
                                         .foregroundColor(AppColours.customDarkGrey)
@@ -53,7 +53,7 @@ struct ControlPanelView: View {
                                     Spacer()
                                     Image(systemName: "chevron.right")
                                         .foregroundColor(AppColours.customDarkGrey)
-
+                                    
                                 }
                                 .padding()
                                 .background(AppColours.customLightGrey)
@@ -135,6 +135,7 @@ struct ControlPanelView: View {
         }
     }
 }
+
 
 struct SettingsButtonView: View {
     let icon: String

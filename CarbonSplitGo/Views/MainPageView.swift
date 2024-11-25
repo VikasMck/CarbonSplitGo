@@ -2,21 +2,21 @@ import SwiftUI
 import MapKit
 
 struct MainPageView: View {
-    @StateObject private var mainPageViewModel = MainPageViewModel()
+    @StateObject private var userLocationViewModel = UserLocationViewModel()
     @State private var searchText = ""
     @FocusState private var isFocused: Bool
     
     var body: some View {
-        ZStack {
-            Map(position: $mainPageViewModel.userPosition) {
-                UserAnnotation()
+        NavigationView{
+            ZStack {
+                Map(position: $userLocationViewModel.userPosition) {
+                    UserAnnotation()
+                }
+                
+                ContributionsHeaderView()
+                
+                ControlPanelView()
             }
-            
-            ContributionsHeaderView()
-            
-            Spacer()
-            
-            ControlPanelView()
         }
     }
 }

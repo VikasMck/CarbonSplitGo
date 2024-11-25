@@ -1,7 +1,7 @@
 import SwiftUI
 import MapKit
 
-class MainPageViewModel: ObservableObject {
+class UserLocationViewModel: ObservableObject {
     @Published var userPosition: MapCameraPosition = .userLocation(fallback: .automatic)
     @Published var isUserLocationOn = false
     @Published var authorisationStatus: CLAuthorizationStatus = .notDetermined
@@ -21,7 +21,7 @@ class MainPageViewModel: ObservableObject {
     }
 }
 //callback for updated location permissions
-extension MainPageViewModel: PLocation {
+extension UserLocationViewModel: PLocation {
     func locationService(_ manager: CLLocationManager, didUpdateAuthorisationStatus status: CLAuthorizationStatus) {
         DispatchQueue.main.async {
             self.authorisationStatus = status
