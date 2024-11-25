@@ -1,7 +1,7 @@
 MVVM architecture
 
 For fun
-Hours: 15
+Hours: 21
 
 Few comments due to functional naming
 
@@ -9,6 +9,7 @@ Libraries:
     - SwiftUI
     - MapKit
     - CoreLocation
+    - Combine
 
 
 (For myself and if someone is confused)
@@ -34,3 +35,8 @@ Naming:
     - *View: - For each screen (ExampleView)
     
 
+
+
+
+NavigationView horrible
+Google apis cool, still horrible
