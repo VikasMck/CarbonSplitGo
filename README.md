@@ -1,7 +1,7 @@
 MVVM architecture
 
 For fun
-Hours: 21
+Hours: 34
 
 Few comments due to functional naming
 
@@ -10,6 +10,9 @@ Libraries:
     - MapKit
     - CoreLocation
     - Combine
+    
+APIs:
+    - PlacesAPI
 
 
 (For myself and if someone is confused)

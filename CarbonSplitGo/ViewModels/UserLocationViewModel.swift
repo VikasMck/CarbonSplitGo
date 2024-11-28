@@ -6,15 +6,15 @@ class UserLocationViewModel: ObservableObject {
     @Published var isUserLocationOn = false
     @Published var authorisationStatus: CLAuthorizationStatus = .notDetermined
     
-    private let locationService: LocationService
+    private let locationViewModel: LocationViewModel
     
-    init(locationService: LocationService = LocationService()) {
-        self.locationService = locationService
-        self.locationService.locationDelegate = self
+    init(locationService: LocationViewModel = LocationViewModel()) {
+        self.locationViewModel = locationService
+        self.locationViewModel.locationDelegate = self
     }
     
     func requestLocation() {
-        locationService.requestLocation()
+        locationViewModel.requestLocation()
         DispatchQueue.main.async {
             NSLog("Location manager requested at \(Date())")
         }

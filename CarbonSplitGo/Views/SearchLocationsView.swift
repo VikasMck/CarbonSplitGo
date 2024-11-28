@@ -4,19 +4,16 @@ import Combine
 
 enum ActiveLocationTextField {
     case startingLocation
+    case middleLocation
     case endLocation
 }
 
 struct SearchLocationsView: View {
     @StateObject private var userLocationViewModel = UserLocationViewModel()
-    @StateObject private var suggestionsViewModel = SuggestionsViewModel()
-    @State private var startingLocationPreview: String = ""
-    @State private var endLocationPreview: String = ""
-    @State private var startingLocationSaved: String = ""
-    @State private var endLocationSaved: String = ""
-    @FocusState private var activeLocationTextField: ActiveLocationTextField? 
+    @EnvironmentObject var suggestionsViewModel: SuggestionsViewModel
+    @FocusState private var activeLocationTextField: ActiveLocationTextField?
         
-        var body: some View {
+    var body: some View {
             ZStack {
                 Map(position: $userLocationViewModel.userPosition) {
                     UserAnnotation()
@@ -30,35 +27,45 @@ struct SearchLocationsView: View {
                             VStack() {
                                 HStack(spacing: 0) {
                                     VStack(spacing: 0) {
-                                        TextField("From..", text: $startingLocationPreview)
+                                        TextField("From..", text: $suggestionsViewModel.startingLocationSaved)
                                             .textFieldStyle(PlainTextFieldStyle())
                                             .padding(10)
                                             .background(AppColours.customLightGrey)
                                             .focused($activeLocationTextField, equals: .startingLocation)
-                                            .onChange(of: startingLocationPreview) { oldValue, newValue in
+                                            .onChange(of: suggestionsViewModel.startingLocationSaved) { oldValue, newValue in
                                                 suggestionsViewModel.fetchSuggestionsPlacesAPI(for: newValue)
                                             }
-
-                                        TextField("To..", text: $endLocationPreview)
+                                        //temp field just to test functionally between 3 points
+                                        TextField("Middle..", text: $suggestionsViewModel.middleLocationSaved)
+                                            .textFieldStyle(PlainTextFieldStyle())
+                                            .padding(10)
+                                            .background(AppColours.customLightGrey)
+                                            .focused($activeLocationTextField, equals: .middleLocation)
+                                            .onChange(of: suggestionsViewModel.middleLocationSaved) { oldValue, newValue in
+                                                suggestionsViewModel.fetchSuggestionsPlacesAPI(for: newValue)
+                                            }
+                                        
+                                        TextField("To..", text: $suggestionsViewModel.endLocationSaved)
                                             .textFieldStyle(PlainTextFieldStyle())
                                             .padding(10)
                                             .background(AppColours.customLightGrey)
                                             .focused($activeLocationTextField, equals: .endLocation)
-                                            .onChange(of: endLocationPreview) { oldValue, newValue in
+                                            .onChange(of: suggestionsViewModel.endLocationSaved) { oldValue, newValue in
                                                 suggestionsViewModel.fetchSuggestionsPlacesAPI(for: newValue)
                                             }
-                                        }
-                                            
-                                    Button(action:navigateToNextView) {
+                                    }
+                                    NavigationLink(destination: RouteView()){
                                         Image(systemName: "arrow.right")
                                             .foregroundColor(.white)
                                             .padding(10)
                                             .background(AppColours.customDarkGrey)
                                             .clipShape(Rectangle())
+                                    
                                     }
                                 }
+                                
                                 .padding(.horizontal)
-
+                                
                                 if !suggestionsViewModel.mapLocation.isEmpty {
                                     ScrollView {
                                         VStack(alignment: .leading, spacing: 5) {
@@ -67,9 +74,11 @@ struct SearchLocationsView: View {
                                                     .padding(.vertical, 5)
                                                     .onTapGesture {
                                                         if activeLocationTextField == .startingLocation {
-                                                            startingLocationPreview = locationSuggestion.name
+                                                            suggestionsViewModel.startingLocationSaved = locationSuggestion.name
+                                                        } else if activeLocationTextField == .middleLocation {
+                                                            suggestionsViewModel.middleLocationSaved = locationSuggestion.name
                                                         } else if activeLocationTextField == .endLocation {
-                                                            endLocationPreview = locationSuggestion.name
+                                                            suggestionsViewModel.endLocationSaved = locationSuggestion.name
                                                         }
                                                         suggestionsViewModel.mapLocation.removeAll()
                                                     }
@@ -83,23 +92,19 @@ struct SearchLocationsView: View {
                                 }
                                 Spacer()
                             }
-                            .padding(.top, 20)
+                                .padding(.top, 20)
                         )
                         .frame(height: 350)
                         .padding(.horizontal, 20)
+                    
                 }
+                
             }
         }
-    
-    private func navigateToNextView() {
-        startingLocationSaved = startingLocationPreview
-        endLocationSaved = endLocationPreview
-        startingLocationPreview = ""
-        endLocationPreview = ""
-        print("Navigating with your location: \(startingLocationSaved), destination: \(endLocationSaved)")
     }
-}
+    
 
 #Preview{
     SearchLocationsView()
+        .environmentObject(SuggestionsViewModel())
 }

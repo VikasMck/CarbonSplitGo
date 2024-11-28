@@ -1,6 +1,6 @@
 import CoreLocation
 
-class LocationService: NSObject, CLLocationManagerDelegate {
+class LocationViewModel: NSObject, CLLocationManagerDelegate {
     private let locationManager = CLLocationManager()
     weak var locationDelegate: PLocation?
 

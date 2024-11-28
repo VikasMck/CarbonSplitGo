@@ -23,4 +23,5 @@ struct MainPageView: View {
 
 #Preview{
     MainPageView()
+        .environmentObject(SuggestionsViewModel())
 }
