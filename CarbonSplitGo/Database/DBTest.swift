@@ -18,10 +18,11 @@ struct TestTableView: View {
         Task {
             do {
                 var configuration = PostgresClientKit.ConnectionConfiguration()
-                configuration.host = "48.209.49.220"
-                configuration.database = "carbonsplitgodb"
-                configuration.user = "vikas"
-                configuration.credential = .scramSHA256(password: "password11")
+                configuration.host = Const.DB_HOST
+                configuration.database = Const.DB_DATABASE
+                configuration.user = Const.DB_USER
+                configuration.credential = .scramSHA256(password:
+                                                            Const.DB_PASSWORD)
                 
                 let connection = try Connection(configuration: configuration)
                 defer { connection.close() }
