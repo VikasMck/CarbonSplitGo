@@ -21,8 +21,7 @@ struct TestTableView: View {
                 configuration.host = Const.DB_HOST
                 configuration.database = Const.DB_DATABASE
                 configuration.user = Const.DB_USER
-                configuration.credential = .scramSHA256(password:
-                                                            Const.DB_PASSWORD)
+                configuration.credential = .scramSHA256(password: Const.DB_PASSWORD)
                 
                 let connection = try Connection(configuration: configuration)
                 defer { connection.close() }
