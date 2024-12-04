@@ -33,8 +33,24 @@ struct RouteView: View {
         for (index, location) in locationsSaved.enumerated() {
             routingViewModel.getCoordinatesFromAddress(for: location) { coordinate in
                 self.userCoordinates[index] = coordinate
-                updateRoutes()
                 
+                guard let coordinate = coordinate else {
+                    print("error for this coordinate: \(index)")
+                    return
+                }
+                updateRoutes()
+                //save them into db
+                Task {
+                    do {
+                        try await LocationQueries.insertCoordinateToDB(
+                            longitude: coordinate.longitude,
+                            latitude: coordinate.latitude
+                        )
+                        print("coordinate \(index) saved successfully.")
+                    } catch {
+                        print("error for coordinate \(index): \(error)")
+                    }
+                }
             }
         }
     }
