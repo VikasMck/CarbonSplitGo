@@ -7,7 +7,6 @@ struct MainPageView: View {
     @FocusState private var isFocused: Bool
     
     var body: some View {
-        NavigationView{
             ZStack {
                 Map(position: $userLocationViewModel.userPosition) {
                     UserAnnotation()
@@ -16,10 +15,10 @@ struct MainPageView: View {
                 ContributionsHeaderView()
                 
                 ControlPanelView()
-            }
+            }.navigationBarHidden(true)
         }
     }
-}
+
 
 #Preview{
     MainPageView()

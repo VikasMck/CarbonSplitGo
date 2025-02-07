@@ -1,5 +1,5 @@
 import CoreLocation
 
-protocol PLocation: AnyObject {
+protocol Location: AnyObject {
     func locationService(_ manager: CLLocationManager, didUpdateAuthorisationStatus status: CLAuthorizationStatus)
 }

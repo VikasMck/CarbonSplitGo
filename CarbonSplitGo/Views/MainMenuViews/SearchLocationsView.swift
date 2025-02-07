@@ -99,7 +99,7 @@ struct SearchLocationsView: View {
                     
                 }
                 
-            }
+            }.navigationBarHidden(true)
         }
     }
     

@@ -7,12 +7,13 @@ struct CarbonSplitGoApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainPageView()
+            AuthenticateView()
                 .environmentObject(suggestionsViewModel)
         }
     }
 }
 
 #Preview{
-    MainPageView()
+    AuthenticateView()
+        .environmentObject(SuggestionsViewModel())
 }

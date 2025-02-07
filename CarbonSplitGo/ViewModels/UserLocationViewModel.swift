@@ -21,7 +21,7 @@ class UserLocationViewModel: ObservableObject {
     }
 }
 //callback for updated location permissions
-extension UserLocationViewModel: PLocation {
+extension UserLocationViewModel: Location {
     func locationService(_ manager: CLLocationManager, didUpdateAuthorisationStatus status: CLAuthorizationStatus) {
         DispatchQueue.main.async {
             self.authorisationStatus = status

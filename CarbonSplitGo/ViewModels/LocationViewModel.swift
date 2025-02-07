@@ -2,7 +2,7 @@ import CoreLocation
 
 class LocationViewModel: NSObject, CLLocationManagerDelegate {
     private let locationManager = CLLocationManager()
-    weak var locationDelegate: PLocation?
+    weak var locationDelegate: Location?
 
     override init() {
         super.init()
