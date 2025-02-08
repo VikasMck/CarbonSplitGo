@@ -57,4 +57,27 @@ struct AuthenticationQueries {
         
         return false
     }
+    
+    static func deleteUser(email: String) throws -> Bool {
+     
+        let connection = try PostgresConnect.getConnection()
+        defer {
+            connection.close()
+        }
+        
+        let statement = try connection.prepareStatement(text: SQLQueries.deleteUser)
+        defer {
+            statement.close()
+        }
+        
+        let result = try statement.execute(parameterValues: [email])
+        
+        //just check if any rows updated
+        if result.rowCount! > 0{
+            return true
+        }
+        return false
+    }
+    
+
 }

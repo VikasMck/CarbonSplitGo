@@ -23,6 +23,11 @@ struct SQLQueries {
         $1, ST_SetSRID(ST_Point($2, $3), 4326))
     """
     
+    //delete user
+    static let deleteUser = """
+        delete from user_management.users where user_email = $1;
+
+    """
 
 
 }

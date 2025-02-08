@@ -18,7 +18,7 @@ class AuthenticationViewModel: ObservableObject {
                 }
             } catch {
                 DispatchQueue.main.async {
-                    self.errorMessage = "Registration error: \(error.localizedDescription)"
+                    self.errorMessage = "Register error: \(error.localizedDescription)"
                     completion(false)
                 }
             }
@@ -30,7 +30,13 @@ class AuthenticationViewModel: ObservableObject {
             do {
                 let success = try AuthenticationQueries.authenticateUser(email: email, password: password)
                 DispatchQueue.main.async {
-                    completion(success)
+                    //try/catch isn't enough
+                    if success {
+                        completion(true)
+                    } else {
+                        self.errorMessage = "Invalid email or password."
+                        completion(false)
+                    }
                 }
             } catch {
                 DispatchQueue.main.async {
@@ -41,6 +47,28 @@ class AuthenticationViewModel: ObservableObject {
         }
     }
     
+    //wanted to use userID, but that was too difficult and pointless, so stuck with email as it is unique anyways
+    func deleteUser(email: String, completion: @escaping (Bool) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                let success = try AuthenticationQueries.deleteUser(email: email)
+                DispatchQueue.main.async {
+                    if success {
+                        completion(true)
+                    } else {
+                        self.errorMessage = "User with this email does not exist"
+                        completion(false)
+                    }
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Delete error: \(error.localizedDescription)"
+                    completion(false)
+                }
+            }
+        }
+    }
+
     //standard hashing
     static func hashPassword(_ password: String) -> String {
         //convert to Data utf8 from Foundation
