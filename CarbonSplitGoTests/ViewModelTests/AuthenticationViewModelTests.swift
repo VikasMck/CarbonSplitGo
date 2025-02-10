@@ -100,7 +100,7 @@ class AuthenticationViewModelTests: XCTestCase {
     
     func testLoginUser_Failure() {
         let email = "testUser@gmail.com"
-        let password = "testUserPassword"
+        let password = "testUserWrongPassword"
         
         let expectation = self.expectation(description: "User failed to login")
         

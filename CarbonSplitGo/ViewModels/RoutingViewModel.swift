@@ -9,9 +9,8 @@ class RoutingViewModel: ObservableObject {
     
     //fetch coordinates them asynchronously, major changes as I didn't know I was hardcoding location thus, limiting myself with the amount of locations
     func fetchCoordinates(from locations: [String]) async {
-        DispatchQueue.main.async {
             self.userCoordinates = Array(repeating: nil, count: locations.count) //to work with more location, need to init it with how many locations to expect
-        }
+        
 
         await withTaskGroup(of: (Int, CLLocationCoordinate2D?).self) { group in //actually make it async now
             for (index, location) in locations.enumerated() {
@@ -22,9 +21,8 @@ class RoutingViewModel: ObservableObject {
             }
 
             for await (index, coordinate) in group {
-                self.userCoordinates[index] = coordinate
-
-
+                    self.userCoordinates[index] = coordinate
+                
                 //check if nil
                 guard let coordinate = coordinate else {
                     DispatchQueue.main.async {
@@ -58,7 +56,6 @@ class RoutingViewModel: ObservableObject {
         }
     }
 
-    // Calculate all routes based on stored coordinates
     private func calculateRoutes() async {
         let validCoordinates = userCoordinates.compactMap { $0 }
         guard validCoordinates.count > 1 else { return }
@@ -69,9 +66,7 @@ class RoutingViewModel: ObservableObject {
                 newRoutes.append(route)
             }
         }
-        DispatchQueue.main.async {
             self.routes = newRoutes
-        }
     }
 
     //add an overlay of the route to the map
