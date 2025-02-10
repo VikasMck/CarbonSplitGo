@@ -24,9 +24,12 @@ struct AuthenticationQueries {
             user.userProfilePictureURL,
             user.userDateOfBirth,
             user.userDefaultRole,
-            user.isActive,
+            user.isOnline,
             user.isVerified,
-            user.verificationToken
+            user.verificationToken,
+            user.userSavedCO2,
+            user.userDistanceShared,
+            user.userCarbonCredits
         ])
     }
     

@@ -5,9 +5,9 @@ struct SQLQueries {
         insert into user_management.users (
         user_name, user_email, user_password, user_first_name, user_last_name,
         user_phone_number, user_profile_picture_url, user_date_of_birth,
-        user_default_role, is_active, is_verified, verification_token
-        )
-        values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+        user_default_role, is_online, is_verified, verification_token,
+        user_saved_co2, user_distance_shared, user_carbon_credits ) 
+        values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15);
     """
     
     //login

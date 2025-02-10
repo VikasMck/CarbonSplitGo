@@ -39,7 +39,7 @@ struct ContributionsHeaderView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 30)
-                    .fill(AppColours.customGreen)
+                    .fill(AppColours.customLightGreen)
             )
             .padding()
         }

@@ -21,8 +21,13 @@ struct SearchLocationsView: View {
                 
                 VStack {
                     Spacer()
-                    RoundedRectangle(cornerRadius: 30)
-                        .fill(AppColours.customGreen)
+                    UnevenRoundedRectangle(cornerRadii: .init(
+                        topLeading: 0,
+                        bottomLeading: 30,
+                        bottomTrailing: 30,
+                        topTrailing: 0
+                    ))
+                    .fill(AppColours.customMediumGreen)
                         .overlay(
                             VStack() {
                                 HStack(spacing: 0) {
@@ -35,15 +40,6 @@ struct SearchLocationsView: View {
                                             .onChange(of: suggestionsViewModel.startingLocationSaved) { oldValue, newValue in
                                                 suggestionsViewModel.fetchSuggestionsPlacesAPI(for: newValue)
                                             }
-                                        //temp field just to test functionally between 3 points
-                                        TextField("Middle..", text: $suggestionsViewModel.middleLocationSaved)
-                                            .textFieldStyle(PlainTextFieldStyle())
-                                            .padding(10)
-                                            .background(AppColours.customLightGrey)
-                                            .focused($activeLocationTextField, equals: .middleLocation)
-                                            .onChange(of: suggestionsViewModel.middleLocationSaved) { oldValue, newValue in
-                                                suggestionsViewModel.fetchSuggestionsPlacesAPI(for: newValue)
-                                            }
                                         
                                         TextField("To..", text: $suggestionsViewModel.endLocationSaved)
                                             .textFieldStyle(PlainTextFieldStyle())
@@ -54,13 +50,12 @@ struct SearchLocationsView: View {
                                                 suggestionsViewModel.fetchSuggestionsPlacesAPI(for: newValue)
                                             }
                                     }
-                                    NavigationLink(destination: RouteView()){
+                                    NavigationLink(destination: RouteView().navigationBarBackButtonHidden(true)){
                                         Image(systemName: "arrow.right")
                                             .foregroundColor(.white)
                                             .padding(10)
                                             .background(AppColours.customDarkGrey)
                                             .clipShape(Rectangle())
-                                            .navigationBarBackButtonHidden(true)
                                     
                                     }
                                 }
@@ -76,8 +71,6 @@ struct SearchLocationsView: View {
                                                     .onTapGesture {
                                                         if activeLocationTextField == .startingLocation {
                                                             suggestionsViewModel.startingLocationSaved = locationSuggestion.name
-                                                        } else if activeLocationTextField == .middleLocation {
-                                                            suggestionsViewModel.middleLocationSaved = locationSuggestion.name
                                                         } else if activeLocationTextField == .endLocation {
                                                             suggestionsViewModel.endLocationSaved = locationSuggestion.name
                                                         }
@@ -95,7 +88,7 @@ struct SearchLocationsView: View {
                             }
                                 .padding(.top, 20)
                         )
-                        .frame(height: 350)
+                        .frame(height: 330)
                         .padding(.horizontal, 20)
                     
                 }

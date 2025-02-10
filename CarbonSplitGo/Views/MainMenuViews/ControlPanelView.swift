@@ -19,15 +19,15 @@ struct ControlPanelView: View {
                         bottomTrailing: 0,
                         topTrailing: 30
                     ))
-                    .fill(Color(.darkGray))
+                    .fill(AppColours.customDarkGrey)
                     .frame(height: 50)
                     .overlay(
                         HStack {
-                            SettingsButtonView(icon: "gearshape.fill", text: "Settings")
+                            TextWithIconView(icon: "gearshape.fill", text: "Settings")
                             Spacer()
-                            SettingsButtonView(icon: "person.fill", text: "Profile")
+                            TextWithIconView(icon: "person.fill", text: "Profile")
                             Spacer()
-                            SettingsButtonView(icon: "person.2.fill", text: "Friends")
+                            TextWithIconView(icon: "person.2.fill", text: "Friends")
                         }
                             .padding(20)
                     )
@@ -40,7 +40,7 @@ struct ControlPanelView: View {
                         bottomTrailing: 30,
                         topTrailing: 0
                     ))
-                    .fill(AppColours.customGreen)
+                    .fill(AppColours.customMediumGreen)
                     .frame(height: 300)
                     .overlay(
                         VStack(spacing: 15) {
@@ -136,41 +136,6 @@ struct ControlPanelView: View {
     }
 }
 
-
-struct SettingsButtonView: View {
-    let icon: String
-    let text: String
-    
-    var body: some View {
-        Button(action: {}) {
-            HStack {
-                Image(systemName: icon)
-                Text(text)
-            }
-            .foregroundColor(AppColours.customLightGrey)
-        }
-    }
-}
-
-struct SavedLocationEntryView: View {
-    let icon: String
-    let text: String
-    
-    var body: some View {
-        VStack {
-            Text(text)
-                .font(.caption2)
-                .foregroundColor(.black)
-            Circle()
-                .fill(AppColours.customDarkGrey)
-                .frame(width: 40, height: 40)
-                .overlay(
-                    Image(systemName: icon)
-                        .foregroundColor(AppColours.customLightGrey)
-                )
-        }
-    }
-}
 
 #Preview {
     ControlPanelView()

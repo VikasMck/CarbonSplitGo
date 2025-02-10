@@ -9,6 +9,9 @@ struct RegisterView: View {
     @State private var lastName = ""
     @State private var phoneNumber = ""
     @State private var dateOfBirth = ""
+    @State private var savedCO2 = 0.0
+    @State private var distanceShared = 0.0
+    @State private var carbonCredits = 0.0
     @State private var errorMessage: String?
     @Binding var navigationPath: NavigationPath
 
@@ -80,13 +83,16 @@ struct RegisterView: View {
             userPassword: password,
             userFirstName: firstName.isEmpty ? nil : firstName,
             userLastName: lastName.isEmpty ? nil : lastName,
-            isActive: true,
+            isOnline: true,
             isVerified: false,
             verificationToken: nil,
             userPhoneNumber: phoneNumber.isEmpty ? nil : phoneNumber,
             userProfilePictureURL: nil,
             userDateOfBirth: dateOfBirth.isEmpty ? nil : dateOfBirth,
-            userDefaultRole: "passenger"
+            userDefaultRole: "passenger",
+            userSavedCO2: savedCO2,
+            userDistanceShared: distanceShared,
+            userCarbonCredits: carbonCredits
         )
 
         viewModel.registerUser(user: user) { success in

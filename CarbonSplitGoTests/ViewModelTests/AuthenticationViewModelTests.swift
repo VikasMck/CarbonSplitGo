@@ -26,13 +26,16 @@ class AuthenticationViewModelTests: XCTestCase {
             userPassword: "testUserPassword",
             userFirstName: "testUserName",
             userLastName: "testUserSurname",
-            isActive: true,
+            isOnline: false,
             isVerified: false,
             verificationToken: nil,
             userPhoneNumber: "1234567890",
             userProfilePictureURL: nil,
             userDateOfBirth: "2000-01-01",
-            userDefaultRole: "driver"
+            userDefaultRole: "driver",
+            userSavedCO2: 0.0,
+            userDistanceShared: 0.0,
+            userCarbonCredits: 0.0
         )
         
         let expectation = self.expectation(description: "User can register")
@@ -54,14 +57,18 @@ class AuthenticationViewModelTests: XCTestCase {
             userPassword: "",
             userFirstName: "",
             userLastName: "",
-            isActive: false,
+            isOnline: false,
             isVerified: false,
             verificationToken: nil,
             userPhoneNumber: "",
             userProfilePictureURL: nil,
             userDateOfBirth: "",
-            userDefaultRole: ""
+            userDefaultRole: "",
+            userSavedCO2: 0.0,
+            userDistanceShared:  0.0,
+            userCarbonCredits:  0.0
         )
+
         
         let expectation = self.expectation(description: "User failed to register")
         

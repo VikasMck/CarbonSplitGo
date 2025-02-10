@@ -16,6 +16,7 @@ struct RouteView: View {
                 }
             }
         }
+        .edgesIgnoringSafeArea(.all)
         .onAppear {
             Task {
                 await routingViewModel.fetchCoordinates(from: [

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct LoginView: View {
-    @StateObject private var viewModel = AuthenticationViewModel()
+    @StateObject private var authenticationViewModel = AuthenticationViewModel()
     @State private var email = ""
     @State private var password = ""
     @State private var errorMessage: String?
@@ -62,18 +62,18 @@ struct LoginView: View {
     }
 
     private func loginUser() {
-        viewModel.loginUser(email: email, password: password) { success in
+        authenticationViewModel.loginUser(email: email, password: password) { success in
             if success {
-                navigationPath.removeLast(navigationPath.count) // Reset path
-                navigationPath.append("main") // Navigate to MainPageView
+                navigationPath.removeLast(navigationPath.count)
+                navigationPath.append("main")
             } else {
-                errorMessage = viewModel.errorMessage
+                errorMessage = authenticationViewModel.errorMessage
             }
         }
     }
 }
 
 #Preview {
-    @State var path = NavigationPath()
+    @Previewable @State var path = NavigationPath()
     return LoginView(navigationPath: $path)
 }
