@@ -1,6 +1,6 @@
 import Foundation
 import CoreLocation
-import MapKit
+@preconcurrency import MapKit
 
 //major rework
 class RoutingViewModel: ObservableObject {
@@ -9,7 +9,9 @@ class RoutingViewModel: ObservableObject {
     
     //fetch coordinates them asynchronously, major changes as I didn't know I was hardcoding location thus, limiting myself with the amount of locations
     func fetchCoordinates(from locations: [String]) async {
-        self.userCoordinates = Array(repeating: nil, count: locations.count) //to work with more location, need to init it with how many locations to expect
+        DispatchQueue.main.async {
+            self.userCoordinates = Array(repeating: nil, count: locations.count) //to work with more location, need to init it with how many locations to expect
+        }
 
         await withTaskGroup(of: (Int, CLLocationCoordinate2D?).self) { group in //actually make it async now
             for (index, location) in locations.enumerated() {
@@ -25,10 +27,11 @@ class RoutingViewModel: ObservableObject {
 
                 //check if nil
                 guard let coordinate = coordinate else {
-                    print("the value of the coord was null at: \(index)")
+                    DispatchQueue.main.async {
+                        print("the value of the coord was null at: \(index)")
+                    }
                     continue
                 }
-
                 do {
                     try await LocationQueries.insertCoordinateToDB(longitude: coordinate.longitude, latitude: coordinate.latitude)
                     print("Coordinate \(index) was saved in the database.")
@@ -66,7 +69,9 @@ class RoutingViewModel: ObservableObject {
                 newRoutes.append(route)
             }
         }
-        self.routes = newRoutes
+        DispatchQueue.main.async {
+            self.routes = newRoutes
+        }
     }
 
     //add an overlay of the route to the map
