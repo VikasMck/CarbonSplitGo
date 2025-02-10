@@ -60,6 +60,7 @@ struct SearchLocationsView: View {
                                             .padding(10)
                                             .background(AppColours.customDarkGrey)
                                             .clipShape(Rectangle())
+                                            .navigationBarBackButtonHidden(true)
                                     
                                     }
                                 }

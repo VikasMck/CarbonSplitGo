@@ -3,8 +3,7 @@ import MapKit
 
 //due to built in Map limitations when routing I needed to create this view. Methods taken, and overriden from UIViewRepresentable
 struct CustomMapView: UIViewRepresentable {
-    @Binding var mkRoute: MKRoute?
-    @Binding var clCoordinates: [CLLocationCoordinate2D?]
+    var routes: [MKRoute] //changed to be an array, as it will handle multiple routes
 
     //coordinator is required to handle interactions beenween MKMapView and my CustomMapView
     class Coordinator: NSObject, MKMapViewDelegate {
@@ -38,30 +37,17 @@ struct CustomMapView: UIViewRepresentable {
         return mapView
     }
 
-    //part of UIViewRepresentable
-    func updateUIView(_ mkMapView: MKMapView, context: Context) {
-        mkMapView.removeOverlays(mkMapView.overlays)
-
-        if let start = clCoordinates[0], let middle = clCoordinates[1], let end = clCoordinates[2] {
-            let region = MKCoordinateRegion(center: start, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
-            mkMapView.setRegion(region, animated: true)
-
-            routeOverlayOnMap(from: start, to: middle, mapView: mkMapView)
-            routeOverlayOnMap(from: middle, to: end, mapView: mkMapView)
+    //changed to be simpler, and more usable, as previous way had issues with 2 points only
+    func updateUIView(_ mapView: MKMapView, context: Context) {
+        mapView.removeOverlays(mapView.overlays)
+        for route in routes {
+            mapView.addOverlay(route.polyline)
         }
-    }
 
-    //add an overlay of the route to the map
-    private func routeOverlayOnMap(from routeStart: CLLocationCoordinate2D, to routeEnd: CLLocationCoordinate2D, mapView: MKMapView) {
-        let mkRequest = MKDirections.Request()
-        mkRequest.source = MKMapItem(placemark: MKPlacemark(coordinate: routeStart))
-        mkRequest.destination = MKMapItem(placemark: MKPlacemark(coordinate: routeEnd))
-        
-        MKDirections(request: mkRequest).calculate { response, error in
-            if let route = response?.routes.first {
-                mapView.addOverlay(route.polyline)
-            }
+        //added this so it feels more finished when route is mapped
+        if let firstRoute = routes.first {
+            let routeRect = firstRoute.polyline.boundingMapRect
+            mapView.setVisibleMapRect(routeRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50), animated: true)
         }
     }
 }
-
