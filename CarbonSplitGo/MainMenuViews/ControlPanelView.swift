@@ -24,11 +24,12 @@ struct ControlPanelView: View {
                     .frame(height: 50)
                     .overlay(
                         HStack {
-                            CustomTextWithIconView(icon: "gearshape.fill", text: "Settings")
+                            CustomTextWithIconView(icon: "person.2.fill", text: "Friends", destination: SocialView())
                             Spacer()
-                            CustomTextWithIconView(icon: "person.fill", text: "Profile")
+                            CustomTextWithIconView(icon: "person.fill", text: "Profile", destination: ProfileView())
                             Spacer()
-                            CustomTextWithIconView(icon: "person.2.fill", text: "Friends")
+                            CustomTextWithIconView(icon: "gearshape.fill", text: "Settings", destination: SettingsView())
+                            
                         }
                             .padding(20)
                     )
@@ -110,7 +111,9 @@ struct ControlPanelView: View {
                             .padding(.top, 20)
                             
                             HStack(spacing: 0) {
-                                Button(action: { userChoiceDriverPassenger = .driver }) {
+                                Button(action: { userChoiceDriverPassenger = .driver
+                                    Session.shared.setUserRole("Driver")
+                                    print("user is now a: " + String(Session.shared.getUserRole()!))}) {
                                     Text("I'm a Driver")
                                         .padding()
                                         .frame(maxWidth: .infinity)
@@ -118,7 +121,9 @@ struct ControlPanelView: View {
                                 .background(userChoiceDriverPassenger == .driver ? AppColours.customDarkGrey : AppColours.customLightGrey)
                                 .foregroundColor(userChoiceDriverPassenger == .driver ? .white : .black)
                                 
-                                Button(action: { userChoiceDriverPassenger = .passenger }) {
+                                Button(action: { userChoiceDriverPassenger = .passenger
+                                    Session.shared.setUserRole("Passenger")
+                                    print("user is now a: " + String(Session.shared.getUserRole()!))}) {
                                     Text("I'm a Passenger")
                                         .padding()
                                         .frame(maxWidth: .infinity)

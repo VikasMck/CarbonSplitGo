@@ -7,7 +7,7 @@ struct LocationQueries {
        defer { connection.close() }
        
        let statement = try connection.prepareStatement(
-        text: SQLQueries.insertUserCoordinates)
+        text: SQLUserQueries.insertUserCoordinates)
        defer { statement.close() }
        
        try statement.execute(parameterValues: [

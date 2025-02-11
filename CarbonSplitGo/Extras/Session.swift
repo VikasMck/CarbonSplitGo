@@ -7,6 +7,7 @@ class Session {
 
     private var userID: Int?
     private var userEmail: String?
+    private var userRole: String = "Driver"
 
     func setUserID(_ id: Int) {
         self.userID = id
@@ -27,5 +28,13 @@ class Session {
     func clearSession() {
         userID = nil
         userEmail = nil
+    }
+    
+    func setUserRole(_ userRole: String) {
+        self.userRole = userRole
+    }
+    
+    func getUserRole() -> String? {
+        return userRole
     }
 }

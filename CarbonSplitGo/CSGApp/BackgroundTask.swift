@@ -27,7 +27,7 @@ struct BackgroundTask {
             try BGTaskScheduler.shared.submit(request)
             print("Background refresh task scheduled.")
         } catch {
-            print("Failed to schedule background task: \(error)")
+            print("Failed to schedule: \(error)")
         }
     }
 
@@ -40,7 +40,7 @@ struct BackgroundTask {
     }
 
     static func triggerUserOffline() {
-        print("Background task executed. Marking user offline.")
+        print("user marked offline.")
         
         do {
             let success = try UserMaintenanceQueries.changeUserToOffline(email: Session.shared.getUserEmail()!)

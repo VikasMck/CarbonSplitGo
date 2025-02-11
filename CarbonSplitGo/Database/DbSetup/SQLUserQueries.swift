@@ -1,8 +1,8 @@
-struct SQLQueries {
+struct SQLUserQueries {
     
     //register a user
     static let insertUser = """
-        insert into user_management.users (
+        insert into users (
         user_name, user_email, user_password, user_first_name, user_last_name,
         user_phone_number, user_profile_picture_url, user_date_of_birth,
         user_default_role, is_online, is_verified, verification_token,
@@ -12,28 +12,28 @@ struct SQLQueries {
     
     //login
     static let authenticateUser = """
-        select user_id from user_management.users
+        select user_id from users
         where user_email = $1 and user_password = $2
     """
     
     //inserting user coords
     static let insertUserCoordinates = """
-        insert into user_management.user_location (
+        insert into user_location (
         user_id, user_location) values (
         $1, ST_SetSRID(ST_Point($2, $3), 4326))
     """
     
     //delete user
     static let deleteUser = """
-        delete from user_management.users where user_email = $1;
+        delete from users where user_email = $1;
     """
     
     static let changeUserToOnline = """
-    update user_management.users set is_online = true where user_email = $1;
+    update users set is_online = true where user_email = $1;
     """
     
     static let changeUserToOffline = """
-    update user_management.users set is_online = false where user_email = $1;
+    update users set is_online = false where user_email = $1;
     """
 
 

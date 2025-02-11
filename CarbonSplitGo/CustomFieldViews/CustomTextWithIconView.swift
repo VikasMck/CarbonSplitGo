@@ -1,11 +1,12 @@
 import SwiftUI
 
-struct CustomTextWithIconView: View {
+struct CustomTextWithIconView<Destination: View>: View {
     let icon: String
     let text: String
+    let destination: Destination
     
     var body: some View {
-        Button(action: {}) {
+        NavigationLink(destination: destination) {
             HStack {
                 Image(systemName: icon)
                 Text(text)

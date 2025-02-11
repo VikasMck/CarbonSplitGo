@@ -9,7 +9,7 @@ struct UserMaintenanceQueries {
             connection.close()
         }
         
-        let statement = try connection.prepareStatement(text: SQLQueries.changeUserToOnline)
+        let statement = try connection.prepareStatement(text: SQLUserQueries.changeUserToOnline)
         defer {
             statement.close()
         }
@@ -30,7 +30,7 @@ struct UserMaintenanceQueries {
             connection.close()
         }
         
-        let statement = try connection.prepareStatement(text: SQLQueries.changeUserToOffline)
+        let statement = try connection.prepareStatement(text: SQLUserQueries.changeUserToOffline)
         defer {
             statement.close()
         }

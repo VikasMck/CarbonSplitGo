@@ -34,11 +34,11 @@ struct SearchLocationsView: View {
                         .frame(height: 50)
                         .overlay(
                             HStack {
-                                CustomTextWithIconView(icon: "gearshape.fill", text: "Settings")
+                                CustomTextWithIconView(icon: "person.2.fill", text: "Friends", destination: SocialView())
                                 Spacer()
-                                CustomTextWithIconView(icon: "person.fill", text: "Profile")
+                                CustomTextWithIconView(icon: "person.fill", text: "Profile", destination: ProfileView())
                                 Spacer()
-                                CustomTextWithIconView(icon: "person.2.fill", text: "Friends")
+                                CustomTextWithIconView(icon: "gearshape.fill", text: "Settings", destination: SettingsView())
                             }
                                 .padding(20)
                         )
@@ -55,6 +55,7 @@ struct SearchLocationsView: View {
                         VStack() {
                             HStack(spacing: 0) {
                                 VStack(spacing: 0) {
+                                    Text("You are a " + Session.shared.getUserRole()!).padding(.bottom, 10).padding(.top, -10)
                                     TextField("From..", text: $suggestionsViewModel.startingLocationSaved)
                                         .textFieldStyle(PlainTextFieldStyle())
                                         .padding(10)

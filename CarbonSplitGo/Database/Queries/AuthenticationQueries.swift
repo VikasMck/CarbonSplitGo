@@ -9,7 +9,7 @@ struct AuthenticationQueries {
             connection.close()
         }
         
-        let statement = try connection.prepareStatement(text: SQLQueries.insertUser)
+        let statement = try connection.prepareStatement(text: SQLUserQueries.insertUser)
         defer {
             statement.close()
         }
@@ -41,7 +41,7 @@ struct AuthenticationQueries {
             connection.close()
         }
         
-        let statement = try connection.prepareStatement(text: SQLQueries.authenticateUser)
+        let statement = try connection.prepareStatement(text: SQLUserQueries.authenticateUser)
         defer {
             statement.close()
         }
@@ -71,7 +71,7 @@ struct AuthenticationQueries {
             connection.close()
         }
         
-        let statement = try connection.prepareStatement(text: SQLQueries.deleteUser)
+        let statement = try connection.prepareStatement(text: SQLUserQueries.deleteUser)
         defer {
             statement.close()
         }
