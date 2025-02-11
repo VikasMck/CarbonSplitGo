@@ -26,7 +26,14 @@ struct SQLQueries {
     //delete user
     static let deleteUser = """
         delete from user_management.users where user_email = $1;
-
+    """
+    
+    static let changeUserToOnline = """
+    update user_management.users set is_online = true where user_email = $1;
+    """
+    
+    static let changeUserToOffline = """
+    update user_management.users set is_online = false where user_email = $1;
     """
 
 

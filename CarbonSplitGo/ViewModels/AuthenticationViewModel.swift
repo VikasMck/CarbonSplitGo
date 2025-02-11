@@ -30,9 +30,9 @@ class AuthenticationViewModel: ObservableObject {
             do {
                 let success = try AuthenticationQueries.authenticateUser(email: email, password: password)
                 DispatchQueue.main.async {
-                    //try/catch isn't enough
                     if success {
                         completion(true)
+
                     } else {
                         self.errorMessage = "Invalid email or password."
                         completion(false)

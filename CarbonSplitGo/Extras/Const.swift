@@ -6,6 +6,7 @@ struct Const {
     static let DB_DATABASE = Bundle.main.object(forInfoDictionaryKey: "DB_DATABASE") as? String ?? ""
     static let DB_USER = Bundle.main.object(forInfoDictionaryKey: "DB_USER") as? String ?? ""
     static let DB_PASSWORD = Bundle.main.object(forInfoDictionaryKey: "DB_PASSWORD") as? String ?? ""
+    static let BUNDLE_ID = Bundle.main.object(forInfoDictionaryKey: "BUNDLE_ID") as? String ?? ""
 
 
 }

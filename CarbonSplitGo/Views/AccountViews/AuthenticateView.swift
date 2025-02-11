@@ -4,74 +4,65 @@ struct AuthenticateView: View {
     @State private var navigationPath = NavigationPath()
 
     var body: some View {
-        GeometryReader { geometry in
-            NavigationStack(path: $navigationPath) {
-                ZStack {
-                    Image("Wallpaper1")
+        NavigationStack(path: $navigationPath) {
+            ZStack {
+                AppColours.customLightGreen
+                    .edgesIgnoringSafeArea(.all)
+
+                VStack(spacing: 20) {
+                    Image("FakeLogo")
                         .resizable()
-                        .scaledToFill()
-                        .edgesIgnoringSafeArea(.all)
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity, maxHeight: 400)
 
-                    VStack(spacing: 20) {
-                        Spacer()
-                        
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .frame(width: 100, height: 100)
-                            .foregroundColor(.blue)
-                            .padding()
+                    Text("CarbonSplitGo")
+                        .font(.custom("Sen", size: 45))
+                        .multilineTextAlignment(.center)
+                        .padding(.top, -100)
+                    Spacer()
 
-                        Text("CarbonSplitGo")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
 
-                        VStack(spacing: 15) {
-                            Button {
-                                navigationPath.append("register")
-                            } label: {
-                                Text("Register")
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                                    .background(Color.blue)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
-                            }
-
-                            Button {
-                                navigationPath.append("login")
-                            } label: {
-                                Text("Login")
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                                    .background(Color.green)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
-                            }
+                    VStack(spacing: 30) {
+                        Button {
+                            navigationPath.append("register")
+                        } label: {
+                            Text("Register")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .font(.custom("Sen", size: 20))
+                                .background(AppColours.customDarkGreen)
+                                .foregroundColor(.white)
+                                .cornerRadius(30)
                         }
-                        .padding(.horizontal, 20)
 
-                        Spacer()
+                        Button {
+                            navigationPath.append("login")
+                        } label: {
+                            Text("Login")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .font(.custom("Sen", size: 20))
+                                .background(AppColours.customMediumGreen)
+                                .foregroundColor(.white)
+                                .cornerRadius(30)
+                        }
                     }
-                    .padding()
-                    .background(Color.gray.opacity(0.7))
-                    .cornerRadius(20)
-                    .padding(25)
+                    .padding(.horizontal, 40)
+                    
+                    Spacer().frame(height: 250)
                 }
-                .navigationDestination(for: String.self) { value in
-                    if value == "register" {
-                        RegisterView(navigationPath: $navigationPath)
-                            .navigationBarBackButtonHidden(true)
-                    } else if value == "login" {
-                        LoginView(navigationPath: $navigationPath)
-                            .navigationBarBackButtonHidden(true)
-
-                    } else if value == "main" {
-                        MainPageView()
-                            .navigationBarBackButtonHidden(true)
-
-                    }
+                .padding(.top, 20)
+            }
+            .navigationDestination(for: String.self) { value in
+                if value == "register" {
+                    RegisterView(navigationPath: $navigationPath)
+                        .navigationBarBackButtonHidden(true)
+                } else if value == "login" {
+                    LoginView(navigationPath: $navigationPath)
+                        .navigationBarBackButtonHidden(true)
+                } else if value == "main" {
+                    MainPageView()
+                        .navigationBarBackButtonHidden(true)
                 }
             }
         }

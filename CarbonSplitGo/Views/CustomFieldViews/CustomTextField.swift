@@ -13,16 +13,23 @@ struct CustomTextField: View {
         Group {
             if isSecure {
                 SecureField(placeholder, text: $text)
+                    .font(.custom("Sen", size: 17))
+                    .foregroundColor(AppColours.customDarkGrey)
+
             } else {
                 TextField(placeholder, text: $text)
+                    .font(.custom("Sen", size: 17))
+                    .foregroundColor(AppColours.customDarkGrey)
+
             }
         }
         .padding()
-        .background(Color(.white))
+        .background(Color(.white).opacity(0.9))
         .cornerRadius(30)
+        .foregroundColor(.black)
         .overlay(
             RoundedRectangle(cornerRadius: 30)
-                .stroke(Color(AppColours.customDarkGrey), lineWidth: 1)
+                .stroke(Color(AppColours.customLightGrey), lineWidth: 1)
         )
     }
 }

@@ -53,7 +53,10 @@ struct AuthenticationQueries {
            let row = try? result.get(),
            let userId = try? row.columns[0].int() {
             Session.shared.setUserID(userId)
+            Session.shared.setUserEmail(email)
+
             print("the user is logged in with id: \(userId)")
+            
 
             return true
         }
@@ -76,7 +79,7 @@ struct AuthenticationQueries {
         let result = try statement.execute(parameterValues: [email])
         
         //just check if any rows updated
-        if result.rowCount! > 0{
+        if let rowCount = result.rowCount, rowCount > 0 {
             return true
         }
         return false

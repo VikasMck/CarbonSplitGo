@@ -12,9 +12,9 @@ struct MainPageView: View {
                     UserAnnotation()
                 }
                 
-                ContributionsHeaderView()
+                ContributionsHeaderView().padding(.top, -20)
                 
-                ControlPanelView()
+                ControlPanelView().padding(.bottom, -20)
             }.navigationBarHidden(true)
         }
     }

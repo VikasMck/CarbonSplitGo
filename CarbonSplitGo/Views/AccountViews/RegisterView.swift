@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct RegisterView: View {
-    @StateObject private var viewModel = AuthenticationViewModel()
+    @StateObject private var authenticationViewModel = AuthenticationViewModel()
     @State private var username = ""
     @State private var email = ""
     @State private var password = ""
@@ -24,11 +24,12 @@ struct RegisterView: View {
 
             ScrollView {
                 VStack(spacing: 30) {
-                    Text("Create an Account")
-                        .font(.largeTitle)
+                    Text("Join Us!")
                         .fontWeight(.bold)
                         .foregroundColor(AppColours.customDarkGrey)
                         .padding(.top, 80)
+                        .font(.custom("Sen", size: 45))
+
 
                     VStack(spacing: 15) {
                         CustomTextField(placeholder: "Username", text: $username)
@@ -48,19 +49,17 @@ struct RegisterView: View {
                     if let error = errorMessage {
                         Text(error)
                             .foregroundColor(.red)
-                            .font(.subheadline)
-                            .padding(.vertical, 5)
+                            .font(.custom("Sen", size: 20))
                     }
 
                     Button(action: registerUser) {
                         Text("Register")
-                            .font(.headline)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(AppColours.customDarkGrey)
-                            .cornerRadius(10)
-                            .shadow(radius: 5)
+                            .background(AppColours.customDarkGreen)
+                            .cornerRadius(30)
+                            .font(.custom("Sen", size: 20))
                     }
                     .padding(.horizontal)
 
@@ -69,6 +68,8 @@ struct RegisterView: View {
                     } label: {
                         Text("Already have an account?")
                             .foregroundColor(AppColours.customDarkGrey)
+                            .font(.custom("Sen", size: 18))
+
                     }
                 }
                 .padding(.horizontal, 50)
@@ -95,14 +96,19 @@ struct RegisterView: View {
             userCarbonCredits: carbonCredits
         )
 
-        viewModel.registerUser(user: user) { success in
+        authenticationViewModel.registerUser(user: user) { success in
             if success {
                 navigationPath.removeLast(navigationPath.count) // Reset path
                 navigationPath.append("login") // Navigate to MainPageView
             } else {
-                errorMessage = viewModel.errorMessage
+                errorMessage = authenticationViewModel.errorMessage
             }
         }
     }
+}
+
+#Preview {
+    @Previewable @State var path = NavigationPath()
+    return RegisterView(navigationPath: $path)
 }
 
