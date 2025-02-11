@@ -9,6 +9,7 @@ struct LoginView: View {
     
     var body: some View {
         ZStack {
+            
             Image("RegisterWallpaper")
                 .resizable()
                 .scaledToFill()
@@ -58,6 +59,12 @@ struct LoginView: View {
             .padding(.horizontal, 50)
             
         }
+        .overlay(
+            GeometryReader { geometry in
+                CustomBackButton()
+                    .position(x: 45, y: 20)
+            }
+        )
     }
     
     private func loginUser() {

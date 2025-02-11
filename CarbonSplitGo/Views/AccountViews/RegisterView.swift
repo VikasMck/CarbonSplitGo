@@ -73,6 +73,12 @@ struct RegisterView: View {
                     }
                 }
                 .padding(.horizontal, 50)
+                .overlay(
+                    GeometryReader { geometry in
+                        CustomBackButton()
+                            .position(x: 45, y: 20)
+                    }
+                )
             }
         }
     }
@@ -98,8 +104,8 @@ struct RegisterView: View {
 
         authenticationViewModel.registerUser(user: user) { success in
             if success {
-                navigationPath.removeLast(navigationPath.count) // Reset path
-                navigationPath.append("login") // Navigate to MainPageView
+                navigationPath.removeLast(navigationPath.count)
+                navigationPath.append("login")
             } else {
                 errorMessage = authenticationViewModel.errorMessage
             }

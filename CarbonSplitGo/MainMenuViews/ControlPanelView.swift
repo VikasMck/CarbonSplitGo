@@ -24,11 +24,11 @@ struct ControlPanelView: View {
                     .frame(height: 50)
                     .overlay(
                         HStack {
-                            TextWithIconView(icon: "gearshape.fill", text: "Settings")
+                            CustomTextWithIconView(icon: "gearshape.fill", text: "Settings")
                             Spacer()
-                            TextWithIconView(icon: "person.fill", text: "Profile")
+                            CustomTextWithIconView(icon: "person.fill", text: "Profile")
                             Spacer()
-                            TextWithIconView(icon: "person.2.fill", text: "Friends")
+                            CustomTextWithIconView(icon: "person.2.fill", text: "Friends")
                         }
                             .padding(20)
                     )
@@ -88,11 +88,11 @@ struct ControlPanelView: View {
                                 .overlay(
                                     ScrollView(.horizontal, showsIndicators: false) {
                                         HStack(spacing: 50) {
-                                            SavedLocationEntryView(icon: "location.fill", text: "Saved1")
-                                            SavedLocationEntryView(icon: "location.fill", text: "Saved2")
-                                            SavedLocationEntryView(icon: "location.fill", text: "Saved3")
-                                            SavedLocationEntryView(icon: "location.fill", text: "Saved4")
-                                            SavedLocationEntryView(icon: "location.fill", text: "Saved5")
+                                            CustomSavedLocationEntryView(icon: "location.fill", text: "Saved1")
+                                            CustomSavedLocationEntryView(icon: "location.fill", text: "Saved2")
+                                            CustomSavedLocationEntryView(icon: "location.fill", text: "Saved3")
+                                            CustomSavedLocationEntryView(icon: "location.fill", text: "Saved4")
+                                            CustomSavedLocationEntryView(icon: "location.fill", text: "Saved5")
                                         }
                                         .padding(.horizontal, 10)
                                     }

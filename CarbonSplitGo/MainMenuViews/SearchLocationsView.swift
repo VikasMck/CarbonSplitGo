@@ -34,11 +34,11 @@ struct SearchLocationsView: View {
                         .frame(height: 50)
                         .overlay(
                             HStack {
-                                TextWithIconView(icon: "gearshape.fill", text: "Settings")
+                                CustomTextWithIconView(icon: "gearshape.fill", text: "Settings")
                                 Spacer()
-                                TextWithIconView(icon: "person.fill", text: "Profile")
+                                CustomTextWithIconView(icon: "person.fill", text: "Profile")
                                 Spacer()
-                                TextWithIconView(icon: "person.2.fill", text: "Friends")
+                                CustomTextWithIconView(icon: "person.2.fill", text: "Friends")
                             }
                                 .padding(20)
                         )
@@ -120,11 +120,17 @@ struct SearchLocationsView: View {
                     .padding(.bottom, 20)
                 
             }.navigationBarHidden(true)
+            .overlay(
+                GeometryReader { geometry in
+                    CustomBackButton()
+                        .position(x: 35, y: -10)
+                }
+            )
         }
         
     }
 
-    }
+}
     
 
 #Preview{
