@@ -30,4 +30,21 @@ struct SocialQueries {
         
         return friendList
     }
+    
+    static func insertFriendship(userId: Int, friendId: Int) throws {
+        let connection = try PostgresConnect.getConnection()
+        defer {
+            connection.close()
+        }
+        
+        let statement = try connection.prepareStatement(text: SQLSocialQueries.addFriend)
+        defer {
+            statement.close()
+        }
+        
+        try statement.execute(parameterValues: [
+            userId, friendId, friendId, userId
+        ])
+    }
+    
 }

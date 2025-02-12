@@ -3,8 +3,11 @@ import SwiftUI
 struct SocialView: View {
     @StateObject private var socialViewModel = SocialViewModel()
     
-//    var userId: Int  Pass this dynamically when creating the view
-    
+    @State private var friends: [String] = []
+    @State private var friendId: String = ""
+    @State private var groupName: String = ""
+
+
     var body: some View {
         NavigationView {
             VStack {
@@ -14,7 +17,7 @@ struct SocialView: View {
                 Text("Friends").font(.headline)
                 ScrollView {
                     VStack(alignment: .leading, spacing: 10) {
-                        ForEach(socialViewModel.friends, id: \.self) { friend in
+                        ForEach(friends, id: \.self) { friend in
                             Text(friend)
                                 .padding()
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -24,6 +27,7 @@ struct SocialView: View {
                     }
                     .padding()
                 }
+                
                 
                 Text("Groups").font(.headline)
                 ScrollView {
@@ -39,17 +43,23 @@ struct SocialView: View {
                     .padding()
                 }
                 
+                
                 VStack(spacing: 10) {
                     HStack {
-                        TextField("Add Friend", text: $socialViewModel.addFriend)
+                        TextField("Add Friend", text: $friendId)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                         Button("Add") {
+                            if let friendIdInt = Int(friendId) {
+                                socialViewModel.addFriend(friendId: friendIdInt)
+                            } else {
+                                print("User with this ID doesn't exist")
+                            }
                         }
                     }
                     .padding()
                     
                     HStack {
-                        TextField("Add Group", text: $socialViewModel.joinGroup)
+                        TextField("Add Group", text: $groupName)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                         Button("Add") {
                         }
@@ -57,9 +67,11 @@ struct SocialView: View {
                     .padding()
                 }
             }
-            .onAppear {
-                socialViewModel.fetchFriends()
-            }
+        }
+        .task {
+            friends = await socialViewModel.fetchFriends()}
+        .refreshable {
+            friends = await socialViewModel.fetchFriends()
         }
     }
 }

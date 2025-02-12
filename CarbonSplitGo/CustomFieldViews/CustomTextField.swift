@@ -11,16 +11,22 @@ struct CustomTextField: View {
 
     var body: some View {
         Group {
-            if isSecure {
-                SecureField(placeholder, text: $text)
-                    .font(.custom("Sen", size: 17))
-                    .foregroundColor(AppColours.customDarkGrey)
-
-            } else {
-                TextField(placeholder, text: $text)
-                    .font(.custom("Sen", size: 17))
-                    .foregroundColor(AppColours.customDarkGrey)
-
+            ZStack(alignment: .leading) {
+                if text.isEmpty {
+                    Text(placeholder)
+                        .font(.custom("Sen", size: 17))
+                        .foregroundColor(AppColours.customMediumGreen)
+                }
+                
+                if isSecure {
+                    SecureField("", text: $text)
+                        .font(.custom("Sen", size: 17))
+                        .foregroundColor(AppColours.customDarkGrey)
+                } else {
+                    TextField("", text: $text)
+                        .font(.custom("Sen", size: 17))
+                        .foregroundColor(AppColours.customDarkGrey)
+                }
             }
         }
         .padding()
