@@ -9,18 +9,30 @@ class SocialViewModel: ObservableObject {
     private var userId: Int? {
             Session.shared.getUserID()
         }
-    //i need to do this more often, this is great
-
     
+    
+    //yes I can fetch them both at the same time, but I will need them separate
     func fetchFriends() async -> [String] {
-        guard let userId = userId else { return [] } // Return an empty list if userId is nil
+        guard let userId = userId else { return [] }
 
         do {
-            let fetchedFriends = try await SocialQueries.retrieveUserFriends(userId: userId)
+            let fetchedFriends = try SocialQueries.retrieveUserFriends(userId: userId)
             return fetchedFriends
         } catch {
             print("Error fetching friends: \(error)")
             return [] 
+        }
+    }
+    
+    func fetchGroups() async -> [String] {
+        guard let userId = userId else { return [] }
+
+        do {
+            let fetchedGroups = try SocialQueries.retrieveUserGroups(userId: userId)
+            return fetchedGroups
+        } catch {
+            print("Error fetching groups: \(error)")
+            return []
         }
     }
 
@@ -31,6 +43,16 @@ class SocialViewModel: ObservableObject {
             try SocialQueries.insertFriendship(userId: userId, friendId: friendId)
         } catch {
             print("Error adding a friend: \(error)")
+        }
+    }
+    
+    func joinGroup(groupName: String) {
+        guard let userId = Session.shared.getUserID() else { return }
+        
+        do {
+            try SocialQueries.insertGroup(groupName: groupName, userId: userId)
+        } catch {
+            print("Error joining a group: \(error)")
         }
     }
     

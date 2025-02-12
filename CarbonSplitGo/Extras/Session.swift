@@ -8,6 +8,7 @@ class Session {
     private var userID: Int?
     private var userEmail: String?
     private var userRole: String = "Driver"
+    private var userOriginalLocation: String?
 
     func setUserID(_ id: Int) {
         self.userID = id
@@ -36,5 +37,13 @@ class Session {
     
     func getUserRole() -> String? {
         return userRole
+    }
+    
+    func setUserOriginalLocation(_ originalLocation: String) {
+        self.userOriginalLocation = originalLocation
+    }
+    
+    func getUserOriginalLocation() -> String? {
+        return userOriginalLocation
     }
 }

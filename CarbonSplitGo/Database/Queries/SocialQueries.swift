@@ -31,6 +31,35 @@ struct SocialQueries {
         return friendList
     }
     
+    static func retrieveUserGroups(userId: Int) throws -> [String] {
+        var groupList: [String] = []
+        
+        let connection = try PostgresConnect.getConnection()
+        defer {
+            connection.close()
+        }
+        
+        let statement = try connection.prepareStatement(text: SQLSocialQueries.retrieveUserGroups)
+        defer {
+            statement.close()
+        }
+        
+        let cursor = try statement.execute(parameterValues: [userId])
+        defer {
+            cursor.close()
+        }
+        
+        for row in cursor {
+            let columns = try row.get().columns
+            let name = try columns[0].string()
+            groupList.append(name)
+        }
+        
+        return groupList
+    }
+
+    
+    
     static func insertFriendship(userId: Int, friendId: Int) throws {
         let connection = try PostgresConnect.getConnection()
         defer {
@@ -44,6 +73,22 @@ struct SocialQueries {
         
         try statement.execute(parameterValues: [
             userId, friendId, friendId, userId
+        ])
+    }
+    
+    static func insertGroup(groupName: String, userId: Int) throws {
+        let connection = try PostgresConnect.getConnection()
+        defer {
+            connection.close()
+        }
+        
+        let statement = try connection.prepareStatement(text: SQLSocialQueries.joinGroup)
+        defer {
+            statement.close()
+        }
+        
+        try statement.execute(parameterValues: [
+            groupName, userId
         ])
     }
     

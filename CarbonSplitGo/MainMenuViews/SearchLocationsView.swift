@@ -54,34 +54,36 @@ struct SearchLocationsView: View {
                     .overlay(
                         VStack() {
                             HStack(spacing: 0) {
-                                VStack(spacing: 0) {
-                                    Text("You are a " + Session.shared.getUserRole()!).padding(.bottom, 10).padding(.top, -10)
-                                    TextField("From..", text: $suggestionsViewModel.startingLocationSaved)
-                                        .textFieldStyle(PlainTextFieldStyle())
-                                        .padding(10)
-                                        .foregroundColor(.black)
-                                        .background(AppColours.customLightGrey)
-                                        .focused($activeLocationTextField, equals: .startingLocation)
-                                        .onChange(of: suggestionsViewModel.startingLocationSaved) { oldValue, newValue in
-                                            suggestionsViewModel.fetchSuggestionsPlacesAPI(for: newValue)
-                                        }
-                                    
-                                    TextField("To..", text: $suggestionsViewModel.endLocationSaved)
-                                        .textFieldStyle(PlainTextFieldStyle())
-                                        .padding(10)
-                                        .foregroundColor(.black)
-                                        .background(AppColours.customLightGrey)
-                                        .focused($activeLocationTextField, equals: .endLocation)
-                                        .onChange(of: suggestionsViewModel.endLocationSaved) { oldValue, newValue in
-                                            suggestionsViewModel.fetchSuggestionsPlacesAPI(for: newValue)
-                                        }
+                                VStack() {
+                                    Text("You are a " + Session.shared.getUserRole()!).padding(.bottom, 10).padding(.bottom, -10).padding(.top, -13)
+                                    VStack(spacing: 0){
+                                        TextField("From..", text: $suggestionsViewModel.startingLocationSaved)
+                                            .textFieldStyle(PlainTextFieldStyle())
+                                            .padding(10)
+                                            .foregroundColor(.black)
+                                            .background(AppColours.customLightGrey)
+                                            .focused($activeLocationTextField, equals: .startingLocation)
+                                            .onChange(of: suggestionsViewModel.startingLocationSaved) { oldValue, newValue in
+                                                suggestionsViewModel.fetchSuggestionsPlacesAPI(for: newValue)
+                                            }
+                                        
+                                        TextField("To..", text: $suggestionsViewModel.endLocationSaved)
+                                            .textFieldStyle(PlainTextFieldStyle())
+                                            .padding(10)
+                                            .foregroundColor(.black)
+                                            .background(AppColours.customLightGrey)
+                                            .focused($activeLocationTextField, equals: .endLocation)
+                                            .onChange(of: suggestionsViewModel.endLocationSaved) { oldValue, newValue in
+                                                suggestionsViewModel.fetchSuggestionsPlacesAPI(for: newValue)
+                                            }
+                                    }.cornerRadius(20)
                                 }
                                 NavigationLink(destination: RouteView().navigationBarBackButtonHidden(true)){
                                     Image(systemName: "arrow.right")
-                                        .foregroundColor(.white)
+                                        .foregroundColor(AppColours.customDarkGrey)
                                         .padding(10)
-                                        .background(AppColours.customDarkGrey)
-                                        .clipShape(Rectangle())
+                                        .padding(.top, 10)
+                                        .font(.title)
                                     
                                 }
                             }
