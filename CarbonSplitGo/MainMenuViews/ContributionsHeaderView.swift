@@ -15,7 +15,7 @@ struct ContributionsIndividualBoxView: View {
                 .frame(height: 30)
                 .overlay(
                         RoundedRectangle(cornerRadius: 30)
-                            .stroke(AppColours.customLightGrey, lineWidth: 4)
+                            .stroke(AppColours.customLightGrey, lineWidth: 2)
                         )
                 .overlay(
                     Text(value)
@@ -48,7 +48,7 @@ struct ContributionsHeaderView: View {
             .background(
                 RoundedRectangle(cornerRadius: 30)
                     .fill(AppColours.customLightGreen)
-                    .stroke(AppColours.customMediumGreen, lineWidth: 4)
+                    .stroke(AppColours.customMediumGreen, lineWidth: 2)
 
             )
             .padding()

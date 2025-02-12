@@ -8,6 +8,7 @@ class RoutingViewModel: ObservableObject {
     @Published var routes: [MKRoute] = []
     
     //fetch coordinates them asynchronously, major changes as I didn't know I was hardcoding location thus, limiting myself with the amount of locations
+    @MainActor
     func fetchCoordinates(from locations: [String]) async {
             self.userCoordinates = Array(repeating: nil, count: locations.count) //to work with more location, need to init it with how many locations to expect
         
@@ -55,7 +56,8 @@ class RoutingViewModel: ObservableObject {
             }
         }
     }
-
+    
+    @MainActor
     private func calculateRoutes() async {
         let validCoordinates = userCoordinates.compactMap { $0 }
         guard validCoordinates.count > 1 else { return }

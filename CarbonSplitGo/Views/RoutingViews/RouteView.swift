@@ -8,22 +8,22 @@ struct RouteView: View {
 
     var body: some View {
         VStack {
+            
             CustomMapView(routes: routingViewModel.routes)
 
-            ForEach(0..<routingViewModel.userCoordinates.count, id: \.self) { index in
-                if routingViewModel.userCoordinates[index] != nil {
-//                    Text("Coordinates \(index + 1): \(coordinate.latitude), \(coordinate.longitude)")
-                }
-            }
         }
         .edgesIgnoringSafeArea(.all)
         .onAppear {
+            if suggestionsViewModel.startingLocationSaved == "My Location" {
+                suggestionsViewModel.startingLocationSaved = Session.shared.getUserOriginalLocation()!
+            }
             Task {
                 await routingViewModel.fetchCoordinates(from: [
                     suggestionsViewModel.startingLocationSaved,
-//                    suggestionsViewModel.middleLocationSaved,
                     suggestionsViewModel.endLocationSaved
                 ])
+                suggestionsViewModel.startingLocationSaved = ""
+                suggestionsViewModel.endLocationSaved = ""
             }
         }
         .overlay(

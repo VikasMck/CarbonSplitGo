@@ -28,9 +28,7 @@ class LocationViewModel: NSObject, CLLocationManagerDelegate {
         
             let coordinateString = "\(currentLocation.coordinate.latitude),\(currentLocation.coordinate.longitude)"
             
-            Session.shared.setUserOriginalLocation(coordinateString)
-            
-            print(Session.shared.getUserOriginalLocation() ?? "No location saved")
+            Session.shared.setUserOriginalLocation(coordinateString)            
     }
 
     //this was also included in the library, so why not. Easy to set up

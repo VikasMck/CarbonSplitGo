@@ -50,33 +50,38 @@ struct SearchLocationsView: View {
                         topTrailing: 0
                     ))
                     .stroke(AppColours.customDarkGrey, lineWidth: 5)
-                    .fill(AppColours.customMediumGreen)
+                    .fill(AppColours.customLightGreen)
                     .overlay(
                         VStack() {
+                            Text("You are a " + Session.shared.getUserRole()!)
+                            .padding(.bottom, 10).padding(.bottom, -10).padding(.top, -13)
+                            .font(.custom("Sen", size: 17))
+                            .foregroundColor(AppColours.customDarkGrey)
                             HStack(spacing: 0) {
                                 VStack() {
-                                    Text("You are a " + Session.shared.getUserRole()!).padding(.bottom, 10).padding(.bottom, -10).padding(.top, -13)
                                     VStack(spacing: 0){
-                                        TextField("From..", text: $suggestionsViewModel.startingLocationSaved)
+                                        TextField("From..", text: $suggestionsViewModel.startingLocationSaved, prompt: Text("From..").foregroundColor(AppColours.customMediumGreen))
                                             .textFieldStyle(PlainTextFieldStyle())
                                             .padding(10)
                                             .foregroundColor(.black)
-                                            .background(AppColours.customLightGrey)
+                                            .font(.custom("Sen", size: 17))
+                                            .background(.white)
                                             .focused($activeLocationTextField, equals: .startingLocation)
                                             .onChange(of: suggestionsViewModel.startingLocationSaved) { oldValue, newValue in
                                                 suggestionsViewModel.fetchSuggestionsPlacesAPI(for: newValue)
                                             }
-                                        
-                                        TextField("To..", text: $suggestionsViewModel.endLocationSaved)
+                                        Divider()
+                                        TextField("To..", text: $suggestionsViewModel.endLocationSaved, prompt: Text("To..").foregroundColor(AppColours.customMediumGreen))
+                                            .font(.custom("Sen", size: 17))
                                             .textFieldStyle(PlainTextFieldStyle())
                                             .padding(10)
                                             .foregroundColor(.black)
-                                            .background(AppColours.customLightGrey)
+                                            .background(.white)
                                             .focused($activeLocationTextField, equals: .endLocation)
                                             .onChange(of: suggestionsViewModel.endLocationSaved) { oldValue, newValue in
                                                 suggestionsViewModel.fetchSuggestionsPlacesAPI(for: newValue)
                                             }
-                                    }.cornerRadius(20)
+                                    }.cornerRadius(15)
                                 }
                                 NavigationLink(destination: RouteView().navigationBarBackButtonHidden(true)){
                                     Image(systemName: "arrow.right")
@@ -93,8 +98,21 @@ struct SearchLocationsView: View {
                             if !suggestionsViewModel.mapLocation.isEmpty {
                                 ScrollView {
                                     VStack(alignment: .leading, spacing: 5) {
+                                        if((Session.shared.getUserOriginalLocation()) != nil) {
+                                            Text("My Location")
+                                                .padding(.horizontal, 10)
+                                                .font(.custom("Sen", size: 15))
+                                                .foregroundColor(.blue)
+                                                .onTapGesture {
+                                                    suggestionsViewModel.startingLocationSaved = "My Location"
+                                                }
+
+                                            Divider()
+                                        }
                                         ForEach(suggestionsViewModel.mapLocation, id: \.id){
                                             locationSuggestion in Text(locationSuggestion.name)
+                                                .font(.custom("Sen", size: 15))
+                                                .foregroundColor(AppColours.customDarkGrey)
                                                 .padding(.vertical, 5)
                                                 .onTapGesture {
                                                     if activeLocationTextField == .startingLocation {
@@ -105,13 +123,12 @@ struct SearchLocationsView: View {
                                                     suggestionsViewModel.mapLocation.removeAll()
                                                 }
                                                 .padding(.horizontal, 10)
-                                            Divider()
+                                            Divider().padding(.trailing, 55)
                                         }
                                     }
                                 }
-                                .frame(maxHeight: 150)
-                                .padding(.horizontal)
-//                                .fill(AppColours.customLightGreen)
+                                .padding(.leading, 20)
+
                             }
                             Spacer()
                         }
@@ -120,9 +137,10 @@ struct SearchLocationsView: View {
                     .frame(height: 300)
                     
                 }.padding(.horizontal, 10)
-                    .padding(.bottom, 20)
                 
-            }.navigationBarHidden(true)
+            }
+            
+            .navigationBarHidden(true)
             .overlay(
                 GeometryReader { geometry in
                     CustomBackButton()
@@ -130,9 +148,7 @@ struct SearchLocationsView: View {
                 }
             )
         }
-        
     }
-
 }
     
 

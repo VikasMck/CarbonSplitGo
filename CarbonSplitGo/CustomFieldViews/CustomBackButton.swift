@@ -7,14 +7,20 @@ struct CustomBackButton: View {
         Button(action: {
             dismiss()
         }) {
-            Image(systemName: "xmark")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 24, height: 24)
-                .foregroundColor(AppColours.customDarkGrey)
+            ZStack {
+                Circle()
+                    .fill(AppColours.customLightGrey.opacity(0.5))
+                    .frame(width: 40, height: 40)
+                Image(systemName: "xmark")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 24, height: 24)
+                    .foregroundColor(AppColours.customDarkGrey)
+            }
         }
     }
 }
+
 #Preview {
     CustomBackButton()
 }
