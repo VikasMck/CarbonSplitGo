@@ -16,13 +16,6 @@ struct SQLUserQueries {
         where user_email = $1 and user_password = $2
     """
     
-    //inserting user coords
-    static let insertUserCoordinates = """
-        insert into user_location (
-        user_id, user_location) values (
-        $1, ST_SetSRID(ST_Point($2, $3), 4326))
-    """
-    
     //delete user
     static let deleteUser = """
         delete from users where user_email = $1;

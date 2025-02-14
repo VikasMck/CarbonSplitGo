@@ -7,7 +7,7 @@ struct LocationQueries {
        defer { connection.close() }
        
        let statement = try connection.prepareStatement(
-        text: SQLUserQueries.insertUserCoordinates)
+        text: SQLRouteQueries.insertUserCoordinates)
        defer { statement.close() }
        
        try statement.execute(parameterValues: [
@@ -15,6 +15,25 @@ struct LocationQueries {
            longitude,
            latitude,
        ])
-       print("worked! latitude: \(latitude), longitude: \(longitude)")
     }
+    
+    static func insertIntoPlannedRouteToDB(groupName: String, longitude: Double, latitude: Double) async throws {
+        let connection = try PostgresConnect.getConnection()
+        defer { connection.close() }
+        
+        let statement = try connection.prepareStatement(
+            text: SQLRouteQueries.insertIntoPlannedRoute)
+        defer { statement.close() }
+        
+        try statement.execute(parameterValues: [
+            groupName,
+            Session.shared.getUserID(),
+            Session.shared.getUserRole(),
+            longitude,
+            latitude
+        ])
+    }
+
+    
+    
 }

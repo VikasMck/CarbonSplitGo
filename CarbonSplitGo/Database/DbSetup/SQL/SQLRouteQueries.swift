@@ -1,0 +1,20 @@
+struct SQLRouteQueries{
+    
+    //inserting user coords
+    static let insertUserCoordinates = """
+        insert into user_location (
+        user_id, user_location) values (
+        $1, ST_SetSRID(ST_Point($2, $3), 4326))
+    """
+    
+    //insert passenger into a planned route
+    static let insertIntoPlannedRoute = """
+        insert into route_groups (group_name, user_id, user_role, user_route_coords)
+        values ($1, $2, $3, ST_SetSRID(ST_Point($4, $5), 4326))
+        on conflict (user_id)
+        do update set
+        group_name = excluded.group_name,
+        user_role = excluded.user_role,
+        user_route_coords = excluded.user_route_coords;
+    """
+}

@@ -44,7 +44,7 @@ class RoutingViewModel: ObservableObject {
     }
 
     //convert addresses into coordinates which can later be used for routing
-    private func getCoordinatesFromAddress(for userAddress: String) async -> CLLocationCoordinate2D? {
+    func getCoordinatesFromAddress(for userAddress: String) async -> CLLocationCoordinate2D? {
         return await withCheckedContinuation { continuation in
             let clGeocoder = CLGeocoder()
             clGeocoder.geocodeAddressString(userAddress) { placemarks, _ in
