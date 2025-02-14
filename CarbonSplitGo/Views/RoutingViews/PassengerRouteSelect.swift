@@ -105,7 +105,8 @@ struct PassengerRouteSelect: View {
                         await routeGroupViewModel.insertPlannedRoute(
                             groupName: selectedGroup,
                             longitude: coordinates.longitude,
-                            latitude: coordinates.latitude
+                            latitude: coordinates.latitude,
+                            routeDate: String(DateFormat.dateFormat(selectedDate!))
                         )
                     }
 

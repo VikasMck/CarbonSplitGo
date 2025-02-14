@@ -17,7 +17,7 @@ struct LocationQueries {
        ])
     }
     
-    static func insertIntoPlannedRouteToDB(groupName: String, longitude: Double, latitude: Double) async throws {
+    static func insertIntoPlannedRouteToDB(groupName: String, longitude: Double, latitude: Double, routeDate: String) async throws {
         let connection = try PostgresConnect.getConnection()
         defer { connection.close() }
         
@@ -30,7 +30,8 @@ struct LocationQueries {
             Session.shared.getUserID(),
             Session.shared.getUserRole(),
             longitude,
-            latitude
+            latitude,
+            routeDate
         ])
     }
 
