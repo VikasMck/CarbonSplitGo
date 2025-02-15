@@ -10,9 +10,8 @@ class RoutingViewModel: ObservableObject {
     //fetch coordinates them asynchronously, major changes as I didn't know I was hardcoding location thus, limiting myself with the amount of locations
     @MainActor
     func fetchCoordinates(from locations: [String]) async {
-            self.userCoordinates = Array(repeating: nil, count: locations.count) //to work with more location, need to init it with how many locations to expect
+        self.userCoordinates = Array(repeating: nil, count: locations.count) //to work with more location, need to init it with how many locations to expect
         
-
         await withTaskGroup(of: (Int, CLLocationCoordinate2D?).self) { group in //actually make it async now
             for (index, location) in locations.enumerated() {
                 group.addTask { //add each location to the group task
@@ -22,21 +21,7 @@ class RoutingViewModel: ObservableObject {
             }
 
             for await (index, coordinate) in group {
-                    self.userCoordinates[index] = coordinate
-                
-                //check if nil
-                guard let coordinate = coordinate else {
-                    DispatchQueue.main.async {
-                        print("the value of the coord was null at: \(index)")
-                    }
-                    continue
-                }
-                do {
-                    try await LocationQueries.insertCoordinateToDB(longitude: coordinate.longitude, latitude: coordinate.latitude)
-                    print("Coordinate \(index) was saved in the database.")
-                } catch {
-                    print("error at index: \(index): \(error)")
-                }
+                self.userCoordinates[index] = coordinate
             }
         }
 
@@ -68,7 +53,7 @@ class RoutingViewModel: ObservableObject {
                 newRoutes.append(route)
             }
         }
-            self.routes = newRoutes
+        self.routes = newRoutes
     }
 
     //add an overlay of the route to the map
@@ -85,5 +70,20 @@ class RoutingViewModel: ObservableObject {
             print("Failed to get route: \(error)")
             return nil
         }
+    }
+    
+    @MainActor
+    func generateAnnotations() -> [MKPointAnnotation] {
+        let fetchedUserCoordinates = userCoordinates.compactMap { $0 }
+        var pointAnnotations: [MKPointAnnotation] = []
+        
+        for coordinate in fetchedUserCoordinates {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+//            annotation.title = ""
+            pointAnnotations.append(annotation)
+        }
+        
+        return pointAnnotations
     }
 }

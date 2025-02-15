@@ -20,4 +20,14 @@ struct SQLRouteQueries{
         passenger_included = excluded.passenger_included,
         created_at = excluded.created_at;
     """
+    
+    //get coordinates for annotations
+    static let retrieveUserInfoFromRouteGroup = """
+        select rg.user_id, rg.group_name, rg.route_day, rg.user_role,
+        st_x(rg.user_route_coords) as longitude, st_y(rg.user_route_coords) as latitude,
+        u.user_name, u.user_email
+        from route_groups rg
+        join users u on rg.user_id = u.user_id 
+        where group_name = $1 and user_role = $2;
+    """
 }

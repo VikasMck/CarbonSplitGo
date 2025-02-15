@@ -1,7 +1,7 @@
 import SwiftUI
 import CoreLocation
 
-struct PassengerRouteSelect: View {
+struct PassengerRouteSelectView: View {
     @StateObject private var socialViewModel = SocialViewModel()
     @StateObject private var routeGroupViewModel = RouteGroupViewModel()
 
@@ -34,7 +34,7 @@ struct PassengerRouteSelect: View {
                 }) {
                     HStack {
                         CustomTextField(
-                            placeholder: selectedDate.map { DateFormat.dateFormat($0) } ?? "When?",
+                            placeholder: selectedDate.map { DateFormat.dateFormatDayAndTime($0) } ?? "When?",
                             text: .constant("")
                         )
 
@@ -106,7 +106,7 @@ struct PassengerRouteSelect: View {
                             groupName: selectedGroup,
                             longitude: coordinates.longitude,
                             latitude: coordinates.latitude,
-                            routeDate: String(DateFormat.dateFormat(selectedDate!))
+                            routeDate: String(DateFormat.dateFormatDayAndTime(selectedDate!))
                         )
                     }
 

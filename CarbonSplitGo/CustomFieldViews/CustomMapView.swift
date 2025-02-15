@@ -5,6 +5,9 @@ import MapKit
 struct CustomMapView: UIViewRepresentable {
     var routes: [MKRoute] //changed to be an array, as it will handle multiple routes
 
+    //I need to start using binding more
+    @Binding var annotations: [MKPointAnnotation]
+    
     //coordinator is required to handle interactions beenween MKMapView and my CustomMapView
     class Coordinator: NSObject, MKMapViewDelegate {
         var parent: CustomMapView
@@ -37,7 +40,7 @@ struct CustomMapView: UIViewRepresentable {
         return mapView
     }
 
-    //changed to be simpler, and more usable, as previous way had issues with 2 points only
+    //changed to be simpler, and more usable, as previous way had issues with 2 points only, for info, this, like other UIRepresentables are called by SwiftUI automatically
     func updateUIView(_ mapView: MKMapView, context: Context) {
         mapView.removeOverlays(mapView.overlays)
         for route in routes {
@@ -49,5 +52,17 @@ struct CustomMapView: UIViewRepresentable {
             let routeRect = firstRoute.polyline.boundingMapRect
             mapView.setVisibleMapRect(routeRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50), animated: true)
         }
+
+        //these are kinda standard for dealing with annotation, but still was horrible to learn.
+        //this connects them to mapView
+        let currentAnnotations = mapView.annotations as? [MKPointAnnotation] ?? []
+
+        //when needed this removes them
+        let annotationsToRemove = currentAnnotations.filter { !annotations.contains($0) }
+        mapView.removeAnnotations(annotationsToRemove)
+
+        //adds new
+        let annotationsToAdd = annotations.filter { !currentAnnotations.contains($0) }
+        mapView.addAnnotations(annotationsToAdd)
     }
 }
