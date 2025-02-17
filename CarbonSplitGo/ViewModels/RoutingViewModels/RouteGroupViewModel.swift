@@ -5,7 +5,8 @@ import MapKit
 @MainActor
 class RouteGroupViewModel: ObservableObject {
     @Published var passengerCoordinates: [(longitude: Double, latitude: Double)] = []
-
+    @Published var annotationPopupInfo: [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String)] = []
+    
     @Published var errorMessage: String?
 
     func insertPlannedRoute(groupName: String, longitude: Double, latitude: Double, routeDate: String) async {
@@ -44,6 +45,29 @@ class RouteGroupViewModel: ObservableObject {
         }
     }
     
+    func fetchAnnotationPopupInfo(longitude: Double, latitude: Double) async -> [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String)]? {
+        do {
+            
+            let annotationInfo = try LocationQueries.retreiveAnnotationPopupInfoFromRouteGroupDB(
+                longitude: longitude,
+                latitude: latitude
+            )
+            guard !annotationInfo.isEmpty else {
+                self.errorMessage = "Error, annotation info found for coordinates (\(longitude), \(latitude))."
+                return nil
+            }
+            
+            self.annotationPopupInfo = annotationInfo
+            
+            return annotationInfo.map { (groupName: $0.groupName, routeDay: $0.routeDay, userName: $0.userName, isVerified: $0.isVerified, userPhoneNumber: $0.userPhoneNumber) }
+            
+        } catch {
+            self.errorMessage = "Error retrieving annotation popup info: \(error.localizedDescription)"
+            return nil
+        }
+    }
+
+    
     func fetchAndSetLocation(for group: String, userRole: String, newCoordinateForAnnotation: @escaping (CLLocationCoordinate2D) -> Void) async {
 
         if let userCoordinates = await fetchCoordsWithGroupAndRole(groupName: group, userRole: userRole) {
@@ -56,6 +80,18 @@ class RouteGroupViewModel: ObservableObject {
                 print("No coordinates for group \(group)")
             }
         }
+    
+    func updatePassengerIncludedStatus(passengerIncluded: Bool, longitude: Double, latitude: Double) async {
+        do {
+            try await LocationQueries.updatePassengerIncludedStatusDB(
+                passengerIncluded: passengerIncluded,
+                longitude: longitude,
+                latitude: latitude
+            )
+        } catch {
+            self.errorMessage = "Error when updating passenger status: \(error.localizedDescription)"
+        }
+    }
 
     
 }

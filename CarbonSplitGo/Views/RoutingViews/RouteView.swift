@@ -7,15 +7,17 @@ struct RouteView: View {
     @StateObject private var routingViewModel = RoutingViewModel()
     @State private var coordinatesForPassengerView: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
     @State private var annotations: [MKPointAnnotation] = []
-
+    @State private var selectedAnnotation: MKPointAnnotation?
 
     var body: some View {
         ZStack {
-            CustomMapView(routes: routingViewModel.routes, annotations: $annotations)
+
+            CustomMapView(routes: routingViewModel.routes, annotations: $annotations, selectedAnnotation: $selectedAnnotation)
 
             if Session.shared.getUserRole() == "Passenger" {
                 PassengerRouteSelectView(coordinates: coordinatesForPassengerView)
-            } else if Session.shared.getUserRole() == "Driver" {
+            }
+            else if Session.shared.getUserRole() == "Driver" {
                 DriverRouteSelectView(annotations: $annotations) {
                     fetchedUserCoordinates in let fetchedAnnotation = MKPointAnnotation()
                     fetchedAnnotation.coordinate = fetchedUserCoordinates
@@ -49,5 +51,11 @@ struct RouteView: View {
                     .position(x: 25, y: 20)
             }
         )
+        .sheet(item: $selectedAnnotation) { annotation in
+            CustomAnnotationPopUp(annotation: annotation)
+                .presentationBackground(Color.clear)
+                .presentationDetents([.medium])
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
     }
 }

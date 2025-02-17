@@ -1,18 +1,37 @@
 import SwiftUI
 import MapKit
 
+//makes eatch annotation custom
+extension MKPointAnnotation: @retroactive Identifiable {
+    public var id: UUID {
+        UUID() 
+    }
+}
+
+
 //due to built in Map limitations when routing I needed to create this view. Methods taken, and overriden from UIViewRepresentable
 struct CustomMapView: UIViewRepresentable {
     var routes: [MKRoute] //changed to be an array, as it will handle multiple routes
 
     //I need to start using binding more
     @Binding var annotations: [MKPointAnnotation]
-    
+    @Binding var selectedAnnotation: MKPointAnnotation?
+
     //coordinator is required to handle interactions beenween MKMapView and my CustomMapView
+    @MainActor
     class Coordinator: NSObject, MKMapViewDelegate {
         var parent: CustomMapView
         init(parent: CustomMapView) {
             self.parent = parent
+        }
+
+        func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+            guard let annotation = view.annotation as? MKPointAnnotation else { return }
+            parent.selectedAnnotation = annotation
+        }
+        
+        func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+            parent.selectedAnnotation = nil
         }
 
         //creating a custom renderer

@@ -26,4 +26,23 @@ struct SQLRouteQueries{
         select st_x(rg.user_route_coords) as longitude, st_y(rg.user_route_coords) as latitude
         from route_groups rg
         where group_name = $1 and user_role = $2;
-    """}
+    """
+    
+    //using unique coord, get the info
+    static let retrieveAnnotationPopUpInfoFromRouteGroup = """
+        select rg.group_name, rg.route_day, u.user_name, u.is_verified, 
+        coalesce(u.user_phone_number, 'Number not set') AS user_phone_number
+        from route_groups rg
+        join users u on u.user_id = rg.user_id
+        where st_dwithin(user_route_coords::geography,st_setsrid
+        (st_makepoint($1, $2), 4326)::geography, 1);
+    """
+    
+    //allows for drivers to select passangers
+    static let updatePassangerIncludedStatus = """
+        update route_groups set passenger_included = $1
+        where st_dwithin(user_route_coords::geography,st_setsrid
+         (st_makepoint($2, $3), 4326)::geography, 1);
+    """
+    
+}
