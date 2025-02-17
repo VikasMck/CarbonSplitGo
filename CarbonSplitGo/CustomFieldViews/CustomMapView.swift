@@ -53,16 +53,8 @@ struct CustomMapView: UIViewRepresentable {
             mapView.setVisibleMapRect(routeRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50), animated: true)
         }
 
-        //these are kinda standard for dealing with annotation, but still was horrible to learn.
-        //this connects them to mapView
-        let currentAnnotations = mapView.annotations as? [MKPointAnnotation] ?? []
-
-        //when needed this removes them
-        let annotationsToRemove = currentAnnotations.filter { !annotations.contains($0) }
-        mapView.removeAnnotations(annotationsToRemove)
-
-        //adds new
-        let annotationsToAdd = annotations.filter { !currentAnnotations.contains($0) }
-        mapView.addAnnotations(annotationsToAdd)
+        //so this needs to be like this, otherwise it won't on real devices.................
+        mapView.removeAnnotations(mapView.annotations)
+        mapView.addAnnotations(annotations)
     }
 }
