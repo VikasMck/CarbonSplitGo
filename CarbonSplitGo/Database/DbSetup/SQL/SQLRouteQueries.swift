@@ -22,12 +22,8 @@ struct SQLRouteQueries{
     """
     
     //get coordinates for annotations
-    static let retrieveUserInfoFromRouteGroup = """
-        select rg.user_id, rg.group_name, rg.route_day, rg.user_role,
-        st_x(rg.user_route_coords) as longitude, st_y(rg.user_route_coords) as latitude,
-        u.user_name, u.user_email
+    static let retrieveUserCoordsFromRouteGroup = """
+        select st_x(rg.user_route_coords) as longitude, st_y(rg.user_route_coords) as latitude
         from route_groups rg
-        join users u on rg.user_id = u.user_id 
         where group_name = $1 and user_role = $2;
-    """
-}
+    """}

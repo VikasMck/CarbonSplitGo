@@ -4,7 +4,8 @@ import MapKit
 
 @MainActor
 class RouteGroupViewModel: ObservableObject {
-    @Published var passengerCoordinates: [(userID: String, groupName: String, routeDay: String, userRole: String, longitude: Double, latitude: Double, userName: String, userEmail: String)] = []
+    @Published var passengerCoordinates: [(longitude: Double, latitude: Double)] = []
+
     @Published var errorMessage: String?
 
     func insertPlannedRoute(groupName: String, longitude: Double, latitude: Double, routeDate: String) async {
@@ -23,7 +24,7 @@ class RouteGroupViewModel: ObservableObject {
     //only need coordinates with this
     func fetchCoordsWithGroupAndRole(groupName: String, userRole: String) async -> [(longitude: Double, latitude: Double)]? {
         do {
-            let userCoordinates = try LocationQueries.retrieveUserInfoFromRouteGroupFromDB(
+            let userCoordinates = try LocationQueries.retrieveUserCoordsFromRouteGroupFromDB(
                 groupName: groupName,
                 userRole: userRole
             )

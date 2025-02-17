@@ -36,13 +36,13 @@ struct LocationQueries {
         ])
     }
     
-    static func retrieveUserInfoFromRouteGroupFromDB(groupName: String, userRole: String) throws -> [(userID: String, groupName: String, routeDay: String, userRole: String, longitude: Double, latitude: Double, userName: String, userEmail: String)] {
-        var userInformationFromRouteGroup: [(String, String, String, String, Double, Double, String, String)] = []
+    static func retrieveUserCoordsFromRouteGroupFromDB(groupName: String, userRole: String) throws -> [(longitude: Double, latitude: Double)] {
+        var userCoordinatesFromRouteGroup: [(Double, Double)] = []
         
         let connection = try PostgresConnect.getConnection()
         defer { connection.close() }
         
-        let statement = try connection.prepareStatement(text: SQLRouteQueries.retrieveUserInfoFromRouteGroup)
+        let statement = try connection.prepareStatement(text: SQLRouteQueries.retrieveUserCoordsFromRouteGroup)
         defer { statement.close() }
         
         let cursor = try statement.execute(parameterValues: [groupName, userRole])
@@ -51,17 +51,10 @@ struct LocationQueries {
         for rowResult in cursor {
             let row = try rowResult.get()
             let columns = row.columns
-            let userID = try columns[0].string()
-            let groupName = try columns[1].string()
-            let routeDay = try columns[2].string()
-            let userRole = try columns[3].string()
-            let longitude = try columns[4].double()
-            let latitude = try columns[5].double()
-            let userName = try columns[6].string()
-            let userEmail = try columns[7].string()
+            let longitude = try columns[0].double()
+            let latitude = try columns[1].double()
             
-            userInformationFromRouteGroup.append((userID, groupName, routeDay, userRole, longitude, latitude, userName, userEmail))
+            userCoordinatesFromRouteGroup.append((longitude, latitude))
         }
-        return userInformationFromRouteGroup
-    }
-}
+        return userCoordinatesFromRouteGroup
+    }}
