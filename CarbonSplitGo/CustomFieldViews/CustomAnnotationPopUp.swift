@@ -38,7 +38,7 @@ struct CustomAnnotationPopUp: View {
                             .font(.custom("Sen", size: 17))
                             .foregroundColor(AppColours.customDarkGrey)
 
-                    }
+                    }.listRowBackground(Color.white)
 
                 }
                 .frame(height: 200)
