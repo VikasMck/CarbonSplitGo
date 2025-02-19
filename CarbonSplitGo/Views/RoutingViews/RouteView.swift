@@ -31,18 +31,29 @@ struct RouteView: View {
                 suggestionsViewModel.locationForRouteList[0] = Session.shared.getUserOriginalLocation()!
             }
             Task {
-                await routingViewModel.fetchCoordinates(from: [
-                    suggestionsViewModel.locationForRouteList[0],
-                    suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1]
-                ])
+                await routingViewModel.fetchCoordinates(from:
+                    suggestionsViewModel.locationForRouteList
+                )
                 //I hope this way doesn't hurt me later
                 coordinatesForPassengerView = await routingViewModel.getCoordinatesFromAddress(for: suggestionsViewModel.locationForRouteList[0])
                     ?? CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
                 
                 annotations = routingViewModel.generateAnnotations()
                 
-                suggestionsViewModel.locationForRouteList[0] = ""
-                suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1] = ""
+//                suggestionsViewModel.locationForRouteList[0] = ""
+//                suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1] = ""
+            }
+        }
+        //this is so cool, sadly I have to repeat code, but it works the best this way
+        .onChange(of: suggestionsViewModel.locationForRouteList) {
+            Task {
+                await routingViewModel.fetchCoordinates(from:
+                    suggestionsViewModel.locationForRouteList
+                )
+                coordinatesForPassengerView = await routingViewModel.getCoordinatesFromAddress(for: suggestionsViewModel.locationForRouteList[0])
+                    ?? CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
+
+                annotations = routingViewModel.generateAnnotations()
             }
         }
         .overlay(

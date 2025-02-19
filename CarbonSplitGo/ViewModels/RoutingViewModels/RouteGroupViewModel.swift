@@ -23,11 +23,12 @@ class RouteGroupViewModel: ObservableObject {
     }
 
     //only need coordinates with this
-    func fetchCoordsWithGroupAndRole(groupName: String, userRole: String) async -> [(longitude: Double, latitude: Double)]? {
+    func fetchCoordsWithGroupAndRole(groupName: String, userRole: String, routeDay: String) async -> [(longitude: Double, latitude: Double)]? {
         do {
             let userCoordinates = try LocationQueries.retrieveUserCoordsFromRouteGroupFromDB(
                 groupName: groupName,
-                userRole: userRole
+                userRole: userRole,
+                routeDay: routeDay
             )
             
             guard !userCoordinates.isEmpty else {
@@ -68,9 +69,9 @@ class RouteGroupViewModel: ObservableObject {
     }
 
     
-    func fetchAndSetLocation(for group: String, userRole: String, newCoordinateForAnnotation: @escaping (CLLocationCoordinate2D) -> Void) async {
+    func fetchAndSetLocation(for group: String, userRole: String, routeDay: String, newCoordinateForAnnotation: @escaping (CLLocationCoordinate2D) -> Void) async {
 
-        if let userCoordinates = await fetchCoordsWithGroupAndRole(groupName: group, userRole: userRole) {
+        if let userCoordinates = await fetchCoordsWithGroupAndRole(groupName: group, userRole: userRole, routeDay: routeDay) {
                 for coordinate in userCoordinates {
                     //I know I can retreive this from db, but I chose to split, so now im combining
                     let newCoordinate = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
@@ -93,5 +94,4 @@ class RouteGroupViewModel: ObservableObject {
         }
     }
 
-    
 }

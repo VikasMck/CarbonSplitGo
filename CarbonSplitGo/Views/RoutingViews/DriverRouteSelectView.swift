@@ -75,7 +75,7 @@ struct DriverRouteSelectView: View {
                             Button {
                                 Task {
                                     annotations.removeAll()
-                                    await routeGroupViewModel.fetchAndSetLocation(for: group, userRole: "Passenger", newCoordinateForAnnotation: newCoordinateForAnnotation)
+                                    await routeGroupViewModel.fetchAndSetLocation(for: group, userRole: "Passenger", routeDay: DateFormat.dateFormatDayWildcard(selectedDate!), newCoordinateForAnnotation: newCoordinateForAnnotation)
                                 }
                             } label: {
                                 CustomSavedLocationEntryView(icon: "location.fill", text: group)

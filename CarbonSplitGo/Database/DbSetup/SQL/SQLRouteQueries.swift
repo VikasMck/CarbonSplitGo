@@ -25,7 +25,7 @@ struct SQLRouteQueries{
     static let retrieveUserCoordsFromRouteGroup = """
         select st_x(rg.user_route_coords) as longitude, st_y(rg.user_route_coords) as latitude
         from route_groups rg
-        where group_name = $1 and user_role = $2;
+        where group_name = $1 and user_role = $2 and route_day like $3;
     """
     
     //using unique coord, get the info

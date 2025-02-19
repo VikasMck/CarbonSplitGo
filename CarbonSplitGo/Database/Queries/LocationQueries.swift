@@ -36,7 +36,7 @@ struct LocationQueries {
         ])
     }
     
-    static func retrieveUserCoordsFromRouteGroupFromDB(groupName: String, userRole: String) throws -> [(longitude: Double, latitude: Double)] {
+    static func retrieveUserCoordsFromRouteGroupFromDB(groupName: String, userRole: String, routeDay: String) throws -> [(longitude: Double, latitude: Double)] {
         var userCoordinatesFromRouteGroup: [(Double, Double)] = []
         
         let connection = try PostgresConnect.getConnection()
@@ -45,7 +45,7 @@ struct LocationQueries {
         let statement = try connection.prepareStatement(text: SQLRouteQueries.retrieveUserCoordsFromRouteGroup)
         defer { statement.close() }
         
-        let cursor = try statement.execute(parameterValues: [groupName, userRole])
+        let cursor = try statement.execute(parameterValues: [groupName, userRole, routeDay])
         defer { cursor.close() }
         
         for rowResult in cursor {

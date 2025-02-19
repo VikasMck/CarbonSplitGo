@@ -4,6 +4,7 @@ import MapKit
 struct CustomAnnotationPopUp: View {
     let annotation: MKPointAnnotation
     @StateObject private var routeGroupViewModel = RouteGroupViewModel()
+    @EnvironmentObject var suggestionViewModel: SuggestionsViewModel
     //hide when something is pressed
     @Environment(\.presentationMode) var isButtonPressed
     
@@ -54,6 +55,9 @@ struct CustomAnnotationPopUp: View {
                             longitude: annotation.coordinate.longitude,
                             latitude: annotation.coordinate.latitude
                         )
+                        
+                        suggestionViewModel.locationForRouteList.insert("\(annotation.coordinate.latitude),\(annotation.coordinate.longitude)", at: max(suggestionViewModel.locationForRouteList.count - 1, 0))
+                        
                         isButtonPressed.wrappedValue.dismiss()
                     }
                 }) {
@@ -71,6 +75,11 @@ struct CustomAnnotationPopUp: View {
                             longitude: annotation.coordinate.longitude,
                             latitude: annotation.coordinate.latitude
                         )
+                        
+                        if let deleteAt = suggestionViewModel.locationForRouteList.firstIndex(where: { $0 == "\(annotation.coordinate.latitude),\(annotation.coordinate.longitude)" }) {
+                            suggestionViewModel.locationForRouteList.remove(at: deleteAt)
+                        }
+
                         isButtonPressed.wrappedValue.dismiss()
                     }
                 }) {
