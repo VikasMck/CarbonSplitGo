@@ -18,11 +18,10 @@ struct PlacePrediction: Codable {
 
 
 class SuggestionsViewModel: ObservableObject {
-    @Published var startingLocationSaved: String = ""
-    @Published var middleLocationSaved: String = ""
-    @Published var endLocationSaved: String = ""
+    @Published var locationForRouteList: [String] = ["", ""]
     @Published var mapLocation: [MapLocation] = []
     private var cancellables: Set<AnyCancellable> = [] //lifecycle management from Combine
+    var locationForRouteCount: Int { locationForRouteList.count }
     
     
     func fetchSuggestionsPlacesAPI(for locationQuery: String) {

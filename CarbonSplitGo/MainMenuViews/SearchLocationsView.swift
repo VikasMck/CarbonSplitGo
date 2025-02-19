@@ -4,7 +4,6 @@ import Combine
 
 enum ActiveLocationTextField {
     case startingLocation
-    case middleLocation
     case endLocation
 }
 
@@ -60,25 +59,25 @@ struct SearchLocationsView: View {
                             HStack(spacing: 0) {
                                 VStack() {
                                     VStack(spacing: 0){
-                                        TextField("From..", text: $suggestionsViewModel.startingLocationSaved, prompt: Text("From..").foregroundColor(AppColours.customMediumGreen))
+                                        TextField("From..", text: $suggestionsViewModel.locationForRouteList[0], prompt: Text("From..").foregroundColor(AppColours.customMediumGreen))
                                             .textFieldStyle(PlainTextFieldStyle())
                                             .padding(10)
                                             .foregroundColor(.black)
                                             .font(.custom("Sen", size: 17))
                                             .background(.white)
                                             .focused($activeLocationTextField, equals: .startingLocation)
-                                            .onChange(of: suggestionsViewModel.startingLocationSaved) { oldValue, newValue in
+                                            .onChange(of: suggestionsViewModel.locationForRouteList[0]) { oldValue, newValue in
                                                 suggestionsViewModel.fetchSuggestionsPlacesAPI(for: newValue)
                                             }
                                         Divider()
-                                        TextField("To..", text: $suggestionsViewModel.endLocationSaved, prompt: Text("To..").foregroundColor(AppColours.customMediumGreen))
+                                        TextField("To..", text: $suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1], prompt: Text("To..").foregroundColor(AppColours.customMediumGreen))
                                             .font(.custom("Sen", size: 17))
                                             .textFieldStyle(PlainTextFieldStyle())
                                             .padding(10)
                                             .foregroundColor(.black)
                                             .background(.white)
                                             .focused($activeLocationTextField, equals: .endLocation)
-                                            .onChange(of: suggestionsViewModel.endLocationSaved) { oldValue, newValue in
+                                            .onChange(of: suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1]) { oldValue, newValue in
                                                 suggestionsViewModel.fetchSuggestionsPlacesAPI(for: newValue)
                                             }
                                     }.cornerRadius(15)
@@ -104,7 +103,7 @@ struct SearchLocationsView: View {
                                                 .font(.custom("Sen", size: 15))
                                                 .foregroundColor(.blue)
                                                 .onTapGesture {
-                                                    suggestionsViewModel.startingLocationSaved = "My Location"
+                                                    suggestionsViewModel.locationForRouteList[0] = "My Location"
                                                 }
 
                                             Divider()
@@ -116,9 +115,9 @@ struct SearchLocationsView: View {
                                                 .padding(.vertical, 5)
                                                 .onTapGesture {
                                                     if activeLocationTextField == .startingLocation {
-                                                        suggestionsViewModel.startingLocationSaved = locationSuggestion.name
+                                                        suggestionsViewModel.locationForRouteList[0] = locationSuggestion.name
                                                     } else if activeLocationTextField == .endLocation {
-                                                        suggestionsViewModel.endLocationSaved = locationSuggestion.name
+                                                        suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1] = locationSuggestion.name
                                                     }
                                                     suggestionsViewModel.mapLocation.removeAll()
                                                 }

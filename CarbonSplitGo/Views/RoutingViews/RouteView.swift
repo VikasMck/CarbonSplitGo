@@ -27,22 +27,22 @@ struct RouteView: View {
         }
         .edgesIgnoringSafeArea(.all)
         .onAppear {
-            if suggestionsViewModel.startingLocationSaved == "My Location" {
-                suggestionsViewModel.startingLocationSaved = Session.shared.getUserOriginalLocation()!
+            if suggestionsViewModel.locationForRouteList.first == "My Location" {
+                suggestionsViewModel.locationForRouteList[0] = Session.shared.getUserOriginalLocation()!
             }
             Task {
                 await routingViewModel.fetchCoordinates(from: [
-                    suggestionsViewModel.startingLocationSaved,
-                    suggestionsViewModel.endLocationSaved
+                    suggestionsViewModel.locationForRouteList[0],
+                    suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1]
                 ])
                 //I hope this way doesn't hurt me later
-                coordinatesForPassengerView = await routingViewModel.getCoordinatesFromAddress(for: suggestionsViewModel.startingLocationSaved)
+                coordinatesForPassengerView = await routingViewModel.getCoordinatesFromAddress(for: suggestionsViewModel.locationForRouteList[0])
                     ?? CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
                 
                 annotations = routingViewModel.generateAnnotations()
                 
-                suggestionsViewModel.startingLocationSaved = ""
-                suggestionsViewModel.endLocationSaved = ""
+                suggestionsViewModel.locationForRouteList[0] = ""
+                suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1] = ""
             }
         }
         .overlay(
