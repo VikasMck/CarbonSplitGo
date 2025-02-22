@@ -5,6 +5,7 @@ import MapKit
 @MainActor
 class RouteGroupViewModel: ObservableObject {
     @Published var passengerCoordinates: [(longitude: Double, latitude: Double)] = []
+    @Published var userDetails: [(groupName: String, routeDay: String, userName: String)] = []
     @Published var annotationPopupInfo: [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String)] = []
     
     @Published var errorMessage: String?
@@ -45,6 +46,30 @@ class RouteGroupViewModel: ObservableObject {
             return nil
         }
     }
+    
+    func fetchUserInfoFromRouteGroup(groupName: String, userRole: String, routeDay: String) async -> [(groupName: String, routeDay: String, userName: String)]? {
+        do {
+            let userInfo = try LocationQueries.retrieveUserInfoFromRouteGroupFromDB(
+                groupName: groupName,
+                userRole: userRole,
+                routeDay: routeDay
+            )
+            
+            guard !userInfo.isEmpty else {
+                self.errorMessage = "Error, user info not found for group \(groupName)."
+                return nil
+            }
+            
+            self.userDetails = userInfo
+            
+            return userInfo.map { (groupName: $0.groupName, routeDay: $0.routeDay, userName: $0.userName) }
+            
+        } catch {
+            self.errorMessage = "Error retrieving user info: \(error.localizedDescription)"
+            return nil
+        }
+    }
+
     
     func fetchAnnotationPopupInfo(longitude: Double, latitude: Double) async -> [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String)]? {
         do {

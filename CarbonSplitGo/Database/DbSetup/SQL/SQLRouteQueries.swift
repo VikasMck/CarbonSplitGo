@@ -7,7 +7,7 @@ struct SQLRouteQueries{
         $1, ST_SetSRID(ST_Point($2, $3), 4326))
     """
     
-    //insert passenger into a planned route
+    //insert user into a planned route
     static let insertIntoPlannedRoute = """
         insert into route_groups (group_name, user_id, user_role, user_route_coords, route_day)
         values ($1, $2, $3, ST_SetSRID(ST_Point($4, $5), 4326), $6)
@@ -25,6 +25,14 @@ struct SQLRouteQueries{
     static let retrieveUserCoordsFromRouteGroup = """
         select st_x(rg.user_route_coords) as longitude, st_y(rg.user_route_coords) as latitude
         from route_groups rg
+        where group_name = $1 and user_role = $2 and route_day like $3;
+    """
+    
+    //mainly for drivers, same as the coords
+    static let retrieveUserInfoFromRouteGroup = """
+        select rg.group_name, rg.route_day, u.user_name
+        from route_groups rg
+        join users u on rg.user_id = u.user_id 
         where group_name = $1 and user_role = $2 and route_day like $3;
     """
     

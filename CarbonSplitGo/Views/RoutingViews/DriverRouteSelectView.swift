@@ -5,6 +5,8 @@ import MapKit
 struct DriverRouteSelectView: View {
     @StateObject private var socialViewModel = SocialViewModel()
     @StateObject private var routeGroupViewModel = RouteGroupViewModel()
+    @EnvironmentObject var suggestionsViewModel: SuggestionsViewModel
+    @StateObject private var routingViewModel = RoutingViewModel()
     
     @Binding var annotations: [MKPointAnnotation]
 
@@ -12,6 +14,8 @@ struct DriverRouteSelectView: View {
     @State private var isCalenderShown = false
     @State private var groups: [String] = []
     @State private var selectedGroup = ""
+    
+    @State private var isAlertOn = false
 
     //variables to control the screen popup
     @State private var screenOffset: CGFloat = UIScreen.main.bounds.height * 0.95
@@ -35,7 +39,7 @@ struct DriverRouteSelectView: View {
                 }) {
                     HStack {
                         CustomTextField(
-                            placeholder: selectedDate.map { DateFormat.dateFormatDay($0) } ?? "When?",
+                            placeholder: selectedDate.map { DateFormat.dateFormatDayAndTime($0) } ?? "When?",
                             text: .constant("")
                         )
                     }
@@ -49,7 +53,7 @@ struct DriverRouteSelectView: View {
                                 get: { selectedDate ?? Date() },
                                 set: { selectedDate = $0 }
                             ),
-                            displayedComponents: [.date]
+                            displayedComponents: [.date, .hourAndMinute]
                         )
                         .onAppear {
                             if selectedDate == nil {
@@ -74,11 +78,22 @@ struct DriverRouteSelectView: View {
                         ForEach(groups, id: \.self) { group in
                             Button {
                                 Task {
-                                    annotations.removeAll()
-                                    await routeGroupViewModel.fetchAndSetLocation(for: group, userRole: "Passenger", routeDay: DateFormat.dateFormatDayWildcard(selectedDate!), newCoordinateForAnnotation: newCoordinateForAnnotation)
+                                    if let selectedDate = selectedDate {
+                                        annotations.removeAll()
+                                        await routeGroupViewModel.fetchAndSetLocation(for: group, userRole: "Passenger", routeDay: DateFormat.dateFormatDayWildcard(selectedDate), newCoordinateForAnnotation: newCoordinateForAnnotation
+                                        )
+                                        selectedGroup = group
+                                    } else {
+                                        isAlertOn = true
+                                    }
                                 }
                             } label: {
                                 CustomSavedLocationEntryView(icon: "location.fill", text: group)
+                            }
+                            .alert("Info", isPresented: $isAlertOn) {
+                                Button("Understood", role: .cancel) {}
+                            } message: {
+                                Text("Missing date, please select.")
                             }
                         }
 
@@ -92,15 +107,34 @@ struct DriverRouteSelectView: View {
                 .task {
                     groups = await socialViewModel.fetchGroups()
                 }
+                
+                Button(action: {
+                    Task{
+                        //saving drivers end location to reuse the insert. If I have time it will come in handy
+                        await routeGroupViewModel.insertPlannedRoute(
+                            groupName: selectedGroup,
+                            longitude: routingViewModel.getCoordinatesFromAddress(for: suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1])!.longitude,
+                            latitude: routingViewModel.getCoordinatesFromAddress(for: suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1])!.latitude,
+                            routeDate: String(DateFormat.dateFormatDayAndTime(selectedDate!))
+                            
+                        )
+                    }
+                }) {
+                    Text("Advertise for Selected Group")
+                        .foregroundColor(.white)
+                        .frame(maxWidth: 300)
+                        .padding()
+                        .background(AppColours.customMediumGreen)
+                        .cornerRadius(30)
+                }
                 Spacer()
-
             }
             .padding()
             .frame(width: geometry.size.width, height: geometry.size.height / 2)
             .background(.white)
             .cornerRadius(30)
             .shadow(radius: 10)
-            .offset(y: min(max(screenOffset + dragOffset, geometry.size.height * 0.7), geometry.size.height * 0.95))
+            .offset(y: min(max(screenOffset + dragOffset, geometry.size.height * 0.65), geometry.size.height * 0.93))
             .gesture(
                 DragGesture()
                     .updating($dragOffset) { value, state, _ in
@@ -111,11 +145,11 @@ struct DriverRouteSelectView: View {
                         let openThreshold = geometry.size.height / 8
                         withAnimation {
                             if value.translation.height > openThreshold {
-                                screenOffset = geometry.size.height * 0.95
+                                screenOffset = geometry.size.height * 0.93
                             } else if value.translation.height < -openThreshold {
-                                screenOffset = geometry.size.height * 0.7
+                                screenOffset = geometry.size.height * 0.65
                             } else {
-                                screenOffset = screenOffset + dragOffset < (geometry.size.height * 0.8) ? geometry.size.height * 0.7 : geometry.size.height * 0.95
+                                screenOffset = screenOffset + dragOffset < (geometry.size.height * 0.8) ? geometry.size.height * 0.65 : geometry.size.height * 0.93
                             }
                         }
                     }

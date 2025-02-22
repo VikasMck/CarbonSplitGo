@@ -9,8 +9,8 @@ struct PassengerRouteSelectView: View {
     @State private var isCalenderShown = false
     @State private var groups: [String] = []
     @State private var selectedGroup = ""
-    @State private var drivers: [String] = []
-    
+    @State private var drivers: [(groupName: String, routeDay: String, userName: String)] = []
+
     var coordinates: CLLocationCoordinate2D
 
     //variables to control the screen popup
@@ -88,7 +88,8 @@ struct PassengerRouteSelectView: View {
                             .foregroundColor(AppColours.customMediumGreen)
                     }
                     .padding()
-                    .background(Color(.white).opacity(0.9))                    .cornerRadius(30)
+                    .background(Color(.white).opacity(0.9))
+                    .cornerRadius(30)
                     .overlay(
                         RoundedRectangle(cornerRadius: 30)
                             .stroke(Color(AppColours.customLightGrey), lineWidth: 1)
@@ -108,6 +109,7 @@ struct PassengerRouteSelectView: View {
                             latitude: coordinates.latitude,
                             routeDate: String(DateFormat.dateFormatDayAndTime(selectedDate!))
                         )
+                        drivers = await routeGroupViewModel.fetchUserInfoFromRouteGroup(groupName: selectedGroup, userRole: "Driver", routeDay: DateFormat.dateFormatDayWildcard(selectedDate!)) ?? []
                     }
 
                 }) {
@@ -124,13 +126,10 @@ struct PassengerRouteSelectView: View {
                         Text("Search for drivers to request a trip")
                     }
                     else{
-                        ForEach(drivers, id: \.self) { driver in
-                            Text(driver)
-                                .padding()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(Color(UIColor.secondarySystemBackground))
-                                .cornerRadius(8)
-                                .padding(.horizontal)
+                        ForEach(drivers.indices, id: \.self) { index in
+                            let driver = drivers[index]
+                            
+                            CustomDriverSelectionView(userName: driver.userName, groupName: driver.groupName, routeDay: driver.routeDay)
                         }
                     }
                 }
@@ -141,7 +140,7 @@ struct PassengerRouteSelectView: View {
             .background(.white)
             .cornerRadius(30)
             .shadow(radius: 10)
-            .offset(y: min(max(screenOffset + dragOffset, geometry.size.height * 0.5), geometry.size.height * 0.95))
+            .offset(y: min(max(screenOffset + dragOffset, geometry.size.height * 0.5), geometry.size.height * 0.93))
             .gesture(
                 DragGesture()
                     .updating($dragOffset) { value, state, _ in
@@ -160,7 +159,7 @@ struct PassengerRouteSelectView: View {
                                 screenOffset = geometry.size.height * 0.5
                             }
                             else {
-                                screenOffset = screenOffset + dragOffset < (geometry.size.height * 0.7) ? geometry.size.height * 0.5 : geometry.size.height * 0.95
+                                screenOffset = screenOffset + dragOffset < (geometry.size.height * 0.7) ? geometry.size.height * 0.5 : geometry.size.height * 0.93
                             }
                         }
                     }

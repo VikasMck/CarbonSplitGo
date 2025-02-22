@@ -10,6 +10,7 @@ extension MKPointAnnotation: @retroactive Identifiable {
 
 
 //due to built in Map limitations when routing I needed to create this view. Methods taken, and overriden from UIViewRepresentable
+@MainActor
 struct CustomMapView: UIViewRepresentable {
     var routes: [MKRoute] //changed to be an array, as it will handle multiple routes
 
@@ -18,7 +19,6 @@ struct CustomMapView: UIViewRepresentable {
     @Binding var selectedAnnotation: MKPointAnnotation?
 
     //coordinator is required to handle interactions beenween MKMapView and my CustomMapView
-    @MainActor
     class Coordinator: NSObject, MKMapViewDelegate {
         var parent: CustomMapView
         init(parent: CustomMapView) {

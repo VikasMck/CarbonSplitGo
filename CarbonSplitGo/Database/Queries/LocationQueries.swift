@@ -59,6 +59,34 @@ struct LocationQueries {
         return userCoordinatesFromRouteGroup
     }
     
+    
+    static func retrieveUserInfoFromRouteGroupFromDB(groupName: String, userRole: String, routeDay: String) throws -> [(groupName: String, routeDay: String, userName: String)] {
+        var userInfoFromRouteGroup: [(String, String, String)] = []
+        
+        let connection = try PostgresConnect.getConnection()
+        defer { connection.close() }
+        
+        let statement = try connection.prepareStatement(text: SQLRouteQueries.retrieveUserInfoFromRouteGroup)
+        defer { statement.close() }
+        
+        let cursor = try statement.execute(parameterValues: [groupName, userRole, routeDay])
+        defer { cursor.close() }
+        
+        for rowResult in cursor {
+            let row = try rowResult.get()
+            let columns = row.columns
+            
+            let groupName = try columns[0].string()
+            let routeDay = try columns[1].string()
+            let userName = try columns[2].string()
+            
+            userInfoFromRouteGroup.append((groupName, routeDay, userName))
+            
+        }
+        return userInfoFromRouteGroup
+    }
+    
+    
     static func retreiveAnnotationPopupInfoFromRouteGroupDB(longitude: Double, latitude: Double) throws -> [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String)] {
         var annotationPopupInfo: [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String)] = []
         
