@@ -6,42 +6,49 @@ struct RouteView: View {
     //at first had all the logic here, but finally fixed so I can follow MVVM again
     @StateObject private var routingViewModel = RoutingViewModel()
     @State private var coordinatesForPassengerView: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
-    @State private var annotations: [MKPointAnnotation] = []
     @State private var selectedAnnotation: MKPointAnnotation?
 
     var body: some View {
         ZStack {
+            CustomMapView(
+                routes: routingViewModel.routes,
+                annotations: $routingViewModel.annotations,
+                selectedAnnotation: $selectedAnnotation,
+                selectedRouteIndex: $routingViewModel.selectedRouteIndex
+            )
+            
+            VStack {
+                CustomRouteSelectView(selectedRouteIndex: $routingViewModel.selectedRouteIndex, selectedRouteDistance: routingViewModel.selectedRouteDistance, selectedRouteTravelTime: routingViewModel.selectedRouteTravelTime, selectedRouteHasTolls: routingViewModel.selectedRouteHasTolls, selectedRouteCo2Emissions: routingViewModel.selectedRouteCo2Emissions,
+                    onSelectMainRoute: { routingViewModel.selectMainRoute() },
+                    onSelectAlternateRoute: { routingViewModel.selectAlternateRoute() }
+                )
+                .padding(.top, 30)
 
-            CustomMapView(routes: routingViewModel.routes, annotations: $annotations, selectedAnnotation: $selectedAnnotation)
+                Spacer()
+            }
+            .padding()
 
             if Session.shared.getUserRole() == "Passenger" {
                 PassengerRouteSelectView(coordinates: coordinatesForPassengerView)
             }
             else if Session.shared.getUserRole() == "Driver" {
-                DriverRouteSelectView(annotations: $annotations) {
-                    fetchedUserCoordinates in let fetchedAnnotation = MKPointAnnotation()
-                    fetchedAnnotation.coordinate = fetchedUserCoordinates
-                    annotations.append(fetchedAnnotation)
+                DriverRouteSelectView(annotations: $routingViewModel.annotations) { fetchedUserCoordinates in
+                    routingViewModel.addAnnotation(at: fetchedUserCoordinates)
                 }
             }
         }
         .edgesIgnoringSafeArea(.all)
         .onAppear {
             if suggestionsViewModel.locationForRouteList.first == "My Location" {
-                suggestionsViewModel.locationForRouteList[0] = Session.shared.getUserOriginalLocation()!
+                suggestionsViewModel.locationForRouteList[0] = Session.shared.getUserOriginalLocation() ?? ""
             }
             Task {
-                await routingViewModel.fetchCoordinates(from:
-                    suggestionsViewModel.locationForRouteList
-                )
-                //I hope this way doesn't hurt me later
+                await routingViewModel.fetchCoordinates(from: suggestionsViewModel.locationForRouteList)
                 coordinatesForPassengerView = await routingViewModel.getCoordinatesFromAddress(for: suggestionsViewModel.locationForRouteList[0])
                     ?? CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
                 
-                annotations = routingViewModel.generateAnnotations()
-                
-//                suggestionsViewModel.locationForRouteList[0] = ""
-//                suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1] = ""
+                //suggestionsViewModel.locationForRouteList[0] = ""
+                //suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1] = ""
             }
         }
         //this is so cool, sadly I have to repeat code, but it works the best this way
@@ -52,8 +59,6 @@ struct RouteView: View {
                 )
                 coordinatesForPassengerView = await routingViewModel.getCoordinatesFromAddress(for: suggestionsViewModel.locationForRouteList[0])
                     ?? CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
-
-                annotations = routingViewModel.generateAnnotations()
             }
         }
         .overlay(

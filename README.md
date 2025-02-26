@@ -1,7 +1,7 @@
 MVVM architecture
 
 For fun
-Hours: 110
+Hours: 125
 
 Few comments due to functional naming
 
@@ -38,8 +38,3 @@ Naming:
     - *View: - For each screen (ExampleView)
     
 
-
-
-
-NavigationView horrible
-Google apis cool, still horrible

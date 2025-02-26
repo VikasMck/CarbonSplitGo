@@ -7,11 +7,13 @@ import Combine
 class RoutingViewModel: ObservableObject {
     @Published var userCoordinates: [CLLocationCoordinate2D?] = []
     @Published var routes: [MKRoute] = []
-    //have to add annotations for the secondary route
     @Published var annotations: [MKPointAnnotation] = []
     @Published var selectedRouteDistance: Double? = nil
     @Published var selectedRouteIndex: Int? = 0
-    
+    @Published var selectedRouteTravelTime: Double? = nil
+    @Published var selectedRouteHasTolls: Bool? = nil
+    @Published var selectedRouteCo2Emissions: Double? = nil
+
     private var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -95,21 +97,39 @@ class RoutingViewModel: ObservableObject {
     
     func updateRouteStatistics() {
         var totalDistance: Double = 0
-        
-        guard let selectedIndex = selectedRouteIndex, !routes.isEmpty
-        else {
+        var totalTravelTime: Double = 0
+
+        guard let selectedIndex = selectedRouteIndex, !routes.isEmpty else {
             selectedRouteDistance = nil
+            selectedRouteTravelTime = nil
+            selectedRouteHasTolls = nil
+            selectedRouteCo2Emissions = nil
             return
         }
         
         for (index, route) in routes.enumerated() {
-            //even or odd indices for routes, and convert to km
+            //even or odd indices for routes, and convert m to km and s to min
             if index % 2 == selectedIndex {
                 totalDistance += route.distance / 1000
+                totalTravelTime += route.expectedTravelTime / 60
+                
+                if route.hasTolls {
+                    selectedRouteHasTolls = true
+                    break
+                }
+                else {
+                    selectedRouteHasTolls = false
+                }
             }
         }
         
         selectedRouteDistance = totalDistance
+        selectedRouteTravelTime = totalTravelTime
+        
+        //https://www.acea.auto/figure/average-co2-emissions-from-new-passenger-cars-by-eu-country/
+        //in ireland co2 per km is 110.7g co2/km, converted from g to kg
+        let co2KgPerKm: Double = 110.7 / 1000
+        selectedRouteCo2Emissions = totalDistance * co2KgPerKm
     }
 
     //add an overlay of the route to the map
