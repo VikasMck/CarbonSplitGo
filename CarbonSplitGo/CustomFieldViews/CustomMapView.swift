@@ -4,10 +4,31 @@ import MapKit
 //makes eatch annotation custom
 extension MKPointAnnotation: @retroactive Identifiable {
     public var id: UUID {
-        UUID() 
+        UUID()
     }
 }
 
+//due to facing complications, this helper makes it much easier with handling selection and ids
+class RoutePolylineHelper: MKPolyline {
+    var isSelected: Bool = false
+    var routeID: Int = -1
+    var distance: Double = 0.0
+    //next commit
+    var tripTime: String = ""
+    var tollCount: Int = 0
+    
+    //logic for creating the lines, this is needed when I am using multiple annotations, so it routes from A->last point, rathen than stopping at first point.
+    static func from(polyline: MKPolyline, routeID: Int) -> RoutePolylineHelper {
+        let pointsStart = polyline.points()
+        let points = Array(UnsafeBufferPointer(start: pointsStart, count: polyline.pointCount))
+        
+        //create a variable which can be returned, with the above attributes.
+        let routePolylineHelper = RoutePolylineHelper(points: points, count: polyline.pointCount)
+        routePolylineHelper.routeID = routeID
+        
+        return routePolylineHelper
+    }
+}
 
 //due to built in Map limitations when routing I needed to create this view. Methods taken, and overriden from UIViewRepresentable
 @MainActor
@@ -17,6 +38,7 @@ struct CustomMapView: UIViewRepresentable {
     //I need to start using binding more
     @Binding var annotations: [MKPointAnnotation]
     @Binding var selectedAnnotation: MKPointAnnotation?
+    @Binding var selectedRouteIndex: Int?
 
     //coordinator is required to handle interactions beenween MKMapView and my CustomMapView
     class Coordinator: NSObject, MKMapViewDelegate {
@@ -33,16 +55,25 @@ struct CustomMapView: UIViewRepresentable {
         func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
             parent.selectedAnnotation = nil
         }
-
-        //creating a custom renderer
-        func mapView(_ mkMapView: MKMapView, rendererFor mkOverlay: MKOverlay) -> MKOverlayRenderer {
-            if let mkPolyline = mkOverlay as? MKPolyline {
-                let mkRenderer = MKPolylineRenderer(polyline: mkPolyline)
-                mkRenderer.strokeColor = .blue
-                mkRenderer.lineWidth = 5
-                return mkRenderer
+        
+        //creating a custom renderer, update to it, so it works with selections
+        func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+            //main change is rather than use MKPolyline, I now use my helper class
+            guard let routePolylineHelper = overlay as? RoutePolylineHelper else {
+                return MKOverlayRenderer(overlay: overlay)
             }
-            return MKOverlayRenderer(overlay: mkOverlay)
+            
+            let polylineRenderer = MKPolylineRenderer(polyline: routePolylineHelper)
+            
+            if routePolylineHelper.isSelected {
+                polylineRenderer.strokeColor = .blue
+                polylineRenderer.lineWidth = 7
+            }
+            else {
+                polylineRenderer.strokeColor = .gray
+                polylineRenderer.lineWidth = 4
+            }
+            return polylineRenderer
         }
     }
 
@@ -62,18 +93,29 @@ struct CustomMapView: UIViewRepresentable {
     //changed to be simpler, and more usable, as previous way had issues with 2 points only, for info, this, like other UIRepresentables are called by SwiftUI automatically
     func updateUIView(_ mapView: MKMapView, context: Context) {
         mapView.removeOverlays(mapView.overlays)
-        for route in routes {
-            mapView.addOverlay(route.polyline)
+        
+        //changing this to allow 2 routes which are shown on the map
+        for (index, route) in routes.enumerated() {
+            let routePolylineHelper = RoutePolylineHelper.from(polyline: route.polyline, routeID: index)
+            
+            //default selection
+            if let selectedIndex = selectedRouteIndex {
+                routePolylineHelper.isSelected = (index % 2 == selectedIndex)
+            } else {
+                routePolylineHelper.isSelected = index % 2 == 0
+            }
+            
+            mapView.addOverlay(routePolylineHelper)
         }
-
-        //added this so it feels more finished when route is mapped
-        if let firstRoute = routes.first {
-            let routeRect = firstRoute.polyline.boundingMapRect
-            mapView.setVisibleMapRect(routeRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50), animated: true)
-        }
-
+        
         //so this needs to be like this, otherwise it won't on real devices.................
         mapView.removeAnnotations(mapView.annotations)
         mapView.addAnnotations(annotations)
+        
+        //added this so it feels more finished when route is mapped, changed to work more consistently with new setup
+        if !routes.isEmpty {
+            let mapRect = routes.map { $0.polyline.boundingMapRect }.reduce(MKMapRect.null) { $0.union($1) }
+            mapView.setVisibleMapRect(mapRect, edgePadding:UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50),animated: true)
+        }
     }
 }

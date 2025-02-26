@@ -1,14 +1,47 @@
 import Foundation
 import CoreLocation
 @preconcurrency import MapKit
+import Combine
 
-//major rework
+@MainActor
 class RoutingViewModel: ObservableObject {
     @Published var userCoordinates: [CLLocationCoordinate2D?] = []
     @Published var routes: [MKRoute] = []
+    //have to add annotations for the secondary route
+    @Published var annotations: [MKPointAnnotation] = []
+    @Published var selectedRouteDistance: Double? = nil
+    @Published var selectedRouteIndex: Int? = 0
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    init() {
+        //publisher to init with latest updates
+        $routes.combineLatest($selectedRouteIndex).sink { [weak self] (routes, selectedIndex) in
+                self?.updateRouteStatistics()
+            }
+            .store(in: &cancellables)
+    }
+    
+    //for buttons
+    func selectMainRoute() {
+        selectedRouteIndex = 0
+        updateRouteStatistics()
+    }
+    
+    func selectAlternateRoute() {
+        if routes.indices.contains(1) {
+            selectedRouteIndex = 1
+            updateRouteStatistics()
+        }
+    }
+    
+    func addAnnotation(at coordinate: CLLocationCoordinate2D) {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        annotations.append(annotation)
+    }
     
     //fetch coordinates them asynchronously, major changes as I didn't know I was hardcoding location thus, limiting myself with the amount of locations
-    @MainActor
     func fetchCoordinates(from locations: [String]) async {
         self.userCoordinates = Array(repeating: nil, count: locations.count) //to work with more location, need to init it with how many locations to expect
         
@@ -26,6 +59,7 @@ class RoutingViewModel: ObservableObject {
         }
 
         await calculateRoutes()
+        self.annotations = generateAnnotations()
     }
 
     //convert addresses into coordinates which can later be used for routing
@@ -42,45 +76,69 @@ class RoutingViewModel: ObservableObject {
         }
     }
     
-    @MainActor
     private func calculateRoutes() async {
         let validCoordinates = userCoordinates.compactMap { $0 }
         guard validCoordinates.count > 1 else { return }
 
-        var newRoutes: [MKRoute] = []
+        var routeList: [MKRoute] = []
         for i in 0..<(validCoordinates.count - 1) {
-            if let route = await routeOverlayOnMap(from: validCoordinates[i], to: validCoordinates[i + 1]) {
-                newRoutes.append(route)
+            if let mainRouteOption = await routeOverlayOnMap(from: validCoordinates[i], to: validCoordinates[i + 1], alternate: false),
+               let secondaryRouteOption = await routeOverlayOnMap(from: validCoordinates[i], to: validCoordinates[i + 1], alternate: true) {
+                routeList.append(mainRouteOption)
+                routeList.append(secondaryRouteOption)
             }
         }
-        self.routes = newRoutes
+        self.routes = routeList
+        
+        updateRouteStatistics()
+    }
+    
+    func updateRouteStatistics() {
+        var totalDistance: Double = 0
+        
+        guard let selectedIndex = selectedRouteIndex, !routes.isEmpty
+        else {
+            selectedRouteDistance = nil
+            return
+        }
+        
+        for (index, route) in routes.enumerated() {
+            //even or odd indices for routes, and convert to km
+            if index % 2 == selectedIndex {
+                totalDistance += route.distance / 1000
+            }
+        }
+        
+        selectedRouteDistance = totalDistance
     }
 
     //add an overlay of the route to the map
-    private func routeOverlayOnMap(from routeStart: CLLocationCoordinate2D, to routeEnd: CLLocationCoordinate2D) async -> MKRoute? {
+    private func routeOverlayOnMap(from routeStart: CLLocationCoordinate2D, to routeEnd: CLLocationCoordinate2D, alternate: Bool) async -> MKRoute? {
         let mkRequest = MKDirections.Request()
         mkRequest.source = MKMapItem(placemark: MKPlacemark(coordinate: routeStart))
         mkRequest.destination = MKMapItem(placemark: MKPlacemark(coordinate: routeEnd))
         mkRequest.transportType = .automobile //think that was default, but adding this anyway
 
+        if alternate {
+            mkRequest.requestsAlternateRoutes = true
+        }
+
         do {
             let response = try await MKDirections(request: mkRequest).calculate()
-            return response.routes.first
+            return alternate ? response.routes.last : response.routes.first
         } catch {
-            print("Failed to get route: \(error)")
+            print("Error when getting a route: \(error)")
             return nil
         }
     }
-    
-    @MainActor
-    func generateAnnotations() -> [MKPointAnnotation] {
+
+    private func generateAnnotations() -> [MKPointAnnotation] {
         let fetchedUserCoordinates = userCoordinates.compactMap { $0 }
         var pointAnnotations: [MKPointAnnotation] = []
         
         for coordinate in fetchedUserCoordinates {
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
-//            annotation.title = ""
             pointAnnotations.append(annotation)
         }
         
