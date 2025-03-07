@@ -115,7 +115,7 @@ struct LocationQueries {
     }
     
     
-    static func updatePassengerIncludedStatusDB(passengerIncluded: Bool, longitude: Double, latitude: Double) async throws {
+    static func updatePassengerIncludedStatusDB(passengerIncluded: Bool, whichDriverInvited: Int, longitude: Double, latitude: Double) async throws {
         let connection = try PostgresConnect.getConnection()
         defer { connection.close() }
         
@@ -124,6 +124,7 @@ struct LocationQueries {
         
         try statement.execute(parameterValues: [
             passengerIncluded,
+            whichDriverInvited,
             longitude,
             latitude
         ])

@@ -97,7 +97,8 @@ struct DriverRouteSelectView: View {
                             }
                         }
 
-                        NavigationLink(destination: SocialView()) {
+                        NavigationLink(destination: SocialView()
+                            .navigationBarBackButtonHidden(true)){
                             CustomSavedLocationEntryView(icon: "plus", text: "Add New")
                         }
                         .navigationBarHidden(true)

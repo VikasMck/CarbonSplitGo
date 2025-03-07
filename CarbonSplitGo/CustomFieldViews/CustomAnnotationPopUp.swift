@@ -52,6 +52,7 @@ struct CustomAnnotationPopUp: View {
                     Task {
                         await routeGroupViewModel.updatePassengerIncludedStatus(
                             passengerIncluded: true,
+                            whichDriverInvited: Session.shared.getUserID() ?? 0,
                             longitude: annotation.coordinate.longitude,
                             latitude: annotation.coordinate.latitude
                         )
@@ -72,6 +73,7 @@ struct CustomAnnotationPopUp: View {
                     Task {
                         await routeGroupViewModel.updatePassengerIncludedStatus(
                             passengerIncluded: false,
+                            whichDriverInvited: 0,
                             longitude: annotation.coordinate.longitude,
                             latitude: annotation.coordinate.latitude
                         )

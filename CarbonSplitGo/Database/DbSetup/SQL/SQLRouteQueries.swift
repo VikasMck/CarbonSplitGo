@@ -48,9 +48,9 @@ struct SQLRouteQueries{
     
     //allows for drivers to select passangers
     static let updatePassangerIncludedStatus = """
-        update route_groups set passenger_included = $1
+        update route_groups set passenger_included = $1, which_driver_invited = $2
         where st_dwithin(user_route_coords::geography,st_setsrid
-         (st_makepoint($2, $3), 4326)::geography, 1);
+         (st_makepoint($3, $4), 4326)::geography, 1);
     """
     
 }

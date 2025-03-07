@@ -107,10 +107,11 @@ class RouteGroupViewModel: ObservableObject {
             }
         }
     
-    func updatePassengerIncludedStatus(passengerIncluded: Bool, longitude: Double, latitude: Double) async {
+    func updatePassengerIncludedStatus(passengerIncluded: Bool, whichDriverInvited: Int, longitude: Double, latitude: Double) async {
         do {
             try await LocationQueries.updatePassengerIncludedStatusDB(
                 passengerIncluded: passengerIncluded,
+                whichDriverInvited: whichDriverInvited,
                 longitude: longitude,
                 latitude: latitude
             )
