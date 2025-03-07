@@ -19,7 +19,7 @@ struct ControlPanelView: View {
                         bottomTrailing: 0,
                         topTrailing: 30
                     ))
-                    .stroke(AppColours.customDarkGrey, lineWidth: 5)
+                    .stroke(AppColours.customDarkGrey, lineWidth: 2)
                     .fill(AppColours.customDarkGrey)
                     .frame(height: 50)
                     .overlay(
@@ -42,7 +42,7 @@ struct ControlPanelView: View {
                         bottomTrailing: 30,
                         topTrailing: 0
                     ))
-                    .stroke(AppColours.customDarkGrey, lineWidth: 5)
+                    .stroke(AppColours.customDarkGrey, lineWidth: 2)
                     .fill(AppColours.customMediumGreen)
                     .frame(height: 300)
                     .overlay(

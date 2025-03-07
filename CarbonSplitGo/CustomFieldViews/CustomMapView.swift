@@ -39,6 +39,7 @@ struct CustomMapView: UIViewRepresentable {
     @Binding var annotations: [MKPointAnnotation]
     @Binding var selectedAnnotation: MKPointAnnotation?
     @Binding var selectedRouteIndex: Int?
+    var showOnlySelectedRoute: Bool = false
 
     //coordinator is required to handle interactions beenween MKMapView and my CustomMapView
     class Coordinator: NSObject, MKMapViewDelegate {
@@ -70,6 +71,9 @@ struct CustomMapView: UIViewRepresentable {
                 polylineRenderer.lineWidth = 7
             }
             else {
+                if parent.showOnlySelectedRoute{
+                    polylineRenderer.alpha = 0
+                }
                 polylineRenderer.strokeColor = .gray
                 polylineRenderer.lineWidth = 4
             }

@@ -6,7 +6,7 @@ struct DriverRouteSelectView: View {
     @StateObject private var socialViewModel = SocialViewModel()
     @StateObject private var routeGroupViewModel = RouteGroupViewModel()
     @EnvironmentObject var suggestionsViewModel: SuggestionsViewModel
-    @StateObject private var routingViewModel = RoutingViewModel()
+    @ObservedObject var routingViewModel: RoutingViewModel
     
     @Binding var annotations: [MKPointAnnotation]
 
@@ -127,6 +127,19 @@ struct DriverRouteSelectView: View {
                         .background(AppColours.customMediumGreen)
                         .cornerRadius(30)
                 }
+                NavigationLink(destination: TripInActionView(routingViewModel: routingViewModel)
+                    .navigationBarBackButtonHidden(true)){
+                        Text("Start the Trip")
+                        .foregroundColor(AppColours.customMediumGreen)
+                        .frame(maxWidth: 300)
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(30)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 30)
+                                .stroke(Color(AppColours.customLightGrey), lineWidth: 1)
+                        )
+                }
                 Spacer()
             }
             .padding()
@@ -134,7 +147,7 @@ struct DriverRouteSelectView: View {
             .background(.white)
             .cornerRadius(30)
             .shadow(radius: 10)
-            .offset(y: min(max(screenOffset + dragOffset, geometry.size.height * 0.65), geometry.size.height * 0.93))
+            .offset(y: min(max(screenOffset + dragOffset, geometry.size.height * 0.60), geometry.size.height * 0.93))
             .gesture(
                 DragGesture()
                     .updating($dragOffset) { value, state, _ in
@@ -147,9 +160,9 @@ struct DriverRouteSelectView: View {
                             if value.translation.height > openThreshold {
                                 screenOffset = geometry.size.height * 0.93
                             } else if value.translation.height < -openThreshold {
-                                screenOffset = geometry.size.height * 0.65
+                                screenOffset = geometry.size.height * 0.60
                             } else {
-                                screenOffset = screenOffset + dragOffset < (geometry.size.height * 0.8) ? geometry.size.height * 0.65 : geometry.size.height * 0.93
+                                screenOffset = screenOffset + dragOffset < (geometry.size.height * 0.8) ? geometry.size.height * 0.60 : geometry.size.height * 0.93
                             }
                         }
                     }

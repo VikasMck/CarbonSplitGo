@@ -1,0 +1,218 @@
+import SwiftUI
+import MapKit
+
+struct TripInActionView: View {
+    @EnvironmentObject var suggestionsViewModel: SuggestionsViewModel
+    @ObservedObject var routingViewModel: RoutingViewModel
+    
+    @State private var selectedAnnotation: MKPointAnnotation?
+    @State private var coordinatesForPassengerView: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
+
+    //test
+    @State private var passengers: [String] = ["One", "Two", "Three"]
+    @State private var groupName: String = "Mastercard"
+    
+    @State private var isMapPopupFullscreen: Bool = false
+
+    var body: some View {
+        VStack {
+            ZStack {
+                LinearGradient(
+                    gradient: Gradient(stops: [
+                            .init(color: AppColours.customMediumGreen, location: 0.0),
+                            .init(color: AppColours.customMediumGreen, location: 0.9),
+                            .init(color: Color.white, location: 1.0)
+                        ]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .ignoresSafeArea()
+                Text("Trip for \(groupName)")
+                    .foregroundColor(.white)
+                    .font(.custom("Sen", size: 32))
+                    .padding(.top, -20)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            
+            Text("Sharing The Trip With:")
+                .foregroundColor(AppColours.customDarkGrey)
+                .font(.custom("Sen", size: 23))
+                .fontWeight(.bold)
+            ScrollView {
+                VStack(spacing: 0) {
+                    ForEach(passengers, id: \.self) { person in
+                        Divider().frame(width: 300,height: 1).background(AppColours.customMediumGreen)
+                        HStack {
+                            Text(person)
+                                .foregroundColor(AppColours.customDarkGrey)
+                                .font(.custom("Sen", size: 17))
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(AppColours.customDarkGreen)
+                                .font(.custom("Sen", size: 20))
+                        }
+                        .padding()
+                        .frame(maxWidth: 200)
+                    }
+                    Divider().frame(width: 300,height: 1).background(AppColours.customMediumGreen)
+
+                }
+            }
+            .frame(maxHeight: 170)
+            .padding(.bottom, 15)
+            
+            VStack {
+                ZStack {
+                    Grid(alignment: .leading, horizontalSpacing: 30, verticalSpacing: 10) {
+                        GridRow {
+                            RouteDetailRow(
+                                icon: "location",
+                                label: "Distance",
+                                value: "\(String(format: "%.2f", routingViewModel.selectedRouteDistance ?? 0)) km."
+                            )
+                            RouteDetailRow(
+                                icon: "clock",
+                                label: "Time",
+                                value: "~\(String(format: "%.0f", routingViewModel.selectedRouteTravelTime ?? 0)) min."
+                            )
+                        }
+                        GridRow {
+                            RouteDetailRow(
+                                icon: "car.fill",
+                                label: "Tolls",
+                                value: routingViewModel.selectedRouteHasTolls == true ? "Yes" : "No"
+                            )
+                            RouteDetailRow(
+                                icon: "leaf.fill",
+                                label: "CO₂",
+                                value: "\(String(format: "%.2f", routingViewModel.selectedRouteCo2Emissions ?? 0)) kg."
+                            )
+                        }
+                    }
+                }
+            }
+
+            ZStack {
+                RoundedRectangle(cornerRadius: 30)
+                    .shadow(color: AppColours.customDarkGreen.opacity(0.9), radius: 10, x: 0, y: 0)
+                
+                CustomMapView(
+                    routes: routingViewModel.routes,
+                    annotations: $routingViewModel.annotations,
+                    selectedAnnotation: $selectedAnnotation,
+                    selectedRouteIndex: $routingViewModel.selectedRouteIndex,
+                    showOnlySelectedRoute: true
+                )
+                .cornerRadius(30)
+                .onAppear {
+                    Task {
+                        if suggestionsViewModel.locationForRouteList.first == "My Location" {
+                            suggestionsViewModel.locationForRouteList[0] = Session.shared.getUserOriginalLocation() ?? ""
+                        }
+                        await routingViewModel.fetchCoordinates(from: suggestionsViewModel.locationForRouteList)
+                        coordinatesForPassengerView = await routingViewModel.getCoordinatesFromAddress(for: suggestionsViewModel.locationForRouteList[0])
+                        ?? CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
+                    }
+                }
+            }
+            .padding()
+
+            VStack(spacing: 16) {
+                Button(action: {
+                    isMapPopupFullscreen.toggle()
+                }) {
+                    Text("Map Fullscreen")
+                        .foregroundColor(.white)
+                        .frame(maxWidth: 300)
+                        .padding()
+                        .background(AppColours.customMediumGreen)
+                        .cornerRadius(30)
+                }
+
+                Button(action: {
+                }) {
+                    Text("End Trip")
+                        .foregroundColor(AppColours.customMediumGreen)
+                        .frame(maxWidth: 300)
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(30)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 30)
+                                .stroke(Color(AppColours.customLightGrey), lineWidth: 1)
+                        )
+                }
+            }
+        }
+        .padding(.bottom, 20)
+        .fullScreenCover(isPresented: $isMapPopupFullscreen) {
+            MapPopupView(routingViewModel: routingViewModel)
+            .ignoresSafeArea()
+        }
+        .overlay(
+            GeometryReader { geometry in
+                CustomBackButton()
+                    .position(x: 25, y: 20)
+            }
+        )
+    }
+}
+//could probably reuse some other view, but made a new clean one
+struct MapPopupView: View {
+    @EnvironmentObject var suggestionsViewModel: SuggestionsViewModel
+    @ObservedObject var routingViewModel: RoutingViewModel
+    @State private var selectedAnnotation: MKPointAnnotation?
+    @State private var coordinatesForPassengerView: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
+
+
+    var body: some View {
+        VStack {
+            CustomMapView(
+                routes: routingViewModel.routes,
+                annotations: $routingViewModel.annotations,
+                selectedAnnotation: $selectedAnnotation,
+                selectedRouteIndex: $routingViewModel.selectedRouteIndex,
+                showOnlySelectedRoute: true
+            )
+            .onAppear {
+                Task {
+                    if suggestionsViewModel.locationForRouteList.first == "My Location" {
+                        suggestionsViewModel.locationForRouteList[0] = Session.shared.getUserOriginalLocation() ?? ""
+                    }
+                    
+                    await routingViewModel.fetchCoordinates(from: suggestionsViewModel.locationForRouteList)
+                    coordinatesForPassengerView = await routingViewModel.getCoordinatesFromAddress(for: suggestionsViewModel.locationForRouteList[0])
+                    ?? CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
+                }
+            }
+        }
+        .overlay(
+            GeometryReader { geometry in
+                CustomBackButton()
+                    .position(x: 40, y: 45)
+            }
+        )
+    }
+}
+
+
+
+#Preview {
+    let routingViewModel = RoutingViewModel()
+    routingViewModel.annotations = []
+    routingViewModel.selectedRouteIndex = 0
+    routingViewModel.selectedRouteDistance = 0
+    routingViewModel.selectedRouteTravelTime = 0
+    routingViewModel.selectedRouteHasTolls = false
+    routingViewModel.selectedRouteCo2Emissions = 0
+
+    let suggestionsViewModel = SuggestionsViewModel()
+    suggestionsViewModel.locationForRouteList = ["Dubin", "Cork"]
+
+    return TripInActionView(routingViewModel: routingViewModel)
+        .environmentObject(suggestionsViewModel)
+}
+
+
+

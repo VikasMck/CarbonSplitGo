@@ -38,7 +38,7 @@ struct CustomRouteSelectView: View {
                         .stroke(AppColours.customDarkGrey, lineWidth: 1)
                         .fill(AppColours.customLightGrey .opacity(0.7))
                         .frame(maxWidth: .infinity)
-                    Grid(alignment: .leading, horizontalSpacing: 30, verticalSpacing: 20) {
+                    Grid(alignment: .leading, horizontalSpacing: 30, verticalSpacing: 10) {
                         GridRow {
                             RouteDetailRow(
                                 icon: "location",

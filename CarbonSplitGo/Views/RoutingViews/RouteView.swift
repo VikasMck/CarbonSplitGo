@@ -32,7 +32,7 @@ struct RouteView: View {
                 PassengerRouteSelectView(coordinates: coordinatesForPassengerView)
             }
             else if Session.shared.getUserRole() == "Driver" {
-                DriverRouteSelectView(annotations: $routingViewModel.annotations) { fetchedUserCoordinates in
+                DriverRouteSelectView(routingViewModel: routingViewModel, annotations: $routingViewModel.annotations) { fetchedUserCoordinates in
                     routingViewModel.addAnnotation(at: fetchedUserCoordinates)
                 }
             }
