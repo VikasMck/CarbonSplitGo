@@ -10,13 +10,14 @@ class RouteGroupViewModel: ObservableObject {
     
     @Published var errorMessage: String?
 
-    func insertPlannedRoute(groupName: String, longitude: Double, latitude: Double, routeDate: String) async {
+    func insertPlannedRoute(groupName: String, longitude: Double, latitude: Double, routeDate: String, whichDriverInvited: Int) async {
         do {
             try await LocationQueries.insertIntoPlannedRouteToDB(
                 groupName: groupName,
                 longitude: longitude,
                 latitude: latitude,
-                routeDate: routeDate
+                routeDate: routeDate,
+                whichDriverInvited: whichDriverInvited
             )
         } catch {
             self.errorMessage = "Error when inserting passenger: \(error.localizedDescription)"
@@ -117,6 +118,24 @@ class RouteGroupViewModel: ObservableObject {
             )
         } catch {
             self.errorMessage = "Error when updating passenger status: \(error.localizedDescription)"
+        }
+    }
+
+    
+    func fetchInvitedPassengerInfo(driverId: Int) async -> [(userId: Int, groupName: String, routeDay: String, userName: String)]? {
+        do {
+            let invitedPassengers = try LocationQueries.retrieveInvitedPassengersFromDb(driverId: driverId)
+            
+            guard !invitedPassengers.isEmpty else {
+                self.errorMessage = "Error, no invited passengers found for driver \(driverId)."
+                return nil
+            }
+            
+            return invitedPassengers.map { (userId: $0.userId, groupName: $0.groupName, routeDay: $0.routeDay, userName: $0.userName) }
+            
+        } catch {
+            self.errorMessage = "Error retrieving invited passengers: \(error.localizedDescription)"
+            return nil
         }
     }
 

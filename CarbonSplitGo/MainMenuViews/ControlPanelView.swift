@@ -43,7 +43,7 @@ struct ControlPanelView: View {
                         topTrailing: 0
                     ))
                     .stroke(AppColours.customDarkGrey, lineWidth: 2)
-                    .fill(AppColours.customMediumGreen)
+                    .fill(AppColours.customLightGreen)
                     .frame(height: 300)
                     .overlay(
                         VStack(spacing: 15) {

@@ -4,13 +4,13 @@ import MapKit
 struct TripInActionView: View {
     @EnvironmentObject var suggestionsViewModel: SuggestionsViewModel
     @ObservedObject var routingViewModel: RoutingViewModel
-    
+    @StateObject private var routeGroupViewModel = RouteGroupViewModel()
+
     @State private var selectedAnnotation: MKPointAnnotation?
     @State private var coordinatesForPassengerView: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
 
     //test
-    @State private var passengers: [String] = ["One", "Two", "Three"]
-    @State private var groupName: String = "Mastercard"
+    @State private var invitedPassengers: [(userId: Int, groupName: String, routeDay: String, userName: String)] = []
     
     @State private var isMapPopupFullscreen: Bool = false
 
@@ -27,39 +27,48 @@ struct TripInActionView: View {
                         endPoint: .bottom
                     )
                     .ignoresSafeArea()
-                Text("Trip for \(groupName)")
+                Text("Trip for \(invitedPassengers.isEmpty ? "N/A" : invitedPassengers[0].groupName)")
                     .foregroundColor(.white)
                     .font(.custom("Sen", size: 32))
                     .padding(.top, -20)
             }
             .frame(maxWidth: .infinity)
             .frame(height: 50)
-            
+            Text((invitedPassengers.isEmpty ? "N/A" : invitedPassengers[0].routeDay.prefix(10)))
+                .foregroundColor(AppColours.customDarkGrey)
+                .font(.custom("Sen", size: 20))
+                .padding(.bottom, 5)
             Text("Sharing The Trip With:")
                 .foregroundColor(AppColours.customDarkGrey)
                 .font(.custom("Sen", size: 23))
                 .fontWeight(.bold)
             ScrollView {
                 VStack(spacing: 0) {
-                    ForEach(passengers, id: \.self) { person in
-                        Divider().frame(width: 300,height: 1).background(AppColours.customMediumGreen)
-                        HStack {
-                            Text(person)
-                                .foregroundColor(AppColours.customDarkGrey)
-                                .font(.custom("Sen", size: 17))
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .foregroundColor(AppColours.customDarkGreen)
-                                .font(.custom("Sen", size: 20))
-                        }
-                        .padding()
-                        .frame(maxWidth: 200)
+                    if invitedPassengers.isEmpty{
+                        Text("No passengers found")
                     }
-                    Divider().frame(width: 300,height: 1).background(AppColours.customMediumGreen)
+                    else{
+                        ForEach(Array(invitedPassengers.enumerated()), id: \.offset) { _, passenger in
+                            Divider().frame(width: 300, height: 1).background(AppColours.customMediumGreen)
+                            HStack {
+                                Text(passenger.userName)
+                                    .foregroundColor(AppColours.customDarkGrey)
+                                    .font(.custom("Sen", size: 18))
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .foregroundColor(AppColours.customDarkGreen)
+                                    .font(.custom("Sen", size: 20))
+                            }
+                            .padding()
+                            .frame(maxWidth: 180)
+                        }
+                        Divider().frame(width: 300,height: 1).background(AppColours.customMediumGreen)
+
+                    }
 
                 }
             }
-            .frame(maxHeight: 170)
+            .frame(maxHeight: 150)
             .padding(.bottom, 15)
             
             VStack {
@@ -145,6 +154,7 @@ struct TripInActionView: View {
                 }
             }
         }
+    
         .padding(.bottom, 20)
         .fullScreenCover(isPresented: $isMapPopupFullscreen) {
             MapPopupView(routingViewModel: routingViewModel)
@@ -156,6 +166,11 @@ struct TripInActionView: View {
                     .position(x: 25, y: 20)
             }
         )
+        .onAppear {
+            Task {
+                invitedPassengers = await routeGroupViewModel.fetchInvitedPassengerInfo(driverId: Session.shared.getUserID() ?? 0) ?? []
+            }
+        }
     }
 }
 //could probably reuse some other view, but made a new clean one
@@ -195,24 +210,23 @@ struct MapPopupView: View {
         )
     }
 }
+// Preview
+struct TripInActionView_Previews: PreviewProvider {
+    static var previews: some View {
+        let routingViewModel = RoutingViewModel()
+        routingViewModel.annotations = []
+        routingViewModel.selectedRouteIndex = 0
+        routingViewModel.selectedRouteDistance = 0
+        routingViewModel.selectedRouteTravelTime = 0
+        routingViewModel.selectedRouteHasTolls = false
+        routingViewModel.selectedRouteCo2Emissions = 0
+        
+        Session.shared.setUserID(1)
 
+        let suggestionsViewModel = SuggestionsViewModel()
+        suggestionsViewModel.locationForRouteList = ["Dubin", "Cork"]
 
-
-#Preview {
-    let routingViewModel = RoutingViewModel()
-    routingViewModel.annotations = []
-    routingViewModel.selectedRouteIndex = 0
-    routingViewModel.selectedRouteDistance = 0
-    routingViewModel.selectedRouteTravelTime = 0
-    routingViewModel.selectedRouteHasTolls = false
-    routingViewModel.selectedRouteCo2Emissions = 0
-
-    let suggestionsViewModel = SuggestionsViewModel()
-    suggestionsViewModel.locationForRouteList = ["Dubin", "Cork"]
-
-    return TripInActionView(routingViewModel: routingViewModel)
-        .environmentObject(suggestionsViewModel)
+        return TripInActionView(routingViewModel: routingViewModel)
+            .environmentObject(suggestionsViewModel)
+    }
 }
-
-
-

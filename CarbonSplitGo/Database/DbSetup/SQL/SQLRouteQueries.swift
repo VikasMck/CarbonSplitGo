@@ -9,8 +9,8 @@ struct SQLRouteQueries{
     
     //insert user into a planned route
     static let insertIntoPlannedRoute = """
-        insert into route_groups (group_name, user_id, user_role, user_route_coords, route_day)
-        values ($1, $2, $3, ST_SetSRID(ST_Point($4, $5), 4326), $6)
+        insert into route_groups (group_name, user_id, user_role, user_route_coords, route_day, which_driver_invited)
+        values ($1, $2, $3, ST_SetSRID(ST_Point($4, $5), 4326), $6, $7)
         on conflict (user_id)
         do update set
         group_name = excluded.group_name,
@@ -18,7 +18,8 @@ struct SQLRouteQueries{
         user_route_coords = excluded.user_route_coords,
         route_day = excluded.route_day,
         passenger_included = excluded.passenger_included,
-        created_at = excluded.created_at;
+        created_at = excluded.created_at,
+        which_driver_invited = excluded.which_driver_invited;
     """
     
     //get coordinates for annotations
@@ -51,6 +52,12 @@ struct SQLRouteQueries{
         update route_groups set passenger_included = $1, which_driver_invited = $2
         where st_dwithin(user_route_coords::geography,st_setsrid
          (st_makepoint($3, $4), 4326)::geography, 1);
+    """
+    
+    static let retrieveInvitedPassengers = """
+        select u.user_id, rg.group_name, rg.route_day, user_name from route_groups rg
+        join users u on u.user_id = rg.user_id
+        where passenger_included = true and rg.which_driver_invited = $1 and user_role = 'Passenger';
     """
     
 }

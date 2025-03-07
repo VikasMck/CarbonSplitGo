@@ -57,7 +57,7 @@ struct RegisterView: View {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(AppColours.customDarkGreen)
+                            .background(AppColours.customMediumGreen)
                             .cornerRadius(30)
                             .font(.custom("Sen", size: 20))
                     }

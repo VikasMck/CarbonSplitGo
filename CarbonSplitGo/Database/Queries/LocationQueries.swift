@@ -18,7 +18,7 @@ struct LocationQueries {
         ])
     }
     
-    static func insertIntoPlannedRouteToDB(groupName: String, longitude: Double, latitude: Double, routeDate: String) async throws {
+    static func insertIntoPlannedRouteToDB(groupName: String, longitude: Double, latitude: Double, routeDate: String, whichDriverInvited: Int) async throws {
         let connection = try PostgresConnect.getConnection()
         defer { connection.close() }
         
@@ -32,7 +32,8 @@ struct LocationQueries {
             Session.shared.getUserRole(),
             longitude,
             latitude,
-            routeDate
+            routeDate,
+            whichDriverInvited
         ])
     }
     
@@ -130,5 +131,29 @@ struct LocationQueries {
         ])
     }
 
+    static func retrieveInvitedPassengersFromDb(driverId: Int) throws -> [(userId: Int, groupName: String, routeDay: String, userName: String)] {
+        var invitedPassengerInfo: [(Int, String, String, String)] = []
+        
+        let connection = try PostgresConnect.getConnection()
+        defer { connection.close() }
+        
+        let statement = try connection.prepareStatement(text: SQLRouteQueries.retrieveInvitedPassengers)
+        defer { statement.close() }
+        
+        let cursor = try statement.execute(parameterValues: [driverId])
+        defer { cursor.close() }
+        
+        for rowResult in cursor {
+            let row = try rowResult.get()
+            let columns = row.columns
+            let userId = try columns[0].int()
+            let groupName = try columns[1].string()
+            let routeDay = try columns[2].string()
+            let userName = try columns[3].string()
+            
+            invitedPassengerInfo.append((userId, groupName, routeDay, userName))
+        }
+        return invitedPassengerInfo
+    }
 
 }

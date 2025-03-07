@@ -107,7 +107,8 @@ struct PassengerRouteSelectView: View {
                             groupName: selectedGroup,
                             longitude: coordinates.longitude,
                             latitude: coordinates.latitude,
-                            routeDate: String(DateFormat.dateFormatDayAndTime(selectedDate!))
+                            routeDate: String(DateFormat.dateFormatDayAndTime(selectedDate!)),
+                            whichDriverInvited: 0
                         )
                         drivers = await routeGroupViewModel.fetchUserInfoFromRouteGroup(groupName: selectedGroup, userRole: "Driver", routeDay: DateFormat.dateFormatDayWildcard(selectedDate!)) ?? []
                     }
@@ -131,6 +132,7 @@ struct PassengerRouteSelectView: View {
                             
                             CustomDriverSelectionView(userName: driver.userName, groupName: driver.groupName, routeDay: driver.routeDay)
                         }
+                        .padding(10)
                     }
                 }
             }

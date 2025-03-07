@@ -116,7 +116,8 @@ struct DriverRouteSelectView: View {
                             groupName: selectedGroup,
                             longitude: routingViewModel.getCoordinatesFromAddress(for: suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1])!.longitude,
                             latitude: routingViewModel.getCoordinatesFromAddress(for: suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1])!.latitude,
-                            routeDate: String(DateFormat.dateFormatDayAndTime(selectedDate!))
+                            routeDate: String(DateFormat.dateFormatDayAndTime(selectedDate!)),
+                            whichDriverInvited: 0
                             
                         )
                     }
