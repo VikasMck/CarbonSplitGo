@@ -2,8 +2,6 @@ import SwiftUI
 import Combine
 
 class SocialViewModel: ObservableObject {
-    @Published var friends: [String] = []
-    @Published var groups: [String] = []
     
     
     private var userId: Int? {
@@ -12,13 +10,14 @@ class SocialViewModel: ObservableObject {
     
     
     //yes I can fetch them both at the same time, but I will need them separate
-    func fetchFriends() async -> [String] {
+    func fetchFriends() async -> [(userId: Int, userName: String)] {
         guard let userId = userId else { return [] }
 
         do {
             let fetchedFriends = try SocialQueries.retrieveUserFriends(userId: userId)
-            return fetchedFriends
-        } catch {
+            return fetchedFriends.map { ($0.userId, $0.userName) }
+        }
+        catch {
             print("Error fetching friends: \(error)")
             return [] 
         }

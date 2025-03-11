@@ -31,7 +31,7 @@ struct SQLRouteQueries{
     
     //mainly for drivers, same as the coords
     static let retrieveUserInfoFromRouteGroup = """
-        select rg.group_name, rg.route_day, u.user_name
+        select u.user_id, rg.group_name, rg.route_day, u.user_name
         from route_groups rg
         join users u on rg.user_id = u.user_id 
         where group_name = $1 and user_role = $2 and route_day like $3;

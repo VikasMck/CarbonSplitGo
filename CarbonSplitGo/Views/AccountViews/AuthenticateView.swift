@@ -31,7 +31,7 @@ struct AuthenticateView: View {
                                 .padding()
                                 .font(.custom("Sen", size: 20))
                                 .background(AppColours.customDarkGreen)
-                                .foregroundColor(.white)
+                                .foregroundColor(AppColours.customWhite)
                                 .cornerRadius(30)
                         }
 
@@ -43,7 +43,7 @@ struct AuthenticateView: View {
                                 .padding()
                                 .font(.custom("Sen", size: 20))
                                 .background(AppColours.customMediumGreen)
-                                .foregroundColor(.white)
+                                .foregroundColor(AppColours.customWhite)
                                 .cornerRadius(30)
                         }
                     }

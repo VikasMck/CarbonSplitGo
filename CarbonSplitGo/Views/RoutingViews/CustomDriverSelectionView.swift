@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct CustomDriverSelectionView: View {
+    let userId: Int
     let userName: String
     let groupName: String
     let routeDay: String
@@ -27,20 +28,24 @@ struct CustomDriverSelectionView: View {
             Button(action: {
                 //later
             }) {
-                Image(systemName: "chevron.right")
-                    .foregroundColor(AppColours.customDarkGreen)
-                    .font(.custom("Sen", size: 25))
+                
+                NavigationLink(destination: MessagesView(senderId: Session.shared.getUserID() ?? 0, receiverId: userId, friendName: userName)
+                    .navigationBarBackButtonHidden(true)) {
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(AppColours.customDarkGreen)
+                        .font(.custom("Sen", size: 25))
+                }                            
 
             }
         }
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.white)
+        .background(AppColours.customWhite)
         .cornerRadius(15)
         .shadow(color: AppColours.customDarkGreen.opacity(0.5), radius: 5, x: 0, y: 0)
         .padding(.horizontal)
     }
 }
 #Preview {
-    CustomDriverSelectionView(userName: "Admin", groupName: "Mastercard", routeDay: "22/02/2025 10:30")
+    CustomDriverSelectionView(userId: 1, userName: "Admin", groupName: "Mastercard", routeDay: "22/02/2025 10:30")
 }

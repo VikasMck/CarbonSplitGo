@@ -61,8 +61,8 @@ struct LocationQueries {
     }
     
     
-    static func retrieveUserInfoFromRouteGroupFromDB(groupName: String, userRole: String, routeDay: String) throws -> [(groupName: String, routeDay: String, userName: String)] {
-        var userInfoFromRouteGroup: [(String, String, String)] = []
+    static func retrieveUserInfoFromRouteGroupFromDB(groupName: String, userRole: String, routeDay: String) throws -> [(userId: Int, groupName: String, routeDay: String, userName: String)] {
+        var userInfoFromRouteGroup: [(Int, String, String, String)] = []
         
         let connection = try PostgresConnect.getConnection()
         defer { connection.close() }
@@ -77,11 +77,12 @@ struct LocationQueries {
             let row = try rowResult.get()
             let columns = row.columns
             
-            let groupName = try columns[0].string()
-            let routeDay = try columns[1].string()
-            let userName = try columns[2].string()
-            
-            userInfoFromRouteGroup.append((groupName, routeDay, userName))
+            let userId = try columns[0].int()
+            let groupName = try columns[1].string()
+            let routeDay = try columns[2].string()
+            let userName = try columns[3].string()
+
+            userInfoFromRouteGroup.append((userId, groupName, routeDay, userName))
             
         }
         return userInfoFromRouteGroup

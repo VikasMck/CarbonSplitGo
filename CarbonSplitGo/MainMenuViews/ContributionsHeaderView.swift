@@ -11,7 +11,7 @@ struct ContributionsIndividualBoxView: View {
                 .foregroundColor(AppColours.customDarkGrey)
                 .bold()
             RoundedRectangle(cornerRadius: 30)
-                .fill(Color.white)
+                .fill(AppColours.customWhite)
                 .frame(height: 30)
                 .overlay(
                         RoundedRectangle(cornerRadius: 30)

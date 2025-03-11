@@ -21,14 +21,14 @@ struct TripInActionView: View {
                     gradient: Gradient(stops: [
                             .init(color: AppColours.customMediumGreen, location: 0.0),
                             .init(color: AppColours.customMediumGreen, location: 0.9),
-                            .init(color: Color.white, location: 1.0)
+                            .init(color: AppColours.customWhite, location: 1.0)
                         ]),
                         startPoint: .top,
                         endPoint: .bottom
                     )
                     .ignoresSafeArea()
                 Text("Trip for \(invitedPassengers.isEmpty ? "N/A" : invitedPassengers[0].groupName)")
-                    .foregroundColor(.white)
+                    .foregroundColor(AppColours.customWhite)
                     .font(.custom("Sen", size: 32))
                     .padding(.top, -20)
             }
@@ -55,9 +55,12 @@ struct TripInActionView: View {
                                     .foregroundColor(AppColours.customDarkGrey)
                                     .font(.custom("Sen", size: 18))
                                 Spacer()
-                                Image(systemName: "chevron.right")
-                                    .foregroundColor(AppColours.customDarkGreen)
-                                    .font(.custom("Sen", size: 20))
+                                NavigationLink(destination: MessagesView(senderId: Session.shared.getUserID() ?? 0, receiverId: passenger.userId, friendName: passenger.userName)
+                                    .navigationBarBackButtonHidden(true)) {
+                                    Image(systemName: "chevron.right")
+                                        .foregroundColor(AppColours.customDarkGreen)
+                                        .font(.custom("Sen", size: 20))
+                                }
                             }
                             .padding()
                             .frame(maxWidth: 180)
@@ -132,7 +135,7 @@ struct TripInActionView: View {
                     isMapPopupFullscreen.toggle()
                 }) {
                     Text("Map Fullscreen")
-                        .foregroundColor(.white)
+                        .foregroundColor(AppColours.customWhite)
                         .frame(maxWidth: 300)
                         .padding()
                         .background(AppColours.customMediumGreen)
@@ -145,7 +148,7 @@ struct TripInActionView: View {
                         .foregroundColor(AppColours.customMediumGreen)
                         .frame(maxWidth: 300)
                         .padding()
-                        .background(Color.white)
+                        .background(AppColours.customWhite)
                         .cornerRadius(30)
                         .overlay(
                             RoundedRectangle(cornerRadius: 30)

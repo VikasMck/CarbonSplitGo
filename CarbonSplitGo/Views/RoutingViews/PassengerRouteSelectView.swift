@@ -9,7 +9,7 @@ struct PassengerRouteSelectView: View {
     @State private var isCalenderShown = false
     @State private var groups: [String] = []
     @State private var selectedGroup = ""
-    @State private var drivers: [(groupName: String, routeDay: String, userName: String)] = []
+    @State private var drivers: [(userId: Int, groupName: String, routeDay: String, userName: String)] = []
 
     var coordinates: CLLocationCoordinate2D
 
@@ -88,7 +88,7 @@ struct PassengerRouteSelectView: View {
                             .foregroundColor(AppColours.customMediumGreen)
                     }
                     .padding()
-                    .background(Color(.white).opacity(0.9))
+                    .background(AppColours.customWhite.opacity(0.9))
                     .cornerRadius(30)
                     .overlay(
                         RoundedRectangle(cornerRadius: 30)
@@ -115,7 +115,7 @@ struct PassengerRouteSelectView: View {
 
                 }) {
                     Text("Search for Drivers")
-                        .foregroundColor(.white)
+                        .foregroundColor(AppColours.customWhite)
                         .frame(maxWidth: 300)
                         .padding()
                         .background(AppColours.customMediumGreen)
@@ -130,7 +130,7 @@ struct PassengerRouteSelectView: View {
                         ForEach(drivers.indices, id: \.self) { index in
                             let driver = drivers[index]
                             
-                            CustomDriverSelectionView(userName: driver.userName, groupName: driver.groupName, routeDay: driver.routeDay)
+                            CustomDriverSelectionView(userId: driver.userId, userName: driver.userName, groupName: driver.groupName, routeDay: driver.routeDay)
                         }
                         .padding(10)
                     }
@@ -139,7 +139,7 @@ struct PassengerRouteSelectView: View {
             .padding()
             //magic part so it covers 50% of the screen
             .frame(width: geometry.size.width, height: geometry.size.height / 2)
-            .background(.white)
+            .background(AppColours.customWhite)
             .cornerRadius(30)
             .shadow(radius: 10)
             .offset(y: min(max(screenOffset + dragOffset, geometry.size.height * 0.5), geometry.size.height * 0.93))

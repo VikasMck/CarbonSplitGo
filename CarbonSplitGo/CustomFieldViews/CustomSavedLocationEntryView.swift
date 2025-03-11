@@ -9,7 +9,7 @@ struct CustomSavedLocationEntryView: View {
         VStack {
             Text(text)
                 .font(.caption2)
-                .foregroundColor(.black)
+                .foregroundColor(AppColours.customBlack)
             Circle()
                 .fill(AppColours.customDarkGrey)
                 .frame(width: 40, height: 40)

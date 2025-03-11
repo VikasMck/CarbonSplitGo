@@ -39,7 +39,7 @@ struct CustomAnnotationPopUp: View {
                             .font(.custom("Sen", size: 17))
                             .foregroundColor(AppColours.customDarkGrey)
 
-                    }.listRowBackground(Color.white)
+                    }.listRowBackground(AppColours.customWhite)
 
                 }
                 .frame(height: 200)
@@ -65,7 +65,7 @@ struct CustomAnnotationPopUp: View {
                     Text("Invite")
                         .frame(maxWidth: .infinity, minHeight: 50)
                         .background(AppColours.customMediumGreen)
-                        .foregroundColor(.white)
+                        .foregroundColor(AppColours.customWhite)
                         .cornerRadius(15)
                 }
                 
@@ -88,14 +88,14 @@ struct CustomAnnotationPopUp: View {
                     Text("Ignore")
                         .frame(maxWidth: .infinity, minHeight: 50)
                         .background(AppColours.customDarkGrey)
-                        .foregroundColor(.white)
+                        .foregroundColor(AppColours.customWhite)
                         .cornerRadius(15)
                 }
             }
         }
         .padding()
         .frame(width: 300, alignment: .center)
-        .background(.white)
+        .background(AppColours.customWhite)
         .cornerRadius(30)
         .shadow(color: AppColours.customDarkGreen.opacity(0.5), radius: 5, x: 0, y: 0)
         .onAppear {

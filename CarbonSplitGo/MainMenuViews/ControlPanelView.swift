@@ -119,7 +119,7 @@ struct ControlPanelView: View {
                                         .frame(maxWidth: .infinity)
                                 }
                                 .background(userChoiceDriverPassenger == .driver ? AppColours.customDarkGrey : AppColours.customLightGrey)
-                                .foregroundColor(userChoiceDriverPassenger == .driver ? .white : .black)
+                                .foregroundColor(userChoiceDriverPassenger == .driver ? AppColours.customWhite : AppColours.customBlack)
                                 
                                 Button(action: { userChoiceDriverPassenger = .passenger
                                     Session.shared.setUserRole("Passenger")
@@ -129,7 +129,7 @@ struct ControlPanelView: View {
                                         .frame(maxWidth: .infinity)
                                 }
                                 .background(userChoiceDriverPassenger == .passenger ? AppColours.customDarkGrey : AppColours.customLightGrey)
-                                .foregroundColor(userChoiceDriverPassenger == .passenger ? .white : .black)
+                                .foregroundColor(userChoiceDriverPassenger == .passenger ? AppColours.customWhite : AppColours.customBlack)
                             }
                             .cornerRadius(30)
                             .padding(.horizontal, 20)

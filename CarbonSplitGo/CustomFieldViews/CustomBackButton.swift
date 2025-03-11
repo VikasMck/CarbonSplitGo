@@ -8,9 +8,10 @@ struct CustomBackButton: View {
             dismiss()
         }) {
             ZStack {
-                Circle()
+                Rectangle()
                     .fill(AppColours.customLightGrey.opacity(0.5))
                     .frame(width: 40, height: 40)
+                    .cornerRadius(15)
                 Image(systemName: "xmark")
                     .resizable()
                     .scaledToFit()

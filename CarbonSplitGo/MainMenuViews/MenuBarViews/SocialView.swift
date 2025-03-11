@@ -3,7 +3,7 @@ import SwiftUI
 struct SocialView: View {
     @StateObject private var socialViewModel = SocialViewModel()
     
-    @State private var friends: [String] = []
+    @State private var friends: [(userId: Int, userName: String)] = []
     @State private var groups: [String] = []
     @State private var friendId: String = ""
     @State private var groupName: String = ""
@@ -33,15 +33,22 @@ struct SocialView: View {
                     }
                 }
                 .padding()
-//                Text("Friends").font(.headline)
                 ScrollView {
                     VStack(alignment: .leading, spacing: 10) {
-                        ForEach(friends, id: \.self) { friend in
-                            Text(friend)
-                                .padding()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(Color.gray.opacity(0.2))
-                                .cornerRadius(8)
+                        ForEach(friends.indices, id: \.self) { index in
+                            HStack {
+                                Text(friends[index].userName)
+                                    .padding()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .background(Color.gray.opacity(0.2))
+                                    .cornerRadius(8)
+                                NavigationLink(destination: MessagesView(senderId: Session.shared.getUserID() ?? 0, receiverId: friends[index].userId, friendName: friends[index].userName)
+                                    .navigationBarBackButtonHidden(true)) {
+                                    Image(systemName: "chevron.right")
+                                        .foregroundColor(AppColours.customDarkGreen)
+                                        .font(.custom("Sen", size: 20))
+                                }
+                            }
                         }
                     }
                     .padding()
@@ -58,7 +65,6 @@ struct SocialView: View {
                     }
                 }
                 .padding()
-//                Text("Groups").font(.headline)
                 ScrollView {
                     VStack(alignment: .leading, spacing: 10) {
                         ForEach(groups, id: \.self) { group in

@@ -5,7 +5,7 @@ import MapKit
 @MainActor
 class RouteGroupViewModel: ObservableObject {
     @Published var passengerCoordinates: [(longitude: Double, latitude: Double)] = []
-    @Published var userDetails: [(groupName: String, routeDay: String, userName: String)] = []
+    @Published var userDetails: [(userId: Int, groupName: String, routeDay: String, userName: String)] = []
     @Published var annotationPopupInfo: [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String)] = []
     
     @Published var errorMessage: String?
@@ -48,7 +48,7 @@ class RouteGroupViewModel: ObservableObject {
         }
     }
     
-    func fetchUserInfoFromRouteGroup(groupName: String, userRole: String, routeDay: String) async -> [(groupName: String, routeDay: String, userName: String)]? {
+    func fetchUserInfoFromRouteGroup(groupName: String, userRole: String, routeDay: String) async -> [(userId: Int, groupName: String, routeDay: String, userName: String)]? {
         do {
             let userInfo = try LocationQueries.retrieveUserInfoFromRouteGroupFromDB(
                 groupName: groupName,
@@ -63,7 +63,7 @@ class RouteGroupViewModel: ObservableObject {
             
             self.userDetails = userInfo
             
-            return userInfo.map { (groupName: $0.groupName, routeDay: $0.routeDay, userName: $0.userName) }
+            return userInfo.map { (userId: $0.userId, groupName: $0.groupName, routeDay: $0.routeDay, userName: $0.userName) }
             
         } catch {
             self.errorMessage = "Error retrieving user info: \(error.localizedDescription)"

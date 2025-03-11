@@ -54,7 +54,7 @@ struct RegisterView: View {
 
                     Button(action: registerUser) {
                         Text("Register")
-                            .foregroundColor(.white)
+                            .foregroundColor(AppColours.customWhite)
                             .frame(maxWidth: .infinity)
                             .padding()
                             .background(AppColours.customMediumGreen)

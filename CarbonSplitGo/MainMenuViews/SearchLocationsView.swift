@@ -62,9 +62,9 @@ struct SearchLocationsView: View {
                                         TextField("From..", text: $suggestionsViewModel.locationForRouteList[0], prompt: Text("From..").foregroundColor(AppColours.customMediumGreen))
                                             .textFieldStyle(PlainTextFieldStyle())
                                             .padding(10)
-                                            .foregroundColor(.black)
+                                            .foregroundColor(AppColours.customBlack)
                                             .font(.custom("Sen", size: 17))
-                                            .background(.white)
+                                            .background(AppColours.customWhite)
                                             .focused($activeLocationTextField, equals: .startingLocation)
                                             .onChange(of: suggestionsViewModel.locationForRouteList[0]) { oldValue, newValue in
                                                 suggestionsViewModel.fetchSuggestionsPlacesAPI(for: newValue)
@@ -74,8 +74,8 @@ struct SearchLocationsView: View {
                                             .font(.custom("Sen", size: 17))
                                             .textFieldStyle(PlainTextFieldStyle())
                                             .padding(10)
-                                            .foregroundColor(.black)
-                                            .background(.white)
+                                            .foregroundColor(AppColours.customBlack)
+                                            .background(AppColours.customWhite)
                                             .focused($activeLocationTextField, equals: .endLocation)
                                             .onChange(of: suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1]) { oldValue, newValue in
                                                 suggestionsViewModel.fetchSuggestionsPlacesAPI(for: newValue)

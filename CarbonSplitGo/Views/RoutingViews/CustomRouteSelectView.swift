@@ -19,7 +19,7 @@ struct CustomRouteSelectView: View {
                 .frame(width: 100)
                 .padding()
                 .background(selectedRouteIndex == 0 ? AppColours.customDarkGrey : AppColours.customLightGrey)
-                .foregroundColor(selectedRouteIndex == 0 ? .white : AppColours.customDarkGrey)
+                .foregroundColor(selectedRouteIndex == 0 ? AppColours.customWhite : AppColours.customDarkGrey)
 
                 Button("Friendlier") {
                     selectedRouteIndex = 1
@@ -28,7 +28,7 @@ struct CustomRouteSelectView: View {
                 .frame(width: 100)
                 .padding()
                 .background(selectedRouteIndex == 1 ? AppColours.customMediumGreen : AppColours.customLightGrey)
-                .foregroundColor(selectedRouteIndex == 1 ? .white : AppColours.customDarkGrey)
+                .foregroundColor(selectedRouteIndex == 1 ? AppColours.customWhite : AppColours.customDarkGrey)
             }
             .cornerRadius(30)
 
@@ -86,7 +86,7 @@ struct RouteDetailRow: View {
     var body: some View {
         HStack() {
             Image(systemName: icon)
-                .foregroundColor(.black)
+                .foregroundColor(AppColours.customBlack)
                 .font(.custom("Sen", size: 18))
                 .frame(width: 25, height: 25)
             

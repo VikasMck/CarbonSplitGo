@@ -3,8 +3,8 @@ import PostgresClientKit
 
 struct SocialQueries {
     
-    static func retrieveUserFriends(userId: Int) throws -> [String] {
-        var friendList: [String] = []
+    static func retrieveUserFriends(userId: Int) throws -> [(userId: Int, userName: String)] {
+        var friendList: [(userId: Int, userName: String)] = []
         
         let connection = try PostgresConnect.getConnection()
         defer {
@@ -24,8 +24,9 @@ struct SocialQueries {
         //hate using cursor for this. Seems like each time I need new way to do it
         for row in cursor {
             let columns = try row.get().columns
-            let name = try columns[0].string()
-            friendList.append(name)
+            let userId = try columns[0].int()
+            let userName = try columns[1].string()
+            friendList.append((userId: userId, userName: userName))
         }
         
         return friendList
@@ -51,8 +52,8 @@ struct SocialQueries {
         
         for row in cursor {
             let columns = try row.get().columns
-            let name = try columns[0].string()
-            groupList.append(name)
+            let userName = try columns[0].string()
+            groupList.append(userName)
         }
         
         return groupList

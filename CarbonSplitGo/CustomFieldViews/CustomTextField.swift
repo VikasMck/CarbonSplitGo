@@ -23,9 +23,9 @@ struct CustomTextField: View {
         }
         }
         .padding()
-        .background(Color(.white).opacity(0.9))
+        .background(AppColours.customWhite.opacity(0.9))
         .cornerRadius(30)
-        .foregroundColor(.black)
+        .foregroundColor(AppColours.customBlack)
         .overlay(
             RoundedRectangle(cornerRadius: 30)
                 .stroke(Color(AppColours.customLightGrey), lineWidth: 1)

@@ -37,7 +37,7 @@ struct LoginView: View {
                 
                 Button(action: loginUser) {
                     Text("Login")
-                        .foregroundColor(.white)
+                        .foregroundColor(AppColours.customWhite)
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(AppColours.customMediumGreen)

@@ -123,7 +123,7 @@ struct DriverRouteSelectView: View {
                     }
                 }) {
                     Text("Advertise for Selected Group")
-                        .foregroundColor(.white)
+                        .foregroundColor(AppColours.customWhite)
                         .frame(maxWidth: 300)
                         .padding()
                         .background(AppColours.customMediumGreen)
@@ -135,7 +135,7 @@ struct DriverRouteSelectView: View {
                         .foregroundColor(AppColours.customMediumGreen)
                         .frame(maxWidth: 300)
                         .padding()
-                        .background(Color.white)
+                        .background(AppColours.customWhite)
                         .cornerRadius(30)
                         .overlay(
                             RoundedRectangle(cornerRadius: 30)
@@ -146,7 +146,7 @@ struct DriverRouteSelectView: View {
             }
             .padding()
             .frame(width: geometry.size.width, height: geometry.size.height / 2)
-            .background(.white)
+            .background(AppColours.customWhite)
             .cornerRadius(30)
             .shadow(radius: 10)
             .offset(y: min(max(screenOffset + dragOffset, geometry.size.height * 0.60), geometry.size.height * 0.93))
