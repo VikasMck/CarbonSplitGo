@@ -12,6 +12,9 @@ struct TripEndView: View {
     @State private var invitedPassengers: [(userId: Int, groupName: String, routeDay: String, userName: String)] = []
     
     @State private var isMapPopupFullscreen: Bool = false
+    @State private var ifFeedbackShown = false
+    @State private var selectedUserId: Int?
+    @State private var selectedUserName: String?
 
     var body: some View {
         VStack {
@@ -40,7 +43,6 @@ struct TripEndView: View {
             Text("Provide Feedback To:")
                 .foregroundColor(AppColours.customDarkGrey)
                 .font(.custom("Sen", size: 23))
-                .fontWeight(.bold)
             ScrollView {
                 VStack(spacing: 0) {
                     if invitedPassengers.isEmpty{
@@ -54,13 +56,15 @@ struct TripEndView: View {
                                     .foregroundColor(AppColours.customDarkGrey)
                                     .font(.custom("Sen", size: 18))
                                 Spacer()
-                                NavigationLink(destination: MessagesView(senderId: Session.shared.getUserID() ?? 0, receiverId: passenger.userId, friendName: passenger.userName)
-                                    .navigationBarBackButtonHidden(true)) {
+                                Button(action: {
+                                    selectedUserId = passenger.userId
+                                    selectedUserName = passenger.userName
+                                    ifFeedbackShown = true
+                                }) {
                                     Image(systemName: "star.bubble.fill")
                                         .foregroundColor(AppColours.customDarkGreen)
                                         .font(.custom("Sen", size: 20))
-                                }
-                            }
+                                }                            }
                             .padding()
                             .frame(maxWidth: 180)
                         }
@@ -124,6 +128,11 @@ struct TripEndView: View {
         .fullScreenCover(isPresented: $isMapPopupFullscreen) {
             MapPopupView(routingViewModel: routingViewModel)
             .ignoresSafeArea()
+        }
+        .sheet(isPresented: $ifFeedbackShown) {
+            FeedbackView(feedbackViewModel: FeedbackViewModel(), userId: selectedUserId ?? 0, userName: selectedUserName ?? "")
+            .presentationDetents([.height(500)])
+            .presentationBackground(.clear)
         }
         .overlay(
             GeometryReader { geometry in

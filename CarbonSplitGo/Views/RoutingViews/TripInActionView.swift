@@ -41,7 +41,6 @@ struct TripInActionView: View {
             Text("Sharing The Trip With:")
                 .foregroundColor(AppColours.customDarkGrey)
                 .font(.custom("Sen", size: 23))
-                .fontWeight(.bold)
             ScrollView {
                 VStack(spacing: 0) {
                     if invitedPassengers.isEmpty{
