@@ -9,7 +9,7 @@ struct PassengerRouteSelectView: View {
     @State private var isCalenderShown = false
     @State private var groups: [String] = []
     @State private var selectedGroup = ""
-    @State private var drivers: [(userId: Int, groupName: String, routeDay: String, userName: String)] = []
+    @State private var drivers: [(userId: Int, groupName: String, routeDay: String, userName: String, feedbackRating: Double, feedbackRatingCount: Int)] = []
 
     var coordinates: CLLocationCoordinate2D
 
@@ -130,7 +130,7 @@ struct PassengerRouteSelectView: View {
                         ForEach(drivers.indices, id: \.self) { index in
                             let driver = drivers[index]
                             
-                            CustomDriverSelectionView(userId: driver.userId, userName: driver.userName, groupName: driver.groupName, routeDay: driver.routeDay)
+                            CustomDriverSelectionView(userId: driver.userId, userName: driver.userName, groupName: driver.groupName, routeDay: driver.routeDay, feedbackRating: driver.feedbackRating, feedbackRatingCount: driver.feedbackRatingCount)
                         }
                         .padding(10)
                     }

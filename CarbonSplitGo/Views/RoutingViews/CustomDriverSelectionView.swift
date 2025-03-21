@@ -5,6 +5,8 @@ struct CustomDriverSelectionView: View {
     let userName: String
     let groupName: String
     let routeDay: String
+    let feedbackRating: Double
+    let feedbackRatingCount: Int
     
     var body: some View {
         HStack {
@@ -12,17 +14,32 @@ struct CustomDriverSelectionView: View {
                 Text("Driver: \(userName)")
                     .font(.custom("Sen", size: 18))
                     .foregroundColor(AppColours.customDarkGrey)
-                    .padding(.bottom, 10)
                 Text("Group: \(groupName)")
                     .font(.custom("Sen", size: 18))
                     .foregroundColor(AppColours.customDarkGrey)
+                HStack(spacing: 0) {
+                    Text("Rating: ")
+                    ForEach(1...5, id: \.self) { index in
+                        if Double(index) <= feedbackRating {
+                            Image(systemName: "rectangle.fill")
+                                .foregroundColor(AppColours.customMediumGreen)
+                        } else if Double(index) - 0.5 == feedbackRating {
+                            Image(systemName: "rectangle.lefthalf.filled")
+                                .foregroundColor(AppColours.customMediumGreen)
+                        } else {
+                            Image(systemName: "rectangle")
+                                .foregroundColor(AppColours.customMediumGreen)
+                        }
+                    }
+                    Text("(\(feedbackRatingCount))")
+                }
             }
             Spacer()
             
             Text((routeDay.suffix(5)))
                 .font(.custom("Sen", size: 25))
                 .foregroundColor(AppColours.customDarkGreen)
-            
+
             Spacer()
             
             Button(action: {
@@ -47,5 +64,5 @@ struct CustomDriverSelectionView: View {
     }
 }
 #Preview {
-    CustomDriverSelectionView(userId: 1, userName: "Admin", groupName: "Mastercard", routeDay: "22/02/2025 10:30")
+    CustomDriverSelectionView(userId: 1, userName: "Admin", groupName: "Mastercard", routeDay: "22/02/2025 10:30", feedbackRating: 2.5, feedbackRatingCount: 2)
 }

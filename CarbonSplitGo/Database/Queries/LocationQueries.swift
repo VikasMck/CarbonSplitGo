@@ -61,8 +61,8 @@ struct LocationQueries {
     }
     
     
-    static func retrieveUserInfoFromRouteGroupFromDB(groupName: String, userRole: String, routeDay: String) throws -> [(userId: Int, groupName: String, routeDay: String, userName: String)] {
-        var userInfoFromRouteGroup: [(Int, String, String, String)] = []
+    static func retrieveUserInfoFromRouteGroupFromDB(groupName: String, userRole: String, routeDay: String) throws -> [(userId: Int, groupName: String, routeDay: String, userName: String, feedbackRating: Double, feedbackRatingCount: Int)] {
+        var userInfoFromRouteGroup: [(Int, String, String, String, Double, Int)] = []
         
         let connection = try PostgresConnect.getConnection()
         defer { connection.close() }
@@ -81,16 +81,18 @@ struct LocationQueries {
             let groupName = try columns[1].string()
             let routeDay = try columns[2].string()
             let userName = try columns[3].string()
+            let feedbackRating = try columns[4].double()
+            let feedbackRatingCount = try columns[5].int()
 
-            userInfoFromRouteGroup.append((userId, groupName, routeDay, userName))
+            userInfoFromRouteGroup.append((userId, groupName, routeDay, userName, feedbackRating, feedbackRatingCount))
             
         }
         return userInfoFromRouteGroup
     }
     
     
-    static func retreiveAnnotationPopupInfoFromRouteGroupDB(longitude: Double, latitude: Double) throws -> [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String)] {
-        var annotationPopupInfo: [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String)] = []
+    static func retreiveAnnotationPopupInfoFromRouteGroupDB(longitude: Double, latitude: Double) throws -> [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String, feedbackRating: Double, feedbackRatingCount: Int)] {
+        var annotationPopupInfo: [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String, feedbackRating: Double, feedbackRatingCount: Int)] = []
         
         let connection = try PostgresConnect.getConnection()
         defer { connection.close() }
@@ -109,8 +111,10 @@ struct LocationQueries {
             let userName = try columns[2].string()
             let isVerified = try columns[3].bool()
             let userPhoneNumber = try columns[4].string()
+            let feedbackRating = try columns[5].double()
+            let feedbackRatingCount = try columns[6].int()
 
-            annotationPopupInfo.append((groupName, routeDay, userName, isVerified, userPhoneNumber))
+            annotationPopupInfo.append((groupName, routeDay, userName, isVerified, userPhoneNumber, feedbackRating, feedbackRatingCount))
         }
         
         return annotationPopupInfo

@@ -38,6 +38,23 @@ struct CustomAnnotationPopUp: View {
                         Text("Status: \(popupInfo.isVerified ? "Verified" : "Unverified")")
                             .font(.custom("Sen", size: 17))
                             .foregroundColor(AppColours.customDarkGrey)
+                        HStack(spacing: 2) {
+                            Text("Rating: ")
+                            ForEach(1...5, id: \.self) { index in
+                                if Double(index) <= popupInfo.feedbackRating {
+                                    Image(systemName: "rectangle.fill")
+                                        .foregroundColor(AppColours.customMediumGreen)
+                                } else if Double(index) - 0.5 == popupInfo.feedbackRating {
+                                    Image(systemName: "rectangle.lefthalf.filled")
+                                        .foregroundColor(AppColours.customMediumGreen)
+                                } else {
+                                    Image(systemName: "rectangle")
+                                        .foregroundColor(AppColours.customMediumGreen)
+                                }
+                            }
+                            Text("(\(popupInfo.feedbackRatingCount))")
+                        }
+
 
                     }.listRowBackground(AppColours.customWhite)
 
@@ -119,7 +136,7 @@ struct CustomAnnotationPopUp: View {
     CustomAnnotationPopUp(
         annotation: {
             let annotation = MKPointAnnotation()
-            annotation.coordinate = CLLocationCoordinate2D(latitude: 53.3527667, longitude: -6.2799033)
+            annotation.coordinate = CLLocationCoordinate2D(latitude: 53.3933485, longitude: -6.4231009)
             return annotation
         }()
     )
