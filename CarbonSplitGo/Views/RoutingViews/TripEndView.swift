@@ -5,6 +5,7 @@ struct TripEndView: View {
     @EnvironmentObject var suggestionsViewModel: SuggestionsViewModel
     @ObservedObject var routingViewModel: RoutingViewModel
     @StateObject private var routeGroupViewModel = RouteGroupViewModel()
+    @StateObject private var userLocationViewModel = UserLocationViewModel()
 
     @State private var selectedAnnotation: MKPointAnnotation?
     @State private var coordinatesForPassengerView: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
@@ -13,8 +14,16 @@ struct TripEndView: View {
     
     @State private var isMapPopupFullscreen: Bool = false
     @State private var ifFeedbackShown = false
+    
+    //need this because button and navigationlink have teamwork issues
+    @State private var moveToMainPage = false
+
     @State private var selectedUserId: Int?
     @State private var selectedUserName: String?
+
+    @State var passengerCount: Int
+    @State var routeCo2Emissions: Double
+    @State var routeDistance: Double
 
     var body: some View {
         VStack {
@@ -75,8 +84,12 @@ struct TripEndView: View {
                 }
             }
             .frame(maxHeight: 150)
-            .padding(.bottom, 15)
             
+            Text("You drove: \(passengerCount) \(passengerCount == 1 ? "person" : "people")")
+            let co2Saved = (routeCo2Emissions * Double(passengerCount)) / Double(passengerCount + 1)
+            
+            Text("CO₂ saved: \(String(format: "%.2f", co2Saved)) kg")
+            Text("Earned: \(String(format: "%.2f", co2Saved * 2.5)) Carbon Credits")
             
             ZStack {
                 RoundedRectangle(cornerRadius: 30)
@@ -106,21 +119,33 @@ struct TripEndView: View {
             VStack(spacing: 16) {
 
                 Button(action: {
+                    Task {
+                        await userLocationViewModel.updateUserRouteRewards(
+                            userSavedCO2: co2Saved,
+                            userDistanceShared: routeDistance,
+                            userCarbonCredits: co2Saved * 2.5,
+                            userId: Session.shared.getUserID() ?? 1
+                        )
+                        passengerCount = 0
+                        routeCo2Emissions = 0.0
+                        routeDistance = 0.0
+                        moveToMainPage = true
+                    }
                 }) {
-                    NavigationLink(destination: MainPageView()
-                        .navigationBarBackButtonHidden(true)){
-                            Text("Main Menu")
-                                .foregroundColor(AppColours.customMediumGreen)
-                                .frame(maxWidth: 300)
-                                .padding()
-                                .background(AppColours.customWhite)
-                                .cornerRadius(30)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 30)
-                                        .stroke(Color(AppColours.customLightGrey), lineWidth: 1)
-                                )
-                        }
+                    Text("Main Menu")
+                        .foregroundColor(AppColours.customMediumGreen)
+                        .frame(maxWidth: 300)
+                        .padding()
+                        .background(AppColours.customWhite)
+                        .cornerRadius(30)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 30)
+                                .stroke(Color(AppColours.customLightGrey), lineWidth: 1)
+                        )
                 }
+            }
+            .navigationDestination(isPresented: $moveToMainPage) {
+                MainPageView().navigationBarBackButtonHidden(true)
             }
         }
     
@@ -164,7 +189,7 @@ struct TripEndView_Previews: PreviewProvider {
         let suggestionsViewModel = SuggestionsViewModel()
         suggestionsViewModel.locationForRouteList = ["Dubin", "Cork"]
 
-        return TripEndView(routingViewModel: routingViewModel)
+        return TripEndView(routingViewModel: routingViewModel, passengerCount: 2, routeCo2Emissions: 3.5, routeDistance: 131.12)
             .environmentObject(suggestionsViewModel)
     }
 }

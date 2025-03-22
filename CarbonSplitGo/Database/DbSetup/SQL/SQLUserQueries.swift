@@ -22,12 +22,24 @@ struct SQLUserQueries {
     """
     
     static let changeUserToOnline = """
-    update users set is_online = true where user_email = $1;
+        update users set is_online = true where user_email = $1;
     """
     
     static let changeUserToOffline = """
-    update users set is_online = false where user_email = $1;
+        update users set is_online = false where user_email = $1;
+    """
+    
+    static let retrieveUserStats = """
+        select user_saved_co2, user_distance_shared, user_carbon_credits from users where user_id = $1;
     """
 
+    static let updateUserRouteRewards = """
+        update users set
+        user_saved_co2 = user_saved_co2 + $1,
+        user_distance_shared = user_distance_shared + $2,
+        user_carbon_credits = user_carbon_credits + $3
+        where user_id = $4;
+    """
+    
 
 }

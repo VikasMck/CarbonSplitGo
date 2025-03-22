@@ -9,7 +9,6 @@ struct TripInActionView: View {
     @State private var selectedAnnotation: MKPointAnnotation?
     @State private var coordinatesForPassengerView: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
 
-    //test
     @State private var invitedPassengers: [(userId: Int, groupName: String, routeDay: String, userName: String)] = []
     
     @State private var isMapPopupFullscreen: Bool = false
@@ -143,7 +142,7 @@ struct TripInActionView: View {
                 
                 Button(action: {
                 }) {
-                    NavigationLink(destination: TripEndView(routingViewModel: routingViewModel)
+                    NavigationLink(destination: TripEndView(routingViewModel: routingViewModel, passengerCount: invitedPassengers.count, routeCo2Emissions: routingViewModel.selectedRouteCo2Emissions ?? 0.0, routeDistance: routingViewModel.selectedRouteDistance ?? 0.0)
                         .navigationBarBackButtonHidden(true)){
                             Text("End Trip")
                                 .foregroundColor(AppColours.customMediumGreen)

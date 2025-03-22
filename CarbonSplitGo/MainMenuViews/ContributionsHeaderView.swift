@@ -7,7 +7,7 @@ struct ContributionsIndividualBoxView: View {
     var body: some View {
         VStack {
             Text(text)
-                .font(.caption)
+                .font(.custom("Sen", size: 13))
                 .foregroundColor(AppColours.customDarkGrey)
                 .bold()
             RoundedRectangle(cornerRadius: 30)
@@ -20,6 +20,7 @@ struct ContributionsIndividualBoxView: View {
                 .overlay(
                     Text(value)
                         .foregroundColor(AppColours.customDarkGrey)
+                        .font(.custom("Sen", size: 15))
                         .padding(.horizontal, 8)
             )
         }
@@ -27,6 +28,9 @@ struct ContributionsIndividualBoxView: View {
 }
 
 struct ContributionsHeaderView: View {
+    @StateObject private var userLocationViewModel = UserLocationViewModel()
+    @State private var userStats: [(userSavedCO2: Double, userDistanceShared: Double, userCarbonCredits: Double)] = []
+    
     var body: some View {
         VStack() {
             VStack {
@@ -39,10 +43,10 @@ struct ContributionsHeaderView: View {
                 Divider().frame(width: 300,height: 3).background(AppColours.customDarkGreen)
 
                 HStack {
-                    ContributionsIndividualBoxView(text: "CO₂ Saved", value: "")
-                    ContributionsIndividualBoxView(text: "Distance Shared", value: "")
-                    ContributionsIndividualBoxView(text: "CarbonPoints", value: "")
-                }
+                    ContributionsIndividualBoxView(text: "CO₂ Saved", value: String(format: "%.2f kg", userStats.first?.userSavedCO2 ?? 0.0))
+                    ContributionsIndividualBoxView(text: "Distance Shared", value: String(format: "%.2f km", userStats.first?.userDistanceShared ?? 0.0))
+                    ContributionsIndividualBoxView(text: "Carbon Credits", value: String(format: "%.2f", userStats.first?.userCarbonCredits ?? 0.0))
+                                    }
                 .padding()
             }
             .background(
@@ -54,6 +58,12 @@ struct ContributionsHeaderView: View {
             .padding()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .onAppear {
+            Task {
+                userStats = await userLocationViewModel.retrieveUserStats(userId: Session.shared.getUserID() ?? 1) ?? []
+                
+            }
+        }
     }
 }
 
