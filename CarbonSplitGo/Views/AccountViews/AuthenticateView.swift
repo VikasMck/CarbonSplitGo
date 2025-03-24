@@ -1,10 +1,8 @@
 import SwiftUI
 
 struct AuthenticateView: View {
-    @State private var navigationPath = NavigationPath()
-
     var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack {
             ZStack {
                 AppColours.customLightGreen
                     .edgesIgnoringSafeArea(.all)
@@ -19,13 +17,12 @@ struct AuthenticateView: View {
                         .font(.custom("Sen", size: 45))
                         .multilineTextAlignment(.center)
                         .padding(.top, -100)
+
                     Spacer()
 
 
                     VStack(spacing: 30) {
-                        Button {
-                            navigationPath.append("register")
-                        } label: {
+                        NavigationLink(destination: RegisterView()                    .navigationBarBackButtonHidden(true)) {
                             Text("Register")
                                 .frame(maxWidth: .infinity)
                                 .padding()
@@ -35,9 +32,7 @@ struct AuthenticateView: View {
                                 .cornerRadius(30)
                         }
 
-                        Button {
-                            navigationPath.append("login")
-                        } label: {
+                        NavigationLink(destination: LoginView()                    .navigationBarBackButtonHidden(true)) {
                             Text("Login")
                                 .frame(maxWidth: .infinity)
                                 .padding()
@@ -52,18 +47,6 @@ struct AuthenticateView: View {
                     Spacer().frame(height: 250)
                 }
                 .padding(.top, 20)
-            }
-            .navigationDestination(for: String.self) { value in
-                if value == "register" {
-                    RegisterView(navigationPath: $navigationPath)
-                        .navigationBarBackButtonHidden(true)
-                } else if value == "login" {
-                    LoginView(navigationPath: $navigationPath)
-                        .navigationBarBackButtonHidden(true)
-                } else if value == "main" {
-                    MainPageView()
-                        .navigationBarBackButtonHidden(true)
-                }
             }
         }
     }

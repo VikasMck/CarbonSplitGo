@@ -78,7 +78,7 @@ struct SocialView: View {
                     .padding()
                 }
             }
-            .background(AppColours.customLightGreen)
+            .background(AppColours.customWhite)
         }
         .task {
             friends = await socialViewModel.fetchFriends()
