@@ -12,6 +12,9 @@ struct TripInActionView: View {
     @State private var invitedPassengers: [(userId: Int, groupName: String, routeDay: String, userName: String)] = []
     
     @State private var isMapPopupFullscreen: Bool = false
+    
+    @State private var moveToTripEnd = false
+
 
     var body: some View {
         VStack {
@@ -141,20 +144,30 @@ struct TripInActionView: View {
                 }
                 
                 Button(action: {
+                    Task {
+                        //changed incase I will need this again later
+                        moveToTripEnd = true
+                    }
                 }) {
-                    NavigationLink(destination: TripEndView(routingViewModel: routingViewModel, passengerCount: invitedPassengers.count, routeCo2Emissions: routingViewModel.selectedRouteCo2Emissions ?? 0.0, routeDistance: routingViewModel.selectedRouteDistance ?? 0.0)
-                        .navigationBarBackButtonHidden(true)){
-                            Text("End Trip")
-                                .foregroundColor(AppColours.customMediumGreen)
-                                .frame(maxWidth: 300)
-                                .padding()
-                                .background(AppColours.customWhite)
-                                .cornerRadius(30)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 30)
-                                        .stroke(Color(AppColours.customLightGrey), lineWidth: 1)
-                                )
-                        }
+                    Text("End Trip")
+                        .foregroundColor(AppColours.customMediumGreen)
+                        .frame(maxWidth: 300)
+                        .padding()
+                        .background(AppColours.customWhite)
+                        .cornerRadius(30)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 30)
+                                .stroke(Color(AppColours.customLightGrey), lineWidth: 1)
+                        )
+                }
+                .navigationDestination(isPresented: $moveToTripEnd) {
+                    TripEndView(
+                        routingViewModel: routingViewModel,
+                        passengerCount: invitedPassengers.count,
+                        routeCo2Emissions: routingViewModel.selectedRouteCo2Emissions ?? 0.0,
+                        routeDistance: routingViewModel.selectedRouteDistance ?? 0.0
+                    )
+                    .navigationBarBackButtonHidden(true)
                 }
             }
         }

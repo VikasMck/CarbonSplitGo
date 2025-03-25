@@ -129,6 +129,12 @@ struct TripEndView: View {
                         passengerCount = 0
                         routeCo2Emissions = 0.0
                         routeDistance = 0.0
+                        
+                        for passenger in invitedPassengers {
+                            await routeGroupViewModel.deleteUserEndTrip(userId: passenger.userId)
+                        }
+                        await routeGroupViewModel.deleteUserEndTrip(userId: Session.shared.getUserID() ?? 0)
+                        
                         moveToMainPage = true
                     }
                 }) {

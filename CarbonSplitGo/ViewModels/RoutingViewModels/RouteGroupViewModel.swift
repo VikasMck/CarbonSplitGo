@@ -117,7 +117,22 @@ class RouteGroupViewModel: ObservableObject {
             self.errorMessage = "Error when updating passenger status: \(error.localizedDescription)"
         }
     }
-
+    
+    func deleteUserEndTrip(userId: Int) async {
+        do {
+            try await LocationQueries.deleteUserEndTripFromDb(userId: userId)
+        } catch {
+            self.errorMessage = "Error when deleting user end trip: \(error.localizedDescription)"
+        }
+    }
+    
+    func clearInvitedPassengers(userId: Int) async {
+        do {
+            try await LocationQueries.clearInvitedPassengersStatusDB(userId: userId)
+        } catch {
+            self.errorMessage = "Error when clearing invited passengers: \(error.localizedDescription)"
+        }
+    }
     
     func fetchInvitedPassengerInfo(driverId: Int) async -> [(userId: Int, groupName: String, routeDay: String, userName: String)]? {
         do {

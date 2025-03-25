@@ -6,6 +6,8 @@ enum UserChoiceDriverPassenger{
 
 
 struct ControlPanelView: View {
+    @EnvironmentObject var suggestionsViewModel: SuggestionsViewModel
+    @StateObject private var routeGroupViewModel = RouteGroupViewModel()
     @State private var userChoiceDriverPassenger: UserChoiceDriverPassenger = .driver
     
     var body: some View {
@@ -89,11 +91,11 @@ struct ControlPanelView: View {
                                 .overlay(
                                     ScrollView(.horizontal, showsIndicators: false) {
                                         HStack(spacing: 50) {
-                                            CustomSavedLocationEntryView(icon: "location.fill", text: "Saved1")
-                                            CustomSavedLocationEntryView(icon: "location.fill", text: "Saved2")
-                                            CustomSavedLocationEntryView(icon: "location.fill", text: "Saved3")
-                                            CustomSavedLocationEntryView(icon: "location.fill", text: "Saved4")
-                                            CustomSavedLocationEntryView(icon: "location.fill", text: "Saved5")
+                                            CustomSavedLocationEntryView(icon: "location.fill", text: "Ongoing")
+                                            CustomSavedLocationEntryView(icon: "location.fill", text: "Friends")
+                                            CustomSavedLocationEntryView(icon: "location.fill", text: "Work")
+                                            CustomSavedLocationEntryView(icon: "location.fill", text: "Uni")
+                                            CustomSavedLocationEntryView(icon: "location.fill", text: "Extra")
                                         }
                                         .padding(.horizontal, 10)
                                     }
@@ -139,6 +141,12 @@ struct ControlPanelView: View {
             }
             .padding(.horizontal, 10)
             .padding(.bottom, 20)
+        }
+        .onAppear() {
+            suggestionsViewModel.locationForRouteList = ["", ""]
+            Task{
+                await routeGroupViewModel.clearInvitedPassengers(userId: Session.shared.getUserID() ?? 0)
+            }
         }
     }
 }

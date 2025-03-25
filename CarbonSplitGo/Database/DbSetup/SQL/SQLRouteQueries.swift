@@ -69,4 +69,11 @@ struct SQLRouteQueries{
         where passenger_included = true and rg.which_driver_invited = $1 and user_role = 'Passenger';
     """
     
+    static let clearUserEndTrip = """
+        delete from route_groups where user_id = $1;
+    """
+    
+    static let clearInvitedPassengers = """
+        update route_groups set passenger_included = false, which_driver_invited = 0 where which_driver_invited = $1;
+    """
 }

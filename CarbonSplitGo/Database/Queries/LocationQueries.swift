@@ -137,6 +137,31 @@ struct LocationQueries {
             latitude
         ])
     }
+    
+    static func deleteUserEndTripFromDb(userId: Int) async throws {
+        let connection = try PostgresConnect.getConnection()
+        defer { connection.close() }
+        
+        let statement = try connection.prepareStatement(text: SQLRouteQueries.clearUserEndTrip)
+        defer { statement.close() }
+        
+        try statement.execute(parameterValues: [
+            userId
+        ])
+    }
+    
+    static func clearInvitedPassengersStatusDB(userId: Int) async throws {
+        let connection = try PostgresConnect.getConnection()
+        defer { connection.close() }
+        
+        let statement = try connection.prepareStatement(text: SQLRouteQueries.clearInvitedPassengers)
+        defer { statement.close() }
+        
+        try statement.execute(parameterValues: [
+            userId
+        ])
+    }
+    
 
     static func retrieveInvitedPassengersFromDb(driverId: Int) throws -> [(userId: Int, groupName: String, routeDay: String, userName: String)] {
         var invitedPassengerInfo: [(Int, String, String, String)] = []
