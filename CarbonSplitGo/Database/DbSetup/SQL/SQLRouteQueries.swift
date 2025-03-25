@@ -32,12 +32,14 @@ struct SQLRouteQueries{
     //mainly for drivers, same as the coords
     static let retrieveUserInfoFromRouteGroup = """
         select u.user_id, rg.group_name, rg.route_day, u.user_name,
-        avg(uf.feedback_rating) as feedback_rating_avg,
+        coalesce(avg(uf.feedback_rating), 0) as feedback_rating_avg,
         count(uf.feedback_rating) as feedback_rating_count
         from route_groups rg
         join users u on rg.user_id = u.user_id
-        join user_feedback uf on u.user_id = uf.user_id
-        where group_name = $1 and user_role = $2 and route_day like $3;
+        full join user_feedback uf on u.user_id = uf.user_id
+        where rg.group_name = $1 and rg.user_role = $2 and rg.route_day like $3
+        and st_distance(st_setsrid(rg.user_route_coords, 4326)::geography,
+        st_setsrid(st_makepoint($4, $5), 4326)::geography) <= $6
         group by u.user_id, rg.group_name, rg.route_day, u.user_name;
     """
     

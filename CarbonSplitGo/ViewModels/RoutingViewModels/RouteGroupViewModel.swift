@@ -48,13 +48,10 @@ class RouteGroupViewModel: ObservableObject {
         }
     }
     
-    func fetchUserInfoFromRouteGroup(groupName: String, userRole: String, routeDay: String) async -> [(userId: Int, groupName: String, routeDay: String, userName: String, feedbackRating: Double, feedbackRatingCount: Int)]? {
+    func fetchUserInfoFromRouteGroup(groupName: String, userRole: String, routeDay: String, longitude: Double, latitude: Double, maxDistance: Int
+    ) async -> [(userId: Int, groupName: String, routeDay: String, userName: String, feedbackRating: Double, feedbackRatingCount: Int)]? {
         do {
-            let userInfo = try LocationQueries.retrieveUserInfoFromRouteGroupFromDB(
-                groupName: groupName,
-                userRole: userRole,
-                routeDay: routeDay
-            )
+            let userInfo = try LocationQueries.retrieveUserInfoFromRouteGroupFromDB(groupName: groupName, userRole: userRole, routeDay: routeDay, longitude: longitude, latitude: latitude, maxDistance: maxDistance)
             
             guard !userInfo.isEmpty else {
                 self.errorMessage = "Error, user info not found for group \(groupName)."

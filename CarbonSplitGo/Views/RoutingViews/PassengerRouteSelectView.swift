@@ -8,6 +8,8 @@ struct PassengerRouteSelectView: View {
     @State private var selectedDate: Date? = nil
     @State private var isCalenderShown = false
     @State private var groups: [String] = []
+    @State private var distances: [Int] = [1, 3, 5, 10, 15, 20, 50]
+    @State private var selectedDistance = 1
     @State private var selectedGroup = ""
     @State private var drivers: [(userId: Int, groupName: String, routeDay: String, userName: String, feedbackRating: Double, feedbackRatingCount: Int)] = []
 
@@ -69,7 +71,6 @@ struct PassengerRouteSelectView: View {
                     }
                 }
 
-                //cant reuse my customtextfield for a menu :(
                 Menu {
                     ForEach(groups, id: \.self) { group in
                         Button(group) {
@@ -78,7 +79,7 @@ struct PassengerRouteSelectView: View {
                     }
                 }label: {
                     HStack {
-                        Text("Which Group? \(selectedGroup)")
+                        Text("Group: \(selectedGroup)")
                             .font(.custom("Sen", size: 17))
                             .frame(maxWidth: .infinity, alignment: .center)
                             .padding(.leading, 20)
@@ -99,6 +100,33 @@ struct PassengerRouteSelectView: View {
                 .task {
                     groups = await socialViewModel.fetchGroups()
                 }
+                
+                Menu {
+                    ForEach(distances, id: \.self) { distance in
+                        Button(String(distance)) {
+                            selectedDistance = distance
+                        }
+                    }
+                }label: {
+                    HStack {
+                        Text("Area: \(selectedDistance)km")
+                            .font(.custom("Sen", size: 17))
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(.leading, 20)
+                            .foregroundColor(AppColours.customMediumGreen)
+                        Spacer()
+                        Image(systemName: "chevron.down")
+                            .foregroundColor(AppColours.customMediumGreen)
+                    }
+                    .padding()
+                    .background(AppColours.customWhite.opacity(0.9))
+                    .cornerRadius(30)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 30)
+                            .stroke(Color(AppColours.customLightGrey), lineWidth: 1)
+                    )
+                }
+                .padding(.horizontal, 20)
 
                 
                 Button(action: {
@@ -110,7 +138,7 @@ struct PassengerRouteSelectView: View {
                             routeDate: String(DateFormat.dateFormatDayAndTime(selectedDate!)),
                             whichDriverInvited: 0
                         )
-                        drivers = await routeGroupViewModel.fetchUserInfoFromRouteGroup(groupName: selectedGroup, userRole: "Driver", routeDay: DateFormat.dateFormatDayWildcard(selectedDate!)) ?? []
+                        drivers = await routeGroupViewModel.fetchUserInfoFromRouteGroup(groupName: selectedGroup, userRole: "Driver", routeDay: DateFormat.dateFormatDayWildcard(selectedDate!), longitude: coordinates.latitude, latitude: coordinates.longitude, maxDistance: selectedDistance * 1000) ?? []
                     }
 
                 }) {
@@ -124,7 +152,7 @@ struct PassengerRouteSelectView: View {
 
                 ScrollView {
                     if drivers.isEmpty {
-                        Text("Search for drivers to request a trip")
+                        Text("No drivers found with current filters")
                     }
                     else{
                         ForEach(drivers.indices, id: \.self) { index in

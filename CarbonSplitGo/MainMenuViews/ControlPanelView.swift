@@ -24,11 +24,11 @@ struct ControlPanelView: View {
                     .frame(height: 50)
                     .overlay(
                         HStack {
-                            CustomTextWithIconView(icon: "person.2.fill", text: "Friends", destination: SocialView().navigationBarHidden(true))
+                            CustomTextWithIconView(icon: "person.2.fill", text: "Friends", destination: SocialView().navigationBarBackButtonHidden(true))
                             Spacer()
-                            CustomTextWithIconView(icon: "person.fill", text: "Profile", destination: ProfileView().navigationBarHidden(true))
+                            CustomTextWithIconView(icon: "person.fill", text: "Profile", destination: ProfileView().navigationBarBackButtonHidden(true))
                             Spacer()
-                            CustomTextWithIconView(icon: "gearshape.fill", text: "Settings", destination: SettingsView().navigationBarHidden(true))
+                            CustomTextWithIconView(icon: "gearshape.fill", text: "Settings", destination: SettingsView().navigationBarBackButtonHidden(true))
                             
                         }
                             .padding(20)

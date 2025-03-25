@@ -61,7 +61,8 @@ struct LocationQueries {
     }
     
     
-    static func retrieveUserInfoFromRouteGroupFromDB(groupName: String, userRole: String, routeDay: String) throws -> [(userId: Int, groupName: String, routeDay: String, userName: String, feedbackRating: Double, feedbackRatingCount: Int)] {
+    static func retrieveUserInfoFromRouteGroupFromDB(groupName: String, userRole: String, routeDay: String, longitude: Double, latitude: Double, maxDistance: Int) throws -> [(userId: Int, groupName: String, routeDay: String, userName: String, feedbackRating: Double, feedbackRatingCount: Int)] {
+        
         var userInfoFromRouteGroup: [(Int, String, String, String, Double, Int)] = []
         
         let connection = try PostgresConnect.getConnection()
@@ -70,7 +71,8 @@ struct LocationQueries {
         let statement = try connection.prepareStatement(text: SQLRouteQueries.retrieveUserInfoFromRouteGroup)
         defer { statement.close() }
         
-        let cursor = try statement.execute(parameterValues: [groupName, userRole, routeDay])
+        let cursor = try statement.execute(parameterValues: [groupName, userRole, routeDay, latitude, longitude, maxDistance])
+        
         defer { cursor.close() }
         
         for rowResult in cursor {

@@ -22,7 +22,8 @@ struct AuthenticateView: View {
 
 
                     VStack(spacing: 30) {
-                        NavigationLink(destination: RegisterView()                    .navigationBarBackButtonHidden(true)) {
+                        NavigationLink(destination: RegisterView()
+                            .navigationBarBackButtonHidden(true)) {
                             Text("Register")
                                 .frame(maxWidth: .infinity)
                                 .padding()
