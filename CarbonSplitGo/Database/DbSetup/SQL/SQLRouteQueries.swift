@@ -1,12 +1,5 @@
 struct SQLRouteQueries{
     
-    //inserting user coords
-    static let insertUserCoordinates = """
-        insert into user_location (
-        user_id, user_location) values (
-        $1, ST_SetSRID(ST_Point($2, $3), 4326))
-    """
-    
     //insert user into a planned route
     static let insertIntoPlannedRoute = """
         insert into route_groups (group_name, user_id, user_role, user_route_coords, route_day, which_driver_invited)
@@ -47,11 +40,11 @@ struct SQLRouteQueries{
     static let retrieveAnnotationPopUpInfoFromRouteGroup = """
         select rg.group_name, rg.route_day, u.user_name, u.is_verified,
         coalesce(u.user_phone_number, 'Number not set') AS user_phone_number,
-        avg(uf.feedback_rating) as feedback_rating_avg,
+        coalesce(avg(uf.feedback_rating), 0) as feedback_rating_avg,
         count(uf.feedback_rating) as feedback_rating_count
         from route_groups rg
         join users u on u.user_id = rg.user_id
-        join user_feedback uf on uf.user_id = rg.user_id
+        full join user_feedback uf on uf.user_id = rg.user_id
         where st_dwithin(user_route_coords::geography, st_setsrid(st_makepoint($1, $2), 4326)::geography, 1)
         group by rg.group_name, rg.route_day, u.user_name, u.is_verified, u.user_phone_number;
     """

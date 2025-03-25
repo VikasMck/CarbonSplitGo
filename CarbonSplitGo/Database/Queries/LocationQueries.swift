@@ -3,21 +3,6 @@ import PostgresClientKit
 
 struct LocationQueries {
     
-    static func insertCoordinateToDB(longitude: Double, latitude: Double) async throws {
-        let connection = try PostgresConnect.getConnection()
-        defer { connection.close() }
-        
-        let statement = try connection.prepareStatement(text: SQLRouteQueries.insertUserCoordinates)
-        
-        defer { statement.close() }
-        
-        try statement.execute(parameterValues: [
-            Session.shared.getUserID(),
-            longitude,
-            latitude,
-        ])
-    }
-    
     static func insertIntoPlannedRouteToDB(groupName: String, longitude: Double, latitude: Double, routeDate: String, whichDriverInvited: Int) async throws {
         let connection = try PostgresConnect.getConnection()
         defer { connection.close() }

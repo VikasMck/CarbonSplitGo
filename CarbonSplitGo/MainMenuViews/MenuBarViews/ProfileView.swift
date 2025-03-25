@@ -33,7 +33,8 @@ struct ProfileView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding()
-                    
+                    Text("Your unique ID: \(Session.shared.getUserID() ?? 0)")
+                        .frame(maxWidth: .infinity, alignment: .center)
                     Button(action: {}) {
                         Text("Change Username")
                             .foregroundColor(AppColours.customWhite)

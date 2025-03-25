@@ -40,8 +40,8 @@ struct SocialView: View {
                                 Text(friends[index].userName)
                                     .padding()
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .background(Color.gray.opacity(0.2))
-                                    .cornerRadius(8)
+                                    .background(AppColours.customLightGreen)
+                                    .cornerRadius(15)
                                 NavigationLink(destination: MessagesView(senderId: Session.shared.getUserID() ?? 0, receiverId: friends[index].userId, friendName: friends[index].userName)
                                     .navigationBarBackButtonHidden(true)) {
                                     Image(systemName: "chevron.right")
@@ -71,8 +71,8 @@ struct SocialView: View {
                             Text(group)
                                 .padding()
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(Color.blue.opacity(0.2))
-                                .cornerRadius(8)
+                                .background(AppColours.customLightGreen)
+                                .cornerRadius(15)
                         }
                     }
                     .padding()

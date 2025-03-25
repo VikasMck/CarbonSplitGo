@@ -12,7 +12,7 @@ struct CustomRouteSelectView: View {
     var body: some View {
         VStack(spacing: -10) {
             HStack(spacing: 0) {
-                Button("Quicker") {
+                Button("Quickest") {
                     selectedRouteIndex = 0
                     onSelectMainRoute()
                 }
@@ -21,7 +21,7 @@ struct CustomRouteSelectView: View {
                 .background(selectedRouteIndex == 0 ? AppColours.customDarkGrey : AppColours.customLightGrey)
                 .foregroundColor(selectedRouteIndex == 0 ? AppColours.customWhite : AppColours.customDarkGrey)
 
-                Button("Friendlier") {
+                Button("Extra") {
                     selectedRouteIndex = 1
                     onSelectAlternateRoute()
                 }

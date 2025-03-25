@@ -7,6 +7,7 @@ struct PassengerRouteSelectView: View {
 
     @State private var selectedDate: Date? = nil
     @State private var isCalenderShown = false
+    @State private var alertPublished = false
     @State private var groups: [String] = []
     @State private var distances: [Int] = [1, 3, 5, 10, 15, 20, 50]
     @State private var selectedDistance = 1
@@ -139,6 +140,8 @@ struct PassengerRouteSelectView: View {
                             whichDriverInvited: 0
                         )
                         drivers = await routeGroupViewModel.fetchUserInfoFromRouteGroup(groupName: selectedGroup, userRole: "Driver", routeDay: DateFormat.dateFormatDayWildcard(selectedDate!), longitude: coordinates.latitude, latitude: coordinates.longitude, maxDistance: selectedDistance * 1000) ?? []
+                        
+                        alertPublished = true
                     }
 
                 }) {
@@ -148,11 +151,14 @@ struct PassengerRouteSelectView: View {
                         .padding()
                         .background(AppColours.customMediumGreen)
                         .cornerRadius(30)
+                }.alert(isPresented: $alertPublished) {
+                    Alert(title: Text("Published"), message: Text("Your route has been advertised"), dismissButton: .default(Text("OK")))
                 }
 
                 ScrollView {
                     if drivers.isEmpty {
                         Text("No drivers found with current filters")
+                            .frame(maxWidth: .infinity, alignment: .center)
                     }
                     else{
                         ForEach(drivers.indices, id: \.self) { index in
