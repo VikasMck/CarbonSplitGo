@@ -33,9 +33,9 @@ class MessagesViewModel: ObservableObject {
                 return false
             }
         }
-        return true // This is the last message from this sender
+        return true
     }
-
+    
     
     func toggleMessageTime(for index: Int) {
         if visibleTimestamps.contains(index) {

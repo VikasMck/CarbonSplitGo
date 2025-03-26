@@ -8,7 +8,9 @@ enum UserChoiceDriverPassenger{
 struct ControlPanelView: View {
     @EnvironmentObject var suggestionsViewModel: SuggestionsViewModel
     @StateObject private var routeGroupViewModel = RouteGroupViewModel()
+    @StateObject var socialViewModel = SocialViewModel()
     @State private var userChoiceDriverPassenger: UserChoiceDriverPassenger = .driver
+    @State private var unreadMessages: [(whichUser: Int, messageCount: Int)]? = []
     
     var body: some View {
         VStack {
@@ -26,7 +28,9 @@ struct ControlPanelView: View {
                     .frame(height: 50)
                     .overlay(
                         HStack {
-                            CustomTextWithIconView(icon: "person.2.fill", text: "Friends", destination: SocialView().navigationBarBackButtonHidden(true))
+                            CustomTextWithIconView(
+                                icon: unreadMessages?.isEmpty ?? true ? "person.2.fill" : "bell.and.waves.left.and.right.fill", text: "Friends", destination: SocialView().navigationBarBackButtonHidden(true), iconColor: unreadMessages?.isEmpty ?? true ? AppColours.customLightGrey : AppColours.customLightGreen
+                            )
                             Spacer()
                             CustomTextWithIconView(icon: "person.fill", text: "Profile", destination: ProfileView().navigationBarBackButtonHidden(true))
                             Spacer()
@@ -146,6 +150,17 @@ struct ControlPanelView: View {
             suggestionsViewModel.locationForRouteList = ["", ""]
             Task{
                 await routeGroupViewModel.clearInvitedPassengers(userId: Session.shared.getUserID() ?? 0)
+                
+                unreadMessages = await socialViewModel.fetchUnreadMessages(userId: Session.shared.getUserID() ?? 0) ?? []
+                
+                if let unreadMessages = unreadMessages {
+                    for message in unreadMessages {
+                        print("User ID: \(message.whichUser), Unread Messages: \(message.messageCount)")
+                    }
+                } else {
+                    print("No unread messages.")
+                }
+
             }
         }
     }
@@ -154,4 +169,5 @@ struct ControlPanelView: View {
 
 #Preview {
     ControlPanelView()
+        .environmentObject(SuggestionsViewModel())
 }

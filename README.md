@@ -1,7 +1,7 @@
 MVVM architecture
 
 For fun
-Hours: 170
+Hours: 174
 
 Few comments due to functional naming
 

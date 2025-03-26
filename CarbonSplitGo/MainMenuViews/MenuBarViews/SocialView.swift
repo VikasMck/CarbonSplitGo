@@ -4,6 +4,7 @@ struct SocialView: View {
     @StateObject private var socialViewModel = SocialViewModel()
     
     @State private var friends: [(userId: Int, userName: String)] = []
+    @State private var unreadMessages: [(whichUser: Int, messageCount: Int)]? = []
     @State private var groups: [String] = []
     @State private var friendId: String = ""
     @State private var groupName: String = ""
@@ -27,7 +28,7 @@ struct SocialView: View {
                             print("User with this ID doesn't exist")
                         }
                     }) {
-                        Image(systemName: "arrow.right")
+                        Image(systemName: "plus.circle")
                             .font(.title)
                             .foregroundColor(AppColours.customDarkGrey)
                     }
@@ -36,18 +37,46 @@ struct SocialView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 10) {
                         ForEach(friends.indices, id: \.self) { index in
-                            HStack {
-                                Text(friends[index].userName)
-                                    .padding()
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .background(AppColours.customLightGreen)
-                                    .cornerRadius(15)
-                                NavigationLink(destination: MessagesView(senderId: Session.shared.getUserID() ?? 0, receiverId: friends[index].userId, friendName: friends[index].userName)
-                                    .navigationBarBackButtonHidden(true)) {
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(AppColours.customDarkGreen)
-                                        .font(.custom("Sen", size: 20))
+                            let friend = friends[index]
+                            if let unread = unreadMessages?.first(where: { $0.whichUser == friend.userId }) {
+                                HStack {
+                                    Text(friend.userName)
+                                        .padding()
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .background(AppColours.customLightGreen)
+                                        .cornerRadius(30)
+                                    Text("\(unread.messageCount) Unread")
+                                        .font(.subheadline)
+                                        .foregroundColor(.black)
+                                        .padding(.trailing)
+                                    NavigationLink(destination: MessagesView(senderId: Session.shared.getUserID() ?? 0, receiverId: friend.userId, friendName: friend.userName)
+                                        .navigationBarBackButtonHidden(true)) {
+                                        Image(systemName: "message")
+                                                .foregroundColor(AppColours.customBlack)
+                                            .font(.custom("Sen", size: 20))
+                                            .padding()
+                                    }
                                 }
+                                .background(AppColours.customLightGrey)
+                                .cornerRadius(30)
+                            } else {
+                                HStack {
+                                    Text(friend.userName)
+                                        .padding()
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .background(AppColours.customLightGreen)
+                                        .cornerRadius(30)
+                                    
+                                    NavigationLink(destination: MessagesView(senderId: Session.shared.getUserID() ?? 0, receiverId: friend.userId, friendName: friend.userName)
+                                        .navigationBarBackButtonHidden(true)) {
+                                        Image(systemName: "message")
+                                                .foregroundColor(AppColours.customBlack)
+                                            .font(.custom("Sen", size: 20))
+                                            .padding()
+                                    }
+                                }
+                                .background(AppColours.customLightGreen)
+                                .cornerRadius(30)
                             }
                         }
                     }
@@ -59,7 +88,7 @@ struct SocialView: View {
                     Button(action: {
                         socialViewModel.joinGroup(groupName: groupName)
                     }) {
-                        Image(systemName: "arrow.right")
+                        Image(systemName: "plus.circle")
                             .font(.title)
                             .foregroundColor(AppColours.customDarkGrey)
                     }
@@ -72,7 +101,7 @@ struct SocialView: View {
                                 .padding()
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .background(AppColours.customLightGreen)
-                                .cornerRadius(15)
+                                .cornerRadius(30)
                         }
                     }
                     .padding()
@@ -83,6 +112,7 @@ struct SocialView: View {
         .task {
             friends = await socialViewModel.fetchFriends()
             groups = await socialViewModel.fetchGroups()
+            unreadMessages = await socialViewModel.fetchUnreadMessages(userId: Session.shared.getUserID() ?? 0) ?? []
         }
         .refreshable {
             friends = await socialViewModel.fetchFriends()
@@ -99,4 +129,7 @@ struct SocialView: View {
 
 #Preview {
     SocialView()
+        .onAppear {
+            Session.shared.setUserID(19)
+        }
 }

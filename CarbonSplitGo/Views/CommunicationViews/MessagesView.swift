@@ -4,6 +4,7 @@ import Foundation
 
 struct MessagesView: View {
     @StateObject private var messagesViewModel: MessagesViewModel
+    @StateObject var socialViewModel = SocialViewModel()
     @State private var timer: Timer?
     @Namespace private var bottomId //need this so it sticks to to bottom
     private let senderId: Int
@@ -113,6 +114,8 @@ struct MessagesView: View {
                         )
                         messagesViewModel.messageText = ""
                         await messagesViewModel.loadMessages()
+                        
+                        await socialViewModel.updateMessageReadStatus(senderId: receiverId, receiverId: senderId)
                     }
                 }
                 .background(AppColours.customLightGreen)
@@ -130,6 +133,9 @@ struct MessagesView: View {
                 }
                 if let timer = timer {
                     RunLoop.main.add(timer, forMode: .common)
+                }
+                Task{
+                    await socialViewModel.clearUnreadMessages(userId: receiverId)
                 }
             }
             .onDisappear {

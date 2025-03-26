@@ -2,7 +2,7 @@ import SwiftUI
 import Combine
 
 class SocialViewModel: ObservableObject {
-    
+    @Published var errorMessage: String? = nil
     
     private var userId: Int? {
             Session.shared.getUserID()
@@ -52,6 +52,42 @@ class SocialViewModel: ObservableObject {
             try SocialQueries.insertGroup(groupName: groupName, userId: userId)
         } catch {
             print("Error joining a group: \(error)")
+        }
+    }
+    
+    
+    func updateMessageReadStatus(senderId: Int, receiverId: Int) async {
+        do{
+            try await MessagesQueries.updateMessageReadStatusInDb(
+                senderId: senderId,
+                receiverId: receiverId)
+        } catch {
+            self.errorMessage = "Error when updating read status of a message: \(error.localizedDescription)"
+        }
+    }
+
+    func fetchUnreadMessages(userId: Int) async -> [(whichUser: Int, messageCount: Int)]? {
+        do {
+            let unreadMessages = try MessagesQueries.retrieveUnreadMessages(userId: userId)
+            
+            guard !unreadMessages.isEmpty else {
+                print("Error, no unread messages found for user \(userId).")
+                return []
+            }
+            
+            return unreadMessages.map { (whichUser: $0.whichUser, messageCount: $0.messageCount) }
+            
+        } catch {
+            self.errorMessage = "Error retrieving unread messages: \(error.localizedDescription)"
+            return nil
+        }
+    }
+    
+    func clearUnreadMessages(userId: Int) async {
+        do {
+            try await MessagesQueries.clearUnreadMessagesFromDB(userId: userId)
+        } catch {
+            self.errorMessage = "Error clearing unread messages: \(error.localizedDescription)"
         }
     }
     

@@ -25,7 +25,7 @@ struct SQLRouteQueries{
     //mainly for drivers, same as the coords
     static let retrieveUserInfoFromRouteGroup = """
         select u.user_id, rg.group_name, rg.route_day, u.user_name,
-        coalesce(avg(uf.feedback_rating), 0) as feedback_rating_avg,
+        coalesce(avg(uf.feedback_rating), 5) as feedback_rating_avg,
         count(uf.feedback_rating) as feedback_rating_count
         from route_groups rg
         join users u on rg.user_id = u.user_id
@@ -40,7 +40,7 @@ struct SQLRouteQueries{
     static let retrieveAnnotationPopUpInfoFromRouteGroup = """
         select rg.group_name, rg.route_day, u.user_name, u.is_verified,
         coalesce(u.user_phone_number, 'Number not set') AS user_phone_number,
-        coalesce(avg(uf.feedback_rating), 0) as feedback_rating_avg,
+        coalesce(avg(uf.feedback_rating), 5) as feedback_rating_avg,
         count(uf.feedback_rating) as feedback_rating_count
         from route_groups rg
         join users u on u.user_id = rg.user_id
