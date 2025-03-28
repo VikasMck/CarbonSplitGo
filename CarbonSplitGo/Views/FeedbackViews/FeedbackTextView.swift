@@ -43,6 +43,7 @@ struct FeedbackTextView: View {
                         Text("No feedback yet")
                             .font(.custom("Sen", size: 30))
                             .frame(maxWidth: .infinity, alignment: .center)
+                            .foregroundColor(AppColours.customBlack)
                             .padding()
                     }
                     VStack(alignment: .leading, spacing: 10) {
