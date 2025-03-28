@@ -126,7 +126,7 @@ struct MessagesView: View {
             }
             .onAppear {
                 //check if theres messages every 5 seconds.
-                timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
+                timer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { _ in
                     Task {
                         await messagesViewModel.checkForNewMessages()
                     }

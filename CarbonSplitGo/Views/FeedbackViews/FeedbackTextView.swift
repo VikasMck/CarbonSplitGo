@@ -52,6 +52,7 @@ struct FeedbackTextView: View {
                                     .padding()
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .background(AppColours.customWhite)
+                                    .foregroundColor(AppColours.customBlack)
                                     .cornerRadius(30)
                                     .font(.custom("Sen", size: 20))
                                 Text(review.feedbackTimeSent)
@@ -78,5 +79,5 @@ struct FeedbackTextView: View {
 }
 
 #Preview {
-    FeedbackTextView(userId: 20, userName: "Admin", feedbackRating: 5, feedbackRatingCount: 2)
+    FeedbackTextView(userId: 19, userName: "Admin", feedbackRating: 5, feedbackRatingCount: 2)
 }

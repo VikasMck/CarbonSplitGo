@@ -159,6 +159,8 @@ struct PassengerRouteSelectView: View {
                     if drivers.isEmpty {
                         Text("No drivers found with current filters")
                             .frame(maxWidth: .infinity, alignment: .center)
+                            .foregroundColor(AppColours.customBlack)
+                            .padding()
                     }
                     else{
                         ForEach(drivers.indices, id: \.self) { index in
