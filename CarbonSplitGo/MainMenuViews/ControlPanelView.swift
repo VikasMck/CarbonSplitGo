@@ -8,9 +8,11 @@ enum UserChoiceDriverPassenger{
 struct ControlPanelView: View {
     @EnvironmentObject var suggestionsViewModel: SuggestionsViewModel
     @StateObject private var routeGroupViewModel = RouteGroupViewModel()
+    @ObservedObject var feedbackViewModel: FeedbackViewModel
     @StateObject var socialViewModel = SocialViewModel()
     @State private var userChoiceDriverPassenger: UserChoiceDriverPassenger = .driver
     @State private var unreadMessages: [(whichUser: Int, messageCount: Int)]? = []
+    @State private var unreadFeedback: [(whichDriver: Int, driverName: String)]? = []
     
     var body: some View {
         VStack {
@@ -153,21 +155,31 @@ struct ControlPanelView: View {
                 
                 unreadMessages = await socialViewModel.fetchUnreadMessages(userId: Session.shared.getUserID() ?? 0) ?? []
                 
-                if let unreadMessages = unreadMessages {
-                    for message in unreadMessages {
-                        print("User ID: \(message.whichUser), Unread Messages: \(message.messageCount)")
-                    }
-                } else {
-                    print("No unread messages.")
-                }
-
+                unreadFeedback = await feedbackViewModel.fetchUnreadFeedbackForDriver(userId: Session.shared.getUserID() ?? 23) ?? []
+                
+                feedbackViewModel.ifDriverFeedbackShown = !(unreadFeedback?.isEmpty ?? true)
             }
         }
+        //this is the most horrible thing to work on. Had to switch to overlay rathan the sheet due to how swift handled States
+        .overlay(
+            Group {
+                if feedbackViewModel.ifDriverFeedbackShown, let feedback = unreadFeedback {
+                    FeedbackForDriverView(
+                        feedbackViewModel: feedbackViewModel,
+                        userId: feedback.first?.whichDriver ?? 0,
+                        userName: feedback.first?.driverName ?? ""
+                    )
+                    .background(AppColours.customWhite)
+                    .cornerRadius(20)
+                    .padding(40)
+                }
+            }
+        )
     }
 }
 
 
 #Preview {
-    ControlPanelView()
+    ControlPanelView(feedbackViewModel: FeedbackViewModel())
         .environmentObject(SuggestionsViewModel())
 }

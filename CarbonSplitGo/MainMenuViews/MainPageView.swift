@@ -14,7 +14,7 @@ struct MainPageView: View {
                 
                 ContributionsHeaderView().padding(.top, -20)
                 
-                ControlPanelView().padding(.bottom, -20)
+                ControlPanelView(feedbackViewModel: FeedbackViewModel()).padding(.bottom, -20)
             }.navigationBarHidden(true)
         }
     }

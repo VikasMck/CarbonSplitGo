@@ -6,6 +6,7 @@ struct TripEndView: View {
     @ObservedObject var routingViewModel: RoutingViewModel
     @StateObject private var routeGroupViewModel = RouteGroupViewModel()
     @StateObject private var userLocationViewModel = UserLocationViewModel()
+    @StateObject private var feedbackViewModel = FeedbackViewModel()
 
     @State private var selectedAnnotation: MKPointAnnotation?
     @State private var coordinatesForPassengerView: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
@@ -134,6 +135,8 @@ struct TripEndView: View {
                             
                             for passenger in invitedPassengers {
                                 await routeGroupViewModel.deleteUserEndTrip(userId: passenger.userId)
+                                
+                                await feedbackViewModel.updateFeedbackStatusForDriver(userId: passenger.userId, whichDriver: Session.shared.getUserID() ?? 0)
                             }
                             await routeGroupViewModel.deleteUserEndTrip(userId: Session.shared.getUserID() ?? 0)
                             
@@ -167,12 +170,6 @@ struct TripEndView: View {
                     .presentationDetents([.height(500)])
                     .presentationBackground(.clear)
             }
-            .overlay(
-                GeometryReader { geometry in
-                    CustomBackButton()
-                        .position(x: 25, y: 20)
-                }
-            )
             .onAppear {
                 Task {
                     invitedPassengers = await routeGroupViewModel.fetchInvitedPassengerInfo(driverId: Session.shared.getUserID() ?? 0) ?? []
