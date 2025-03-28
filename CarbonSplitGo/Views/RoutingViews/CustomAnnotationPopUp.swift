@@ -7,63 +7,71 @@ struct CustomAnnotationPopUp: View {
     @EnvironmentObject var suggestionViewModel: SuggestionsViewModel
     //hide when something is pressed
     @Environment(\.presentationMode) var isButtonPressed
-    
+    @State private var isFeedbackTextSceenOn = false
+
     var body: some View {
         VStack() {
-    
             if let errorMessage = routeGroupViewModel.errorMessage {
                 Text(errorMessage)
                     .foregroundColor(.red)
                     .font(.custom("Sen", size: 20))
-            }
-            else {
-                List(routeGroupViewModel.annotationPopupInfo, id: \.groupName) { popupInfo in
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(popupInfo.groupName)
-                            .font(.custom("Sen", size: 20))
-                            .foregroundColor(AppColours.customDarkGrey)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                        Text("User: \(popupInfo.userName)")
-                            .font(.custom("Sen", size: 17))
-                            .foregroundColor(AppColours.customDarkGrey)
-                        Text("Day: \(popupInfo.routeDay.prefix(10))")
-                            .font(.custom("Sen", size: 17))
-                            .foregroundColor(AppColours.customDarkGrey)
-                        Text("Time: \(popupInfo.routeDay.suffix(5))")
-                            .font(.custom("Sen", size: 17))
-                            .foregroundColor(AppColours.customDarkGrey)
-                        Text("Number: \(popupInfo.userPhoneNumber)")
-                            .font(.custom("Sen", size: 17))
-                            .foregroundColor(AppColours.customDarkGrey)
-                        Text("Status: \(popupInfo.isVerified ? "Verified" : "Unverified")")
-                            .font(.custom("Sen", size: 17))
-                            .foregroundColor(AppColours.customDarkGrey)
-                        HStack(spacing: 2) {
-                            Text("Rating: ")
-                            ForEach(1...5, id: \.self) { index in
-                                if Double(index) <= popupInfo.feedbackRating {
-                                    Image(systemName: "rectangle.fill")
-                                        .foregroundColor(AppColours.customMediumGreen)
-                                } else if Double(index) - 0.5 == popupInfo.feedbackRating {
-                                    Image(systemName: "rectangle.lefthalf.filled")
-                                        .foregroundColor(AppColours.customMediumGreen)
-                                } else {
-                                    Image(systemName: "rectangle")
-                                        .foregroundColor(AppColours.customMediumGreen)
+            } else {
+                //Hate working with list, so removed it
+                VStack(spacing: 20) {
+                    ForEach(routeGroupViewModel.annotationPopupInfo, id: \.groupName) { popupInfo in
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(popupInfo.groupName)
+                                .font(.custom("Sen", size: 20))
+                                .foregroundColor(AppColours.customDarkGrey)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                            Text("User: \(popupInfo.userName)")
+                                .font(.custom("Sen", size: 17))
+                                .foregroundColor(AppColours.customDarkGrey)
+                            Text("Day: \(popupInfo.routeDay.prefix(10))")
+                                .font(.custom("Sen", size: 17))
+                                .foregroundColor(AppColours.customDarkGrey)
+                            Text("Time: \(popupInfo.routeDay.suffix(5))")
+                                .font(.custom("Sen", size: 17))
+                                .foregroundColor(AppColours.customDarkGrey)
+                            Text("Number: \(popupInfo.userPhoneNumber)")
+                                .font(.custom("Sen", size: 17))
+                                .foregroundColor(AppColours.customDarkGrey)
+                            Text("Status: \(popupInfo.isVerified ? "Verified" : "Unverified")")
+                                .font(.custom("Sen", size: 17))
+                                .foregroundColor(AppColours.customDarkGrey)
+                            Button(action: {
+                                isFeedbackTextSceenOn = true
+                            }) {
+                                HStack(spacing: 0) {
+                                    Text("Rating: ")
+                                        .foregroundColor(AppColours.customDarkGrey)
+                                    ForEach(1...5, id: \.self) { index in
+                                        if Double(index) <= popupInfo.feedbackRating {
+                                            Image(systemName: "rectangle.fill")
+                                                .foregroundColor(AppColours.customMediumGreen)
+                                        } else if Double(index) - 0.5 == popupInfo.feedbackRating {
+                                            Image(systemName: "rectangle.lefthalf.filled")
+                                                .foregroundColor(AppColours.customMediumGreen)
+                                        } else {
+                                            Image(systemName: "rectangle")
+                                                .foregroundColor(AppColours.customMediumGreen)
+                                        }
+                                    }
+                                    Text("(\(popupInfo.feedbackRatingCount))")
+                                        .foregroundColor(AppColours.customDarkGrey)
                                 }
                             }
-                            Text("(\(popupInfo.feedbackRatingCount))")
+                            .fullScreenCover(isPresented: $isFeedbackTextSceenOn) { FeedbackTextView( userId: popupInfo.userId, userName: popupInfo.userName, feedbackRating: popupInfo.feedbackRating, feedbackRatingCount: popupInfo.feedbackRatingCount)
+                            }
                         }
-
-
-                    }.listRowBackground(AppColours.customWhite)
-
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .background(AppColours.customWhite)
+                    }
+                    .padding()
                 }
-                .frame(height: 200)
-                .listStyle(PlainListStyle())
-
+                .frame(height: 220)
             }
-            
+
             HStack() {
                 Button(action: {
                     Task {
@@ -73,9 +81,9 @@ struct CustomAnnotationPopUp: View {
                             longitude: annotation.coordinate.longitude,
                             latitude: annotation.coordinate.latitude
                         )
-                        
+
                         suggestionViewModel.locationForRouteList.insert("\(annotation.coordinate.latitude),\(annotation.coordinate.longitude)", at: max(suggestionViewModel.locationForRouteList.count - 1, 0))
-                        
+
                         isButtonPressed.wrappedValue.dismiss()
                     }
                 }) {
@@ -85,7 +93,7 @@ struct CustomAnnotationPopUp: View {
                         .foregroundColor(AppColours.customWhite)
                         .cornerRadius(15)
                 }
-                
+
                 Button(action: {
                     Task {
                         await routeGroupViewModel.updatePassengerIncludedStatus(
@@ -94,7 +102,7 @@ struct CustomAnnotationPopUp: View {
                             longitude: annotation.coordinate.longitude,
                             latitude: annotation.coordinate.latitude
                         )
-                        
+
                         if let deleteAt = suggestionViewModel.locationForRouteList.firstIndex(where: { $0 == "\(annotation.coordinate.latitude),\(annotation.coordinate.longitude)" }) {
                             suggestionViewModel.locationForRouteList.remove(at: deleteAt)
                         }

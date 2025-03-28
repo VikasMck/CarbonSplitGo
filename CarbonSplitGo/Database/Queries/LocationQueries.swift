@@ -78,8 +78,8 @@ struct LocationQueries {
     }
     
     
-    static func retreiveAnnotationPopupInfoFromRouteGroupDB(longitude: Double, latitude: Double) throws -> [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String, feedbackRating: Double, feedbackRatingCount: Int)] {
-        var annotationPopupInfo: [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String, feedbackRating: Double, feedbackRatingCount: Int)] = []
+    static func retreiveAnnotationPopupInfoFromRouteGroupDB(longitude: Double, latitude: Double) throws -> [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String, feedbackRating: Double, feedbackRatingCount: Int, userId: Int)] {
+        var annotationPopupInfo: [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String, feedbackRating: Double, feedbackRatingCount: Int, userId: Int)] = []
         
         let connection = try PostgresConnect.getConnection()
         defer { connection.close() }
@@ -100,8 +100,9 @@ struct LocationQueries {
             let userPhoneNumber = try columns[4].string()
             let feedbackRating = try columns[5].double()
             let feedbackRatingCount = try columns[6].int()
+            let userId = try columns[7].int()
 
-            annotationPopupInfo.append((groupName, routeDay, userName, isVerified, userPhoneNumber, feedbackRating, feedbackRatingCount))
+            annotationPopupInfo.append((groupName, routeDay, userName, isVerified, userPhoneNumber, feedbackRating, feedbackRatingCount, userId))
         }
         
         return annotationPopupInfo

@@ -17,4 +17,7 @@ struct SQLFeedback{
         delete from feedback_unread where which_driver = $1;
     """
     
+    static let retrieveUserFeedbackText: String = """
+        select coalesce(nullif(feedback_text, ''), 'No text'), feedback_time_sent from user_feedback where user_id = $1 order by feedback_time_sent desc;
+    """
 }

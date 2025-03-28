@@ -70,5 +70,31 @@ struct FeedbackQueries {
         
         try statement.execute(parameterValues: [userId])
     }
+    
+    static func retrieveUserFeedbackTextFromDb(userId: Int) throws -> [(feedbackText: String, feedbackTimeSent: String)] {
+        var feedbackTextList: [(feedbackText: String, feedbackTimeSent: String)] = []
+        
+        let connection = try PostgresConnect.getConnection()
+        defer {
+            connection.close()
+        }
+        
+        let statement = try connection.prepareStatement(text: SQLFeedback.retrieveUserFeedbackText)
+        defer {
+            statement.close()
+        }
+        
+        let cursor = try statement.execute(parameterValues: [userId])
+        
+        for row in cursor {
+            let columns = try row.get().columns
+            let feedbackText = try columns[0].string()
+            let feedbackTimeSent = try columns[1].string()
+            
+            feedbackTextList.append((feedbackText: feedbackText, feedbackTimeSent: feedbackTimeSent))
+        }
+        return feedbackTextList
+    }
+    
 }
 

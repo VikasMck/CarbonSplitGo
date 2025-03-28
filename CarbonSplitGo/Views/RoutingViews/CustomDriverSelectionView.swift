@@ -17,21 +17,25 @@ struct CustomDriverSelectionView: View {
                 Text("Group: \(groupName)")
                     .font(.custom("Sen", size: 18))
                     .foregroundColor(AppColours.customDarkGrey)
-                HStack(spacing: 0) {
-                    Text("Rating: ")
-                    ForEach(1...5, id: \.self) { index in
-                        if Double(index) <= feedbackRating {
-                            Image(systemName: "rectangle.fill")
-                                .foregroundColor(AppColours.customMediumGreen)
-                        } else if Double(index) - 0.5 == feedbackRating {
-                            Image(systemName: "rectangle.lefthalf.filled")
-                                .foregroundColor(AppColours.customMediumGreen)
-                        } else {
-                            Image(systemName: "rectangle")
-                                .foregroundColor(AppColours.customMediumGreen)
+                NavigationLink(destination: FeedbackTextView(userId: userId, userName: userName, feedbackRating: feedbackRating, feedbackRatingCount: feedbackRatingCount).navigationBarBackButtonHidden(true)) {
+                    HStack(spacing: 0) {
+                        Text("Rating: ")
+                            .foregroundColor(AppColours.customDarkGrey)
+                        ForEach(1...5, id: \.self) { index in
+                            if Double(index) <= feedbackRating {
+                                Image(systemName: "rectangle.fill")
+                                    .foregroundColor(AppColours.customMediumGreen)
+                            } else if Double(index) - 0.5 == feedbackRating {
+                                Image(systemName: "rectangle.lefthalf.filled")
+                                    .foregroundColor(AppColours.customMediumGreen)
+                            } else {
+                                Image(systemName: "rectangle")
+                                    .foregroundColor(AppColours.customMediumGreen)
+                            }
                         }
+                        Text("(\(feedbackRatingCount))")
+                            .foregroundColor(AppColours.customDarkGrey)
                     }
-                    Text("(\(feedbackRatingCount))")
                 }
             }
             Spacer()

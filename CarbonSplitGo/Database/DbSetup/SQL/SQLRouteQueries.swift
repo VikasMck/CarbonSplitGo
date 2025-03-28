@@ -41,12 +41,12 @@ struct SQLRouteQueries{
         select rg.group_name, rg.route_day, u.user_name, u.is_verified,
         coalesce(u.user_phone_number, 'Number not set') AS user_phone_number,
         coalesce(avg(uf.feedback_rating), 5) as feedback_rating_avg,
-        count(uf.feedback_rating) as feedback_rating_count
+        count(uf.feedback_rating) as feedback_rating_count, u.user_id
         from route_groups rg
         join users u on u.user_id = rg.user_id
         full join user_feedback uf on uf.user_id = rg.user_id
         where st_dwithin(user_route_coords::geography, st_setsrid(st_makepoint($1, $2), 4326)::geography, 1)
-        group by rg.group_name, rg.route_day, u.user_name, u.is_verified, u.user_phone_number;
+        group by rg.group_name, rg.route_day, u.user_name, u.is_verified, u.user_phone_number, u.user_id;
     """
     
     //allows for drivers to select passangers

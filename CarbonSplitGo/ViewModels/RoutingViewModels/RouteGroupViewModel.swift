@@ -6,7 +6,7 @@ import MapKit
 class RouteGroupViewModel: ObservableObject {
     @Published var passengerCoordinates: [(longitude: Double, latitude: Double)] = []
     @Published var userDetails: [(userId: Int, groupName: String, routeDay: String, userName: String, feedbackRating: Double, feedbackRatingCount: Int)] = []
-    @Published var annotationPopupInfo: [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String, feedbackRating: Double, feedbackRatingCount: Int)] = []
+    @Published var annotationPopupInfo: [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String, feedbackRating: Double, feedbackRatingCount: Int, userId: Int)] = []
     
     @Published var errorMessage: String?
 
@@ -69,7 +69,7 @@ class RouteGroupViewModel: ObservableObject {
     }
 
     
-    func fetchAnnotationPopupInfo(longitude: Double, latitude: Double) async -> [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String, feedbackRating: Double, feedbackRatingCount: Int)]? {
+    func fetchAnnotationPopupInfo(longitude: Double, latitude: Double) async -> [(groupName: String, routeDay: String, userName: String, isVerified: Bool, userPhoneNumber: String, feedbackRating: Double, feedbackRatingCount: Int, userId: Int)]? {
         do {
             
             let annotationInfo = try LocationQueries.retreiveAnnotationPopupInfoFromRouteGroupDB(
@@ -83,7 +83,7 @@ class RouteGroupViewModel: ObservableObject {
             
             self.annotationPopupInfo = annotationInfo
             
-            return annotationInfo.map { (groupName: $0.groupName, routeDay: $0.routeDay, userName: $0.userName, isVerified: $0.isVerified, userPhoneNumber: $0.userPhoneNumber, feedbackRating: $0.feedbackRating, feedbackRatingCount: $0.feedbackRatingCount) }
+            return annotationInfo.map { (groupName: $0.groupName, routeDay: $0.routeDay, userName: $0.userName, isVerified: $0.isVerified, userPhoneNumber: $0.userPhoneNumber, feedbackRating: $0.feedbackRating, feedbackRatingCount: $0.feedbackRatingCount, userId: $0.userId) }
             
         } catch {
             self.errorMessage = "Error retrieving annotation popup info: \(error.localizedDescription)"

@@ -58,4 +58,21 @@ class FeedbackViewModel: ObservableObject {
             ifDriverFeedbackShown = false
         }
     }
+    
+    func retrieveUserFeedbackTextFromDb(userId: Int) async -> [(feedbackText: String, feedbackTimeSent: String)]? {
+        do {
+            let feedbackTextList = try FeedbackQueries.retrieveUserFeedbackTextFromDb(userId: userId)
+            
+            guard !feedbackTextList.isEmpty else {
+                print("Error, no unread messages found for user \(userId).")
+                return []
+            }
+            
+            return feedbackTextList.map { (feedbackText: $0.feedbackText, feedbackTimeSent: $0.feedbackTimeSent) }
+            
+        } catch {
+            self.errorMessage = "Error retrieving unread messages: \(error.localizedDescription)"
+            return nil
+        }
+    }
 }

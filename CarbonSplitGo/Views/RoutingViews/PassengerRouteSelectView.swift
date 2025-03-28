@@ -9,7 +9,7 @@ struct PassengerRouteSelectView: View {
     @State private var isCalenderShown = false
     @State private var alertPublished = false
     @State private var groups: [String] = []
-    @State private var distances: [Int] = [1, 3, 5, 10, 15, 20, 50]
+    @State private var distances: [Int] = [1, 3, 5, 10, 15, 20, 30, 50]
     @State private var selectedDistance = 1
     @State private var selectedGroup = ""
     @State private var drivers: [(userId: Int, groupName: String, routeDay: String, userName: String, feedbackRating: Double, feedbackRatingCount: Int)] = []
@@ -104,7 +104,7 @@ struct PassengerRouteSelectView: View {
                 
                 Menu {
                     ForEach(distances, id: \.self) { distance in
-                        Button(String(distance)) {
+                        Button("\(distance)km") {
                             selectedDistance = distance
                         }
                     }
