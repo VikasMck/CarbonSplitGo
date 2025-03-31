@@ -8,17 +8,10 @@ struct AuthenticateView: View {
                     .edgesIgnoringSafeArea(.all)
 
                 VStack(spacing: 20) {
-                    Image("FakeLogo")
+                    Image("LogoClear")
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: .infinity, maxHeight: 400)
-
-                    Text("CarbonSplitGo")
-                        .font(.custom("Sen", size: 45))
-                        .multilineTextAlignment(.center)
-                        .padding(.top, -100)
-
-                    Spacer()
 
 
                     VStack(spacing: 30) {
@@ -45,9 +38,9 @@ struct AuthenticateView: View {
                     }
                     .padding(.horizontal, 40)
                     
-                    Spacer().frame(height: 250)
+                    Spacer().frame(height: 180)
                 }
-                .padding(.top, 20)
+                .padding(.top, 30)
             }
         }
     }

@@ -1,7 +1,7 @@
 MVVM architecture
 
 For fun
-Hours: 185
+Hours: 186
 
 Few comments due to functional naming
 
@@ -10,6 +10,11 @@ Libraries:
     - MapKit
     - CoreLocation
     - Combine
+    - Foundation
+    - PostgresClientKit
+    - CryptoKit
+    - BackgroundTasks
+    - XCTest
     
 APIs:
     - PlacesAPI
@@ -30,11 +35,16 @@ Naming:
      - *Delagates: if delagate just add to the end (exampleDelegate)
 
     ViewModels:
-     - *Service: for classes that provice functionallity (ExampleService)
      - *ViewModel: specific feature for the view (ExampleViewModel)
      - Variables same as classes just lower case (exampleViewModel = ExampleViewModel)
      
     View:
     - *View: - For each screen (ExampleView)
+    
+    Raw SQL:
+    - Starts with SQL (SQLExample)
+    
+    SQL Processing:
+    - End with Queries (ExampleQueries)
     
 

@@ -23,12 +23,12 @@ struct ProfileView: View {
             .ignoresSafeArea(edges: .top)
             
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 15) {
                     Button(action: {}) {
                         Image(systemName: "person.circle.fill")
                             .resizable()
                             .scaledToFill()
-                            .frame(width: 100, height: 100)
+                            .frame(width: 100, height: 50)
                             .foregroundColor(AppColours.customBlack)
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -81,6 +81,20 @@ struct ProfileView: View {
                             .frame(width: 300)
                             .padding(.vertical, 15)
                             .background(AppColours.customDarkGreen)
+                            .cornerRadius(30)
+                            .font(.custom("Sen", size: 18))
+
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    
+                    Divider().frame(width: 300, height: 1).background(AppColours.customDarkGreen).frame(maxWidth: .infinity)
+
+                    Button(action: {}) {
+                        Text("Shop")
+                            .foregroundColor(AppColours.customWhite)
+                            .frame(width: 300)
+                            .padding(.vertical, 15)
+                            .background(AppColours.customMediumGreen)
                             .cornerRadius(30)
                             .font(.custom("Sen", size: 18))
 

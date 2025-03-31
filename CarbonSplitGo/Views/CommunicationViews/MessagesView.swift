@@ -157,6 +157,9 @@ struct MessagesView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             MessagesView(senderId: 1, receiverId: 2, friendName: "One")
+                .onAppear {
+                    Session.shared.setUserRole("Driver")
+                }
         }
     }
 }

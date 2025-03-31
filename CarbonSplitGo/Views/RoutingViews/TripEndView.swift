@@ -89,10 +89,13 @@ struct TripEndView: View {
                 .frame(maxHeight: 150)
                 
                 Text("You drove: \(passengerCount) \(passengerCount == 1 ? "person" : "people")")
+                    .foregroundColor(AppColours.customBlack)
                 let co2Saved = (routeCo2Emissions * Double(passengerCount)) / Double(passengerCount + 1)
                 
                 Text("CO₂ saved: \(String(format: "%.2f", co2Saved)) kg")
+                    .foregroundColor(AppColours.customBlack)
                 Text("Earned: \(String(format: "%.2f", co2Saved * 2.5)) Carbon Credits")
+                    .foregroundColor(AppColours.customBlack)
                 
                 ZStack {
                     RoundedRectangle(cornerRadius: 30)
