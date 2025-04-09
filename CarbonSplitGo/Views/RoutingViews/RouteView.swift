@@ -7,6 +7,7 @@ struct RouteView: View {
     @StateObject private var routingViewModel = RoutingViewModel()
     @State private var coordinatesForPassengerView: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
     @State private var selectedAnnotation: MKPointAnnotation?
+    var passengerDirectionChoice: String
 
     var body: some View {
         ZStack {
@@ -43,12 +44,17 @@ struct RouteView: View {
                 suggestionsViewModel.locationForRouteList[0] = Session.shared.getUserOriginalLocation() ?? ""
             }
             Task {
-                await routingViewModel.fetchCoordinates(from: suggestionsViewModel.locationForRouteList)
-                coordinatesForPassengerView = await routingViewModel.getCoordinatesFromAddress(for: suggestionsViewModel.locationForRouteList[0])
+                if passengerDirectionChoice == "Work"{
+                    await routingViewModel.fetchCoordinates(from: suggestionsViewModel.locationForRouteList)
+                    coordinatesForPassengerView = await routingViewModel.getCoordinatesFromAddress(for: suggestionsViewModel.locationForRouteList[0])
                     ?? CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
-                
-                //suggestionsViewModel.locationForRouteList[0] = ""
-                //suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1] = ""
+                }
+                else{
+                    await routingViewModel.fetchCoordinates(from: suggestionsViewModel.locationForRouteList)
+                    coordinatesForPassengerView = await routingViewModel.getCoordinatesFromAddress(for: suggestionsViewModel.locationForRouteList[suggestionsViewModel.locationForRouteCount - 1])
+                    ?? CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
+                }
+
             }
         }
         //this is so cool, sadly I have to repeat code, but it works the best this way

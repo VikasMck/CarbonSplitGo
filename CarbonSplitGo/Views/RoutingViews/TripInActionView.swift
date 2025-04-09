@@ -60,7 +60,7 @@ struct TripInActionView: View {
                                     Spacer()
                                     NavigationLink(destination: MessagesView(senderId: Session.shared.getUserID() ?? 0, receiverId: passenger.userId, friendName: passenger.userName)
                                         .navigationBarBackButtonHidden(true)) {
-                                            Image(systemName: "chevron.right")
+                                            Image(systemName: "message")
                                                 .foregroundColor(AppColours.customDarkGreen)
                                                 .font(.custom("Sen", size: 20))
                                         }
