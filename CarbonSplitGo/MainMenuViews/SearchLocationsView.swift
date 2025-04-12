@@ -16,7 +16,7 @@ struct SearchLocationsView: View {
     @EnvironmentObject var suggestionsViewModel: SuggestionsViewModel
     @FocusState private var activeLocationTextField: ActiveLocationTextField?
     @State private var userChoiceOfDirection: UserChoiceOfDirection = .work
-    @State var passengerDirectionChoice: String = "Driver"
+    @State var passengerDirectionChoice: String = "Work"
         
     var body: some View {
         ZStack {
